@@ -201,23 +201,24 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
     public void method554(boolean flag) {
         int j = mapIndices1.length;
+        
         for (int k = 0; k < j; k++) {
             if (flag || mapIndices4[k] != 0) {
                 method563((byte) 2, 3, mapIndices3[k]);
                 method563((byte) 2, 3, mapIndices2[k]);
             }
         }
-
     }
 
-    public int getVersionCount(int j) {
-        return versions[j].length;
+    public int getVersionCount(int dataType) {
+        return versions[dataType].length;
     }
 
     private void closeRequest(OnDemandData onDemandData) {
         try {
             if (socket == null) {
                 long l = System.currentTimeMillis();
+                
                 if (l - openSocketTime < 4000L) {
                     return;
                 }
@@ -226,15 +227,16 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
                 outputStream.write(15);
+                
                 for (int j = 0; j < 8; j++) {
                     inputStream.read();
                 }
-
                 loopCycle = 0;
             }
             ioBuffer[0] = (byte) onDemandData.dataType;
             ioBuffer[1] = (byte) (onDemandData.ID >> 8);
             ioBuffer[2] = (byte) onDemandData.ID;
+            
             if (onDemandData.incomplete) {
                 ioBuffer[3] = 2;
             } else if (!clientInstance.loggedIn) {
@@ -248,9 +250,10 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             return;
         } catch (IOException ioexception) {
         }
+        
         try {
             socket.close();
-        } catch (Exception _ex) {
+        } catch (IOException _ex) {
         }
         socket = null;
         inputStream = null;
@@ -263,26 +266,30 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return anIntArray1360.length;
     }
 
-    public void method558(int i, int j) {
-        if (i < 0 || i > versions.length || j < 0 || j > versions[i].length) {
+    public void fetchItem(int dataType, int songId) {
+        if (dataType < 0 || dataType > versions.length || songId < 0 || songId > versions[dataType].length) {
             return;
         }
-        if (versions[i][j] == 0) {
+        
+        if (versions[dataType][songId] == 0) {
             return;
         }
+        
         synchronized (nodeSubList) {
-            for (OnDemandData onDemandData = (OnDemandData) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList.reverseGetNext()) {
-                if (onDemandData.dataType == i && onDemandData.ID == j) {
+            for (OnDemandData onDemandData = (OnDemandData) nodeSubList.reverseGetFirst();
+                    onDemandData != null;
+                    onDemandData = (OnDemandData) nodeSubList.reverseGetNext()) {
+                if (onDemandData.dataType == dataType && onDemandData.ID == songId) {
                     return;
                 }
             }
-
             OnDemandData onDemandData_1 = new OnDemandData();
-            onDemandData_1.dataType = i;
-            onDemandData_1.ID = j;
+            onDemandData_1.dataType = dataType;
+            onDemandData_1.ID = songId;
             onDemandData_1.incomplete = true;
-            synchronized (aClass19_1370) {
-                aClass19_1370.insertHead(onDemandData_1);
+            
+            synchronized (nodeList) {
+                nodeList.insertHead(onDemandData_1);
             }
             nodeSubList.insertHead(onDemandData_1);
         }
@@ -454,7 +461,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     }
 
     public void method548(int i) {
-        method558(0, i);
+        fetchItem(0, i);
     }
 
     public void method563(byte byte0, int i, int j) {
@@ -519,8 +526,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
     private void checkReceived() {
         OnDemandData onDemandData;
-        synchronized (aClass19_1370) {
-            onDemandData = (OnDemandData) aClass19_1370.popHead();
+        synchronized (nodeList) {
+            onDemandData = (OnDemandData) nodeList.popHead();
         }
         while (onDemandData != null) {
             waiting = true;
@@ -531,7 +538,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             if (!crcMatches(versions[onDemandData.dataType][onDemandData.ID], crcs[onDemandData.dataType][onDemandData.ID], abyte0)) {
                 abyte0 = null;
             }
-            synchronized (aClass19_1370) {
+            synchronized (nodeList) {
                 if (abyte0 == null) {
                     aClass19_1368.insertHead(onDemandData);
                 } else {
@@ -540,7 +547,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                         aClass19_1358.insertHead(onDemandData);
                     }
                 }
-                onDemandData = (OnDemandData) aClass19_1370.popHead();
+                onDemandData = (OnDemandData) nodeList.popHead();
             }
         }
     }
@@ -622,7 +629,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         versions = new int[4][];
         crcs = new int[4][];
         aClass19_1368 = new NodeList();
-        aClass19_1370 = new NodeList();
+        nodeList = new NodeList();
     }
 
     private int totalFiles;
@@ -660,7 +667,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     private int completedCount;
     private final NodeList aClass19_1368;
     private OnDemandData current;
-    private final NodeList aClass19_1370;
+    private final NodeList nodeList;
     private int[] mapIndices1;
     private byte[] modelIndices;
     private int loopCycle;

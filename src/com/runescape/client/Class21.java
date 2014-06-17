@@ -1,12 +1,6 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class Class21 {
-
-    public Class21() {
-    }
 
     public byte aByteArray368[];
     public int anInt369;
@@ -25,4 +19,7 @@ final class Class21 {
     public int anInt382;
     public int anInt383;
     public int anInt384;
+
+    public Class21() {
+    }
 }

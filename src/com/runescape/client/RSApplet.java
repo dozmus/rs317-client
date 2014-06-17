@@ -1,8 +1,5 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,18 +7,61 @@ import java.awt.event.*;
 public class RSApplet extends Applet
         implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener {
 
-    final void createClientFrame(int i, int j) {
-        myWidth = j;
-        myHeight = i;
+    public static int anInt34;
+
+    private int anInt4;
+    private int delayTime;
+    int minDelay;
+    private final long[] aLongArray7;
+    int fps;
+    boolean shouldDebug;
+    int myWidth;
+    int myHeight;
+    Graphics graphics;
+    RSImageProducer fullGameScreen;
+    RSFrame gameFrame;
+    private boolean shouldClearScreen;
+    boolean awtFocus;
+    int idleTime;
+    int clickMode2;
+    public int mouseX;
+    public int mouseY;
+    private int clickMode1;
+    private int clickX;
+    private int clickY;
+    private long clickTime;
+    int clickMode3;
+    int saveClickX;
+    int saveClickY;
+    long aLong29;
+    final int[] keyArray;
+    private final int[] charQueue;
+    private int readIndex;
+    private int writeIndex;
+
+    RSApplet() {
+        delayTime = 20;
+        minDelay = 1;
+        aLongArray7 = new long[10];
+        shouldDebug = false;
+        shouldClearScreen = true;
+        awtFocus = true;
+        keyArray = new int[128];
+        charQueue = new int[128];
+    }
+
+    final void createClientFrame(int width, int height) {
+        myWidth = height;
+        myHeight = width;
         gameFrame = new RSFrame(this, myWidth, myHeight);
         graphics = getGameComponent().getGraphics();
         fullGameScreen = new RSImageProducer(myWidth, myHeight, getGameComponent());
         startRunnable(this, 1);
     }
 
-    final void initClientFrame(int i, int j) {
-        myWidth = j;
-        myHeight = i;
+    final void initClientFrame(int height, int width) {
+        myWidth = width;
+        myHeight = height;
         graphics = getGameComponent().getGraphics();
         fullGameScreen = new RSImageProducer(myWidth, myHeight, getGameComponent());
         startRunnable(this, 1);
@@ -32,6 +72,7 @@ public class RSApplet extends Applet
         getGameComponent().addMouseMotionListener(this);
         getGameComponent().addKeyListener(this);
         getGameComponent().addFocusListener(this);
+        
         if (gameFrame != null) {
             gameFrame.addWindowListener(this);
         }
@@ -42,14 +83,16 @@ public class RSApplet extends Applet
         int k = 1;
         int i1 = 0;
         int j1 = 0;
+        
         for (int k1 = 0; k1 < 10; k1++) {
             aLongArray7[k1] = System.currentTimeMillis();
         }
-
         long l = System.currentTimeMillis();
+        
         while (anInt4 >= 0) {
             if (anInt4 > 0) {
                 anInt4--;
+                
                 if (anInt4 == 0) {
                     exit();
                     return;
@@ -60,6 +103,7 @@ public class RSApplet extends Applet
             j = 300;
             k = 1;
             long l1 = System.currentTimeMillis();
+            
             if (aLongArray7[i] == 0L) {
                 j = i2;
                 k = j2;
@@ -84,7 +128,6 @@ public class RSApplet extends Applet
                         aLongArray7[k2] += k;
                     }
                 }
-
             }
             if (k < minDelay) {
                 k = minDelay;
@@ -103,19 +146,20 @@ public class RSApplet extends Applet
                 processGameLoop();
                 readIndex = writeIndex;
             }
-
             i1 &= 0xff;
+            
             if (delayTime > 0) {
                 fps = (1000 * j) / (delayTime * 256);
             }
             processDrawing();
+            
             if (shouldDebug) {
                 System.out.println("ntime:" + l1);
+                
                 for (int l2 = 0; l2 < 10; l2++) {
                     int i3 = ((i - l2 - 1) + 20) % 10;
                     System.out.println("otim" + i3 + ":" + aLongArray7[i3]);
                 }
-
                 System.out.println("fps:" + fps + " ratio:" + j + " count:" + i1);
                 System.out.println("del:" + k + " deltime:" + delayTime + " mindel:" + minDelay);
                 System.out.println("intex:" + j1 + " opos:" + i);
@@ -131,11 +175,13 @@ public class RSApplet extends Applet
     private void exit() {
         anInt4 = -2;
         cleanUpForQuit();
+        
         if (gameFrame != null) {
             try {
                 Thread.sleep(1000L);
-            } catch (Exception _ex) {
+            } catch (InterruptedException _ex) {
             }
+            
             try {
                 System.exit(0);
             } catch (Throwable _ex) {
@@ -161,10 +207,12 @@ public class RSApplet extends Applet
 
     public final void destroy() {
         anInt4 = -1;
+        
         try {
             Thread.sleep(5000L);
-        } catch (Exception _ex) {
+        } catch (InterruptedException _ex) {
         }
+        
         if (anInt4 == -1) {
             exit();
         }
@@ -189,6 +237,7 @@ public class RSApplet extends Applet
     public final void mousePressed(MouseEvent mouseevent) {
         int i = mouseevent.getX();
         int j = mouseevent.getY();
+        
         if (gameFrame != null) {
             i -= 4;
             j -= 22;
@@ -197,6 +246,7 @@ public class RSApplet extends Applet
         clickX = i;
         clickY = j;
         clickTime = System.currentTimeMillis();
+        
         if (mouseevent.isMetaDown()) {
             clickMode1 = 2;
             clickMode2 = 2;
@@ -226,6 +276,7 @@ public class RSApplet extends Applet
     public final void mouseDragged(MouseEvent mouseevent) {
         int i = mouseevent.getX();
         int j = mouseevent.getY();
+        
         if (gameFrame != null) {
             i -= 4;
             j -= 22;
@@ -238,6 +289,7 @@ public class RSApplet extends Applet
     public final void mouseMoved(MouseEvent mouseevent) {
         int i = mouseevent.getX();
         int j = mouseevent.getY();
+        
         if (gameFrame != null) {
             i -= 4;
             j -= 22;
@@ -251,6 +303,7 @@ public class RSApplet extends Applet
         idleTime = 0;
         int i = keyevent.getKeyCode();
         int j = keyevent.getKeyChar();
+        
         if (j < 30) {
             j = 0;
         }
@@ -309,6 +362,7 @@ public class RSApplet extends Applet
         idleTime = 0;
         int i = keyevent.getKeyCode();
         char c = keyevent.getKeyChar();
+        
         if (c < '\036') {
             c = '\0';
         }
@@ -352,6 +406,7 @@ public class RSApplet extends Applet
             for (int j = 1; j > 0; j++);
         }
         int k = -1;
+        
         if (writeIndex != readIndex) {
             k = charQueue[readIndex];
             readIndex = readIndex + 1 & 0x7f;
@@ -367,10 +422,10 @@ public class RSApplet extends Applet
 
     public final void focusLost(FocusEvent focusevent) {
         awtFocus = false;
+        
         for (int i = 0; i < 128; i++) {
             keyArray[i] = 0;
         }
-
     }
 
     public final void windowActivated(WindowEvent windowevent) {
@@ -427,19 +482,22 @@ public class RSApplet extends Applet
     void drawLoadingText(int i, String s) {
         while (graphics == null) {
             graphics = getGameComponent().getGraphics();
+            
             try {
                 getGameComponent().repaint();
             } catch (Exception _ex) {
             }
+            
             try {
                 Thread.sleep(1000L);
-            } catch (Exception _ex) {
+            } catch (InterruptedException _ex) {
             }
         }
         Font font = new Font("Helvetica", 1, 13);
         FontMetrics fontmetrics = getGameComponent().getFontMetrics(font);
         Font font1 = new Font("Helvetica", 0, 13);
         getGameComponent().getFontMetrics(font1);
+        
         if (shouldClearScreen) {
             graphics.setColor(Color.black);
             graphics.fillRect(0, 0, myWidth, myHeight);
@@ -456,46 +514,4 @@ public class RSApplet extends Applet
         graphics.setColor(Color.white);
         graphics.drawString(s, (myWidth - fontmetrics.stringWidth(s)) / 2, j + 22);
     }
-
-    RSApplet() {
-        delayTime = 20;
-        minDelay = 1;
-        aLongArray7 = new long[10];
-        shouldDebug = false;
-        shouldClearScreen = true;
-        awtFocus = true;
-        keyArray = new int[128];
-        charQueue = new int[128];
-    }
-
-    private int anInt4;
-    private int delayTime;
-    int minDelay;
-    private final long[] aLongArray7;
-    int fps;
-    boolean shouldDebug;
-    int myWidth;
-    int myHeight;
-    Graphics graphics;
-    RSImageProducer fullGameScreen;
-    RSFrame gameFrame;
-    private boolean shouldClearScreen;
-    boolean awtFocus;
-    int idleTime;
-    int clickMode2;
-    public int mouseX;
-    public int mouseY;
-    private int clickMode1;
-    private int clickX;
-    private int clickY;
-    private long clickTime;
-    int clickMode3;
-    int saveClickX;
-    int saveClickY;
-    long aLong29;
-    final int[] keyArray;
-    private final int[] charQueue;
-    private int readIndex;
-    private int writeIndex;
-    public static int anInt34;
 }

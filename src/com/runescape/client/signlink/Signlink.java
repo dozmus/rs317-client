@@ -39,7 +39,7 @@ public final class Signlink
     public static boolean reporterror = true;
     public static String errorname = "";
 
-    public static void startpriv(InetAddress inetaddress) {
+    public static void startSignlink(InetAddress address) {
         threadliveid = (int) (Math.random() * 99999999D);
         
         if (active) {
@@ -54,7 +54,7 @@ public final class Signlink
         dnsreq = null;
         savereq = null;
         urlreq = null;
-        socketip = inetaddress;
+        socketip = address;
         Thread thread = new Thread(new Signlink());
         thread.setDaemon(true);
         thread.start();

@@ -36,18 +36,18 @@ public final class Model extends Animable {
         aOnDemandFetcherParent_1662 = onDemandFetcherParent;
     }
 
-    public static void method460(byte abyte0[], int j) {
-        if (abyte0 == null) {
-            Class21 class21 = aClass21Array1661[j] = new Class21();
+    public static void method460(byte buf[], int classId) {
+        if (buf == null) {
+            Class21 class21 = aClass21Array1661[classId] = new Class21();
             class21.anInt369 = 0;
             class21.anInt370 = 0;
             class21.anInt371 = 0;
             return;
         }
-        Stream stream = new Stream(abyte0);
-        stream.currentOffset = abyte0.length - 18;
-        Class21 class21_1 = aClass21Array1661[j] = new Class21();
-        class21_1.aByteArray368 = abyte0;
+        Stream stream = new Stream(buf);
+        stream.currentOffset = buf.length - 18;
+        Class21 class21_1 = aClass21Array1661[classId] = new Class21();
+        class21_1.aByteArray368 = buf;
         class21_1.anInt369 = stream.readUShort();
         class21_1.anInt370 = stream.readUShort();
         class21_1.anInt371 = stream.readUByte();
@@ -66,30 +66,35 @@ public final class Model extends Animable {
         class21_1.anInt378 = l2;
         l2 += class21_1.anInt370;
         class21_1.anInt381 = l2;
+        
         if (l == 255) {
             l2 += class21_1.anInt370;
         } else {
             class21_1.anInt381 = -l - 1;
         }
         class21_1.anInt383 = l2;
+        
         if (j1 == 1) {
             l2 += class21_1.anInt370;
         } else {
             class21_1.anInt383 = -1;
         }
         class21_1.anInt380 = l2;
+        
         if (k == 1) {
             l2 += class21_1.anInt370;
         } else {
             class21_1.anInt380 = -1;
         }
         class21_1.anInt376 = l2;
+        
         if (k1 == 1) {
             l2 += class21_1.anInt369;
         } else {
             class21_1.anInt376 = -1;
         }
         class21_1.anInt382 = l2;
+        
         if (i1 == 1) {
             l2 += class21_1.anInt370;
         } else {
@@ -109,20 +114,21 @@ public final class Model extends Animable {
         l2 += j2;
     }
 
-    public static void method461(int j) {
-        aClass21Array1661[j] = null;
+    public static void method461(int i) {
+        aClass21Array1661[i] = null;
     }
 
-    public static Model method462(int j) {
+    public static Model method462(int i) {
         if (aClass21Array1661 == null) {
             return null;
         }
-        Class21 class21 = aClass21Array1661[j];
+        Class21 class21 = aClass21Array1661[i];
+        
         if (class21 == null) {
-            aOnDemandFetcherParent_1662.method548(j);
+            aOnDemandFetcherParent_1662.method548(i);
             return null;
         } else {
-            return new Model(j);
+            return new Model(i);
         }
     }
 

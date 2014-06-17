@@ -14,8 +14,8 @@ public final class Background extends DrawingArea {
     public int anInt1456;
     private int anInt1457;
 
-    public Background(StreamLoader streamLoader, String s, int i) {
-        Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
+    public Background(StreamLoader streamLoader, String fileName, int length) {
+        Stream stream = new Stream(streamLoader.getDataForName(fileName + ".dat"));
         Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
         stream_1.currentOffset = stream.readUShort();
         anInt1456 = stream_1.readUShort();
@@ -27,7 +27,7 @@ public final class Background extends DrawingArea {
             anIntArray1451[k + 1] = stream_1.readUTriByte();
         }
 
-        for (int l = 0; l < i; l++) {
+        for (int l = 0; l < length; l++) {
             stream_1.currentOffset += 2;
             stream.currentOffset += stream_1.readUShort() * stream_1.readUShort();
             stream_1.currentOffset++;

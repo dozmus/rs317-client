@@ -1,43 +1,42 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public final class Class36 {
 
-    public static void method528(int i) {
-        aClass36Array635 = new Class36[i + 1];
-        aBooleanArray643 = new boolean[i + 1];
-        for (int j = 0; j < i + 1; j++) {
+    private static Class36[] aClass36Array635;
+    private static boolean[] aBooleanArray643;
+
+    public static void method528(int length) {
+        aClass36Array635 = new Class36[length + 1];
+        aBooleanArray643 = new boolean[length + 1];
+
+        for (int j = 0; j < length + 1; j++) {
             aBooleanArray643[j] = true;
         }
-
     }
 
-    public static void method529(byte abyte0[]) {
-        Stream stream = new Stream(abyte0);
-        stream.currentOffset = abyte0.length - 8;
+    public static void method529(byte buf[]) {
+        Stream stream = new Stream(buf);
+        stream.currentOffset = buf.length - 8;
         int i = stream.readUShort();
         int j = stream.readUShort();
         int k = stream.readUShort();
         int l = stream.readUShort();
         int i1 = 0;
-        Stream stream_1 = new Stream(abyte0);
+        Stream stream_1 = new Stream(buf);
         stream_1.currentOffset = i1;
         i1 += i + 2;
-        Stream stream_2 = new Stream(abyte0);
+        Stream stream_2 = new Stream(buf);
         stream_2.currentOffset = i1;
         i1 += j;
-        Stream stream_3 = new Stream(abyte0);
+        Stream stream_3 = new Stream(buf);
         stream_3.currentOffset = i1;
         i1 += k;
-        Stream stream_4 = new Stream(abyte0);
+        Stream stream_4 = new Stream(buf);
         stream_4.currentOffset = i1;
         i1 += l;
-        Stream stream_5 = new Stream(abyte0);
+        Stream stream_5 = new Stream(buf);
         stream_5.currentOffset = i1;
         Class18 class18 = new Class18(stream_5);
         int k1 = stream_1.readUShort();
@@ -92,6 +91,7 @@ public final class Class36 {
                     }
                     k2 = i3;
                     l2++;
+                    
                     if (class18.anIntArray342[i3] == 5) {
                         aBooleanArray643[i2] = false;
                     }
@@ -103,15 +103,14 @@ public final class Class36 {
             class36.anIntArray640 = new int[l2];
             class36.anIntArray641 = new int[l2];
             class36.anIntArray642 = new int[l2];
+            
             for (int k3 = 0; k3 < l2; k3++) {
                 class36.anIntArray639[k3] = ai[k3];
                 class36.anIntArray640[k3] = ai1[k3];
                 class36.anIntArray641[k3] = ai2[k3];
                 class36.anIntArray642[k3] = ai3[k3];
             }
-
         }
-
     }
 
     public static void nullLoader() {
@@ -130,10 +129,6 @@ public final class Class36 {
         return i == -1;
     }
 
-    private Class36() {
-    }
-
-    private static Class36[] aClass36Array635;
     public int anInt636;
     public Class18 aClass18_637;
     public int anInt638;
@@ -141,6 +136,9 @@ public final class Class36 {
     public int anIntArray640[];
     public int anIntArray641[];
     public int anIntArray642[];
-    private static boolean[] aBooleanArray643;
+
+    private Class36() {
+        
+    }
 
 }

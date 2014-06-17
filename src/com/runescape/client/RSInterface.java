@@ -159,7 +159,7 @@ public final class RSInterface {
                 int l = stream.readUByte();
                 if (l != 0) {
                     rsInterface.anInt233 = 1;
-                    rsInterface.mediaID = (l - 1 << 8) + stream.readUByte();
+                    rsInterface.mediaId = (l - 1 << 8) + stream.readUByte();
                 }
                 l = stream.readUByte();
                 if (l != 0) {
@@ -168,9 +168,9 @@ public final class RSInterface {
                 }
                 l = stream.readUByte();
                 if (l != 0) {
-                    rsInterface.anInt257 = (l - 1 << 8) + stream.readUByte();
+                    rsInterface.animationId = (l - 1 << 8) + stream.readUByte();
                 } else {
-                    rsInterface.anInt257 = -1;
+                    rsInterface.animationId = -1;
                 }
                 l = stream.readUByte();
                 if (l != 0) {
@@ -178,8 +178,8 @@ public final class RSInterface {
                 } else {
                     rsInterface.anInt258 = -1;
                 }
-                rsInterface.anInt269 = stream.readUShort();
-                rsInterface.anInt270 = stream.readUShort();
+                rsInterface.zoomFactor = stream.readUShort();
+                rsInterface.modelRotation1 = stream.readUShort();
                 rsInterface.anInt271 = stream.readUShort();
             }
             if (rsInterface.type == 7) {
@@ -264,7 +264,7 @@ public final class RSInterface {
     }
 
     private static Sprite method207(int i, StreamLoader streamLoader, String s) {
-        long l = (TextClass.method585(s) << 8) + (long) i;
+        long l = (StringHelper.method585(s) << 8) + (long) i;
         Sprite sprite = (Sprite) aMRUNodes_238.insertFromCache(l);
         if (sprite != null) {
             return sprite;
@@ -295,7 +295,7 @@ public final class RSInterface {
         if (flag) {
             model = method206(anInt255, anInt256);
         } else {
-            model = method206(anInt233, mediaID);
+            model = method206(anInt233, mediaId);
         }
         if (model == null) {
             return null;
@@ -344,7 +344,7 @@ public final class RSInterface {
     public int invSpritePadX;
     public int textColor;
     public int anInt233;
-    public int mediaID;
+    public int mediaId;
     public boolean aBoolean235;
     public int parentID;
     public int spellUsableOn;
@@ -366,7 +366,7 @@ public final class RSInterface {
     public byte aByte254;
     private int anInt255;
     private int anInt256;
-    public int anInt257;
+    public int animationId;
     public int anInt258;
     public boolean aBoolean259;
     public Sprite sprite2;
@@ -378,8 +378,8 @@ public final class RSInterface {
     public boolean aBoolean266;
     public int height;
     public boolean aBoolean268;
-    public int anInt269;
-    public int anInt270;
+    public int zoomFactor;
+    public int modelRotation1;
     public int anInt271;
     public int childY[];
 

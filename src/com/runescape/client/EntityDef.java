@@ -5,24 +5,23 @@ import com.runescape.client.io.StreamLoader;
 
 public final class EntityDef {
 
-    private static int anInt56;
+    private static int entityId;
     private static Stream stream;
     private static int[] streamIndices;
     private static EntityDef[] cache;
     public static Client clientInstance;
     public static MRUNodes mruNodes = new MRUNodes(30);
 
-    public static EntityDef forID(int i) {
-        for (int j = 0; j < 20; j++) {
-            if (cache[j].type == (long) i) {
-                return cache[j];
+    public static EntityDef forID(int id) {
+        for (int i = 0; i < 20; i++) {
+            if (cache[i].type == (long) id) {
+                return cache[i];
             }
         }
-
-        anInt56 = (anInt56 + 1) % 20;
-        EntityDef entityDef = cache[anInt56] = new EntityDef();
-        stream.currentOffset = streamIndices[i];
-        entityDef.type = i;
+        entityId = (entityId + 1) % 20;
+        EntityDef entityDef = cache[entityId] = new EntityDef();
+        stream.currentOffset = streamIndices[id];
+        entityDef.type = id;
         entityDef.readValues(stream);
         return entityDef;
     }
@@ -33,16 +32,16 @@ public final class EntityDef {
         int totalNPCs = stream2.readUShort();
         streamIndices = new int[totalNPCs];
         int i = 2;
+        
         for (int j = 0; j < totalNPCs; j++) {
             streamIndices[j] = i;
             i += stream2.readUShort();
         }
-
         cache = new EntityDef[20];
+        
         for (int k = 0; k < 20; k++) {
             cache[k] = new EntityDef();
         }
-
     }
 
     public static void nullLoader() {
@@ -105,6 +104,7 @@ public final class EntityDef {
     public Model method160() {
         if (childrenIDs != null) {
             EntityDef entityDef = method161();
+            
             if (entityDef == null) {
                 return null;
             } else {
@@ -115,6 +115,7 @@ public final class EntityDef {
             return null;
         }
         boolean flag1 = false;
+        
         for (int i = 0; i < anIntArray73.length; i++) {
             if (!Model.method463(anIntArray73[i])) {
                 flag1 = true;
@@ -125,37 +126,40 @@ public final class EntityDef {
             return null;
         }
         Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray73.length];
+        
         for (int j = 0; j < anIntArray73.length; j++) {
             aclass30_sub2_sub4_sub6s[j] = Model.method462(anIntArray73[j]);
         }
-
         Model model;
+        
         if (aclass30_sub2_sub4_sub6s.length == 1) {
             model = aclass30_sub2_sub4_sub6s[0];
         } else {
             model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
         }
+        
         if (anIntArray76 != null) {
             for (int k = 0; k < anIntArray76.length; k++) {
                 model.method476(anIntArray76[k], anIntArray70[k]);
             }
-
         }
         return model;
     }
 
     public EntityDef method161() {
         int j = -1;
+        
         if (anInt57 != -1) {
             VarBit varBit = VarBit.cache[anInt57];
             int k = varBit.anInt648;
             int l = varBit.anInt649;
             int i1 = varBit.anInt650;
             int j1 = Client.anIntArray1232[i1 - l];
-            j = clientInstance.variousSettings[k] >> l & j1;
+            j = clientInstance.currentButtonState[k] >> l & j1;
         } else if (anInt59 != -1) {
-            j = clientInstance.variousSettings[anInt59];
+            j = clientInstance.currentButtonState[anInt59];
         }
+        
         if (j < 0 || j >= childrenIDs.length || childrenIDs[j] == -1) {
             return null;
         } else {
@@ -166,6 +170,7 @@ public final class EntityDef {
     public Model method164(int j, int k, int ai[]) {
         if (childrenIDs != null) {
             EntityDef entityDef = method161();
+            
             if (entityDef == null) {
                 return null;
             } else {
@@ -173,8 +178,10 @@ public final class EntityDef {
             }
         }
         Model model = (Model) mruNodes.insertFromCache(type);
+        
         if (model == null) {
             boolean flag = false;
+            
             for (int i1 = 0; i1 < anIntArray94.length; i1++) {
                 if (!Model.method463(anIntArray94[i1])) {
                     flag = true;
@@ -185,6 +192,7 @@ public final class EntityDef {
                 return null;
             }
             Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray94.length];
+            
             for (int j1 = 0; j1 < anIntArray94.length; j1++) {
                 aclass30_sub2_sub4_sub6s[j1] = Model.method462(anIntArray94[j1]);
             }
@@ -194,11 +202,11 @@ public final class EntityDef {
             } else {
                 model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
             }
+            
             if (anIntArray76 != null) {
                 for (int k1 = 0; k1 < anIntArray76.length; k1++) {
                     model.method476(anIntArray76[k1], anIntArray70[k1]);
                 }
-
             }
             model.method469();
             model.method479(64 + anInt85, 850 + anInt92, -30, -50, -30, true);
@@ -206,17 +214,20 @@ public final class EntityDef {
         }
         Model model_1 = Model.aModel_1621;
         model_1.method464(model, Class36.method532(k) & Class36.method532(j));
+        
         if (k != -1 && j != -1) {
             model_1.method471(ai, j, k);
         } else if (k != -1) {
             model_1.method470(k);
         }
+        
         if (anInt91 != 128 || anInt86 != 128) {
             model_1.method478(anInt91, anInt91, anInt86);
         }
         model_1.method466();
         model_1.anIntArrayArray1658 = null;
         model_1.anIntArrayArray1657 = null;
+        
         if (aByte68 == 1) {
             model_1.aBoolean1659 = true;
         }
@@ -226,16 +237,18 @@ public final class EntityDef {
     private void readValues(Stream stream) {
         do {
             int i = stream.readUByte();
+            
             if (i == 0) {
                 return;
             }
+            
             if (i == 1) {
                 int j = stream.readUByte();
                 anIntArray94 = new int[j];
+                
                 for (int j1 = 0; j1 < j; j1++) {
                     anIntArray94[j1] = stream.readUShort();
                 }
-
             } else if (i == 2) {
                 name = stream.readString();
             } else if (i == 3) {
@@ -256,6 +269,7 @@ public final class EntityDef {
                     actions = new String[5];
                 }
                 actions[i - 30] = stream.readString();
+                
                 if (actions[i - 30].equalsIgnoreCase("hidden")) {
                     actions[i - 30] = null;
                 }
@@ -263,6 +277,7 @@ public final class EntityDef {
                 int k = stream.readUByte();
                 anIntArray76 = new int[k];
                 anIntArray70 = new int[k];
+                
                 for (int k1 = 0; k1 < k; k1++) {
                     anIntArray76[k1] = stream.readUShort();
                     anIntArray70[k1] = stream.readUShort();
@@ -271,10 +286,10 @@ public final class EntityDef {
             } else if (i == 60) {
                 int l = stream.readUByte();
                 anIntArray73 = new int[l];
+                
                 for (int l1 = 0; l1 < l; l1++) {
                     anIntArray73[l1] = stream.readUShort();
                 }
-
             } else if (i == 90) {
                 stream.readUShort();
             } else if (i == 91) {
@@ -301,22 +316,25 @@ public final class EntityDef {
                 anInt79 = stream.readUShort();
             } else if (i == 106) {
                 anInt57 = stream.readUShort();
+                
                 if (anInt57 == 65535) {
                     anInt57 = -1;
                 }
                 anInt59 = stream.readUShort();
+                
                 if (anInt59 == 65535) {
                     anInt59 = -1;
                 }
                 int i1 = stream.readUByte();
                 childrenIDs = new int[i1 + 1];
+                
                 for (int i2 = 0; i2 <= i1; i2++) {
                     childrenIDs[i2] = stream.readUShort();
+                    
                     if (childrenIDs[i2] == 65535) {
                         childrenIDs[i2] = -1;
                     }
                 }
-
             } else if (i == 107) {
                 aBoolean84 = false;
             }

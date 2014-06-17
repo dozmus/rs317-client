@@ -1,12 +1,24 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class Class39 {
+
+    private static final float[][] aFloatArrayArray669 = new float[2][8];
+    static final int[][] anIntArrayArray670 = new int[2][8];
+    private static float aFloat671;
+    static int anInt672;
+    final int[] anIntArray665;
+    private final int[][][] anIntArrayArrayArray666;
+    private final int[][][] anIntArrayArrayArray667;
+    private final int[] anIntArray668;
+
+    public Class39() {
+        anIntArray665 = new int[2];
+        anIntArrayArrayArray666 = new int[2][2][4];
+        anIntArrayArrayArray667 = new int[2][2][4];
+        anIntArray668 = new int[2];
+    }
 
     private float method541(int i, int j, float f) {
         float f1 = (float) anIntArrayArrayArray667[i][0][j] + f * (float) (anIntArrayArrayArray667[i][1][j] - anIntArrayArrayArray667[i][0][j]);
@@ -32,22 +44,24 @@ final class Class39 {
             aFloat671 = (float) Math.pow(0.10000000000000001D, f1 / 20F);
             anInt672 = (int) (aFloat671 * 65536F);
         }
+
         if (anIntArray665[i] == 0) {
             return 0;
         }
         float f2 = method541(i, 0, f);
         aFloatArrayArray669[i][0] = -2F * f2 * (float) Math.cos(method543(f, 0, i));
         aFloatArrayArray669[i][1] = f2 * f2;
+
         for (int k = 1; k < anIntArray665[i]; k++) {
             float f3 = method541(i, k, f);
             float f4 = -2F * f3 * (float) Math.cos(method543(f, k, i));
             float f5 = f3 * f3;
             aFloatArrayArray669[i][k * 2 + 1] = aFloatArrayArray669[i][k * 2 - 1] * f5;
             aFloatArrayArray669[i][k * 2] = aFloatArrayArray669[i][k * 2 - 1] * f4 + aFloatArrayArray669[i][k * 2 - 2] * f5;
+
             for (int j1 = k * 2 - 1; j1 >= 2; j1--) {
                 aFloatArrayArray669[i][j1] += aFloatArrayArray669[i][j1 - 1] * f4 + aFloatArrayArray669[i][j1 - 2] * f5;
             }
-
             aFloatArrayArray669[i][1] += aFloatArrayArray669[i][0] * f4 + f5;
             aFloatArrayArray669[i][0] += f4;
         }
@@ -56,12 +70,11 @@ final class Class39 {
             for (int l = 0; l < anIntArray665[0] * 2; l++) {
                 aFloatArrayArray669[0][l] *= aFloat671;
             }
-
         }
+
         for (int i1 = 0; i1 < anIntArray665[i] * 2; i1++) {
             anIntArrayArray670[i][i1] = (int) (aFloatArrayArray669[i][i1] * 65536F);
         }
-
         return anIntArray665[i] * 2;
     }
 
@@ -69,16 +82,17 @@ final class Class39 {
         int i = stream.readUByte();
         anIntArray665[0] = i >> 4;
         anIntArray665[1] = i & 0xf;
+
         if (i != 0) {
             anIntArray668[0] = stream.readUShort();
             anIntArray668[1] = stream.readUShort();
             int j = stream.readUByte();
+
             for (int k = 0; k < 2; k++) {
                 for (int l = 0; l < anIntArray665[k]; l++) {
                     anIntArrayArrayArray666[k][0][l] = stream.readUShort();
                     anIntArrayArrayArray667[k][0][l] = stream.readUShort();
                 }
-
             }
 
             for (int i1 = 0; i1 < 2; i1++) {
@@ -91,7 +105,6 @@ final class Class39 {
                         anIntArrayArrayArray667[i1][1][j1] = anIntArrayArrayArray667[i1][0][j1];
                     }
                 }
-
             }
 
             if (j != 0 || anIntArray668[1] != anIntArray668[0]) {
@@ -101,21 +114,4 @@ final class Class39 {
             anIntArray668[0] = anIntArray668[1] = 0;
         }
     }
-
-    public Class39() {
-        anIntArray665 = new int[2];
-        anIntArrayArrayArray666 = new int[2][2][4];
-        anIntArrayArrayArray667 = new int[2][2][4];
-        anIntArray668 = new int[2];
-    }
-
-    final int[] anIntArray665;
-    private final int[][][] anIntArrayArrayArray666;
-    private final int[][][] anIntArrayArrayArray667;
-    private final int[] anIntArray668;
-    private static final float[][] aFloatArrayArray669 = new float[2][8];
-    static final int[][] anIntArrayArray670 = new int[2][8];
-    private static float aFloat671;
-    static int anInt672;
-
 }

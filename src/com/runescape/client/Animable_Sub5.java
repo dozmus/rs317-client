@@ -99,9 +99,9 @@ public final class Animable_Sub5 extends Animable {
             int l = varBit.anInt649;
             int i1 = varBit.anInt650;
             int j1 = Client.anIntArray1232[i1 - l];
-            i = clientInstance.variousSettings[k] >> l & j1;
+            i = clientInstance.currentButtonState[k] >> l & j1;
         } else if (clientSettingId != -1) {
-            i = clientInstance.variousSettings[clientSettingId];
+            i = clientInstance.currentButtonState[clientSettingId];
         }
         
         if (i < 0 || i >= objectChildrenIds.length || objectChildrenIds[i] == -1) {
