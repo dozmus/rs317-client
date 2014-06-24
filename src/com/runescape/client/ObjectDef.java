@@ -166,9 +166,9 @@ public final class ObjectDef {
             int k = varBit.anInt649;
             int l = varBit.anInt650;
             int i1 = Client.anIntArray1232[l - k];
-            i = clientInstance.currentButtonState[j] >> k & i1;
+            i = clientInstance.currentUserSetting[j] >> k & i1;
         } else if (anInt749 != -1) {
-            i = clientInstance.currentButtonState[anInt749];
+            i = clientInstance.currentUserSetting[anInt749];
         }
         if (i < 0 || i >= childrenIDs.length || childrenIDs[i] == -1) {
             return null;

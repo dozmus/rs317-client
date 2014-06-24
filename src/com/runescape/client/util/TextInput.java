@@ -1,54 +1,55 @@
-package com.runescape.client;
-
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
+package com.runescape.client.util;
 
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-final class TextInput {
+public final class TextInput {
 
-    public static String method525(int i, Stream stream) {
-        int j = 0;
+    public static String constructInput(int i, Stream stream) {
+        int count = 0;
         int k = -1;
+        
         for (int l = 0; l < i; l++) {
             int i1 = stream.readUByte();
-            int j1 = i1 >> 4 & 0xf;
+            int characterId = i1 >> 4 & 0xf;
+            
             if (k == -1) {
-                if (j1 < 13) {
-                    aCharArray631[j++] = validChars[j1];
+                if (characterId < 13) {
+                    characters[count++] = validChars[characterId];
                 } else {
-                    k = j1;
+                    k = characterId;
                 }
             } else {
-                aCharArray631[j++] = validChars[((k << 4) + j1) - 195];
+                characters[count++] = validChars[((k << 4) + characterId) - 195];
                 k = -1;
             }
-            j1 = i1 & 0xf;
+            characterId = i1 & 0xf;
+            
             if (k == -1) {
-                if (j1 < 13) {
-                    aCharArray631[j++] = validChars[j1];
+                if (characterId < 13) {
+                    characters[count++] = validChars[characterId];
                 } else {
-                    k = j1;
+                    k = characterId;
                 }
             } else {
-                aCharArray631[j++] = validChars[((k << 4) + j1) - 195];
+                characters[count++] = validChars[((k << 4) + characterId) - 195];
                 k = -1;
             }
         }
-
         boolean flag1 = true;
-        for (int k1 = 0; k1 < j; k1++) {
-            char c = aCharArray631[k1];
+        
+        for (int k1 = 0; k1 < count; k1++) {
+            char c = characters[k1];
+            
             if (flag1 && c >= 'a' && c <= 'z') {
-                aCharArray631[k1] += '\uFFE0';
+                characters[k1] += '\uFFE0';
                 flag1 = false;
             }
+            
             if (c == '.' || c == '!' || c == '?') {
                 flag1 = true;
             }
         }
-        return new String(aCharArray631, 0, j);
+        return new String(characters, 0, count);
     }
 
     public static void method526(String s, Stream stream) {
@@ -57,9 +58,11 @@ final class TextInput {
         }
         s = s.toLowerCase();
         int i = -1;
+        
         for (int j = 0; j < s.length(); j++) {
             char c = s.charAt(j);
             int k = 0;
+            
             for (int l = 0; l < validChars.length; l++) {
                 if (c != validChars[l]) {
                     continue;
@@ -71,6 +74,7 @@ final class TextInput {
             if (k > 12) {
                 k += 195;
             }
+            
             if (i == -1) {
                 if (k < 13) {
                     i = k;
@@ -85,6 +89,7 @@ final class TextInput {
                 i = k & 0xf;
             }
         }
+        
         if (i != -1) {
             stream.writeByte(i << 4);
         }
@@ -93,14 +98,13 @@ final class TextInput {
     public static String processText(String s) {
         stream.currentOffset = 0;
         method526(s, stream);
-        int j = stream.currentOffset;
+        int streamOffset = stream.currentOffset;
         stream.currentOffset = 0;
-        String s1 = method525(j, stream);
+        String s1 = constructInput(streamOffset, stream);
         return s1;
     }
 
-    private static final boolean aBoolean630 = true;
-    private static final char[] aCharArray631 = new char[100];
+    private static final char[] characters = new char[100];
     private static final Stream stream = new Stream(new byte[100]);
     private static final char[] validChars = {
         ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n', 's', 'r',
@@ -111,5 +115,4 @@ final class TextInput {
         '\'', '@', '#', '+', '=', '\243', '$', '%', '"', '[',
         ']'
     };
-
 }

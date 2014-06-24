@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.util;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;

@@ -2,7 +2,8 @@ package com.runescape.client;
 
 /**
  * The ClipMap, which essentially represents which tiles are traversable and
- * which are not.
+ * which are not, for a single plane. This means that four instances reside
+ * within the Client class.
  *
  * @author Pure_
  */

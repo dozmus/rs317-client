@@ -6,7 +6,7 @@ final class Class30_Sub1 extends Node {
     public int anInt1292;
     public int anInt1293;
     public int anInt1294;
-    public int anInt1295;
+    public int plane;
     public int anInt1296;
     public int anInt1297;
     public int anInt1298;

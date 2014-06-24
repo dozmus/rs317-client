@@ -155,9 +155,9 @@ public final class EntityDef {
             int l = varBit.anInt649;
             int i1 = varBit.anInt650;
             int j1 = Client.anIntArray1232[i1 - l];
-            j = clientInstance.currentButtonState[k] >> l & j1;
+            j = clientInstance.currentUserSetting[k] >> l & j1;
         } else if (anInt59 != -1) {
-            j = clientInstance.currentButtonState[anInt59];
+            j = clientInstance.currentUserSetting[anInt59];
         }
         
         if (j < 0 || j >= childrenIDs.length || childrenIDs[j] == -1) {

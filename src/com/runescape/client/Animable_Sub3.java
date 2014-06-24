@@ -12,15 +12,15 @@ public final class Animable_Sub3 extends Animable {
     private int anInt1569;
     private int anInt1570;
 
-    public Animable_Sub3(int i, int j, int l, int spotAnimId, int j1, int k1,
+    public Animable_Sub3(int plane, int loopCycle, int l, int spotAnimId, int j1, int k1,
             int l1) {
         aBoolean1567 = false;
         spotAnim = SpotAnim.cache[spotAnimId];
-        anInt1560 = i;
+        anInt1560 = plane;
         anInt1561 = l1;
         anInt1562 = k1;
         anInt1563 = j1;
-        anInt1564 = j + l;
+        anInt1564 = loopCycle + l;
         aBoolean1567 = false;
     }
 
