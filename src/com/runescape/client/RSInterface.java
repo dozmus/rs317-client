@@ -300,7 +300,7 @@ public final class RSInterface {
         if (model == null) {
             return null;
         }
-        if (k == -1 && j == -1 && model.anIntArray1640 == null) {
+        if (k == -1 && j == -1 && model.colours == null) {
             return model;
         }
         Model model_1 = new Model(true, Class36.method532(k) & Class36.method532(j), false, model);

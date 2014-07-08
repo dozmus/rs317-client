@@ -806,42 +806,41 @@ final class ObjectManager {
         return (i / 4 << 10) + (j / 32 << 7) + k / 2;
     }
 
-    public static boolean method178(int i, int j) {
-        ObjectDef class46 = ObjectDef.forID(i);
+    public static boolean method178(int id, int j) {
+        ObjectDef def = ObjectDef.forID(id);
+        
         if (j == 11) {
             j = 10;
         }
+        
         if (j >= 5 && j <= 8) {
             j = 4;
         }
-        return class46.method577(j);
+        return def.method577(j);
     }
 
-    public final void method179(int i, int j, ClipMap aclass11[], int l, int i1, byte abyte0[],
-            int j1, int k1, int l1) {
+    public final void method179(int i, int j, ClipMap clipMap[], int l, int i1,
+            byte buf[], int j1, int z, int l1) {
         for (int i2 = 0; i2 < 8; i2++) {
             for (int j2 = 0; j2 < 8; j2++) {
                 if (l + i2 > 0 && l + i2 < 103 && l1 + j2 > 0 && l1 + j2 < 103) {
-                    aclass11[k1].mapFlags[l + i2][l1 + j2] &= 0xfeffffff;
+                    clipMap[z].mapFlags[l + i2][l1 + j2] &= 0xfeffffff;
                 }
             }
-
         }
-        Stream stream = new Stream(abyte0);
+        Stream stream = new Stream(buf);
+        
         for (int l2 = 0; l2 < 4; l2++) {
             for (int i3 = 0; i3 < 64; i3++) {
                 for (int j3 = 0; j3 < 64; j3++) {
                     if (l2 == i && i3 >= i1 && i3 < i1 + 8 && j3 >= j1 && j3 < j1 + 8) {
-                        method181(l1 + Class4.method156(j3 & 7, j, i3 & 7), 0, stream, l + Class4.method155(j, j3 & 7, i3 & 7), k1, j, 0);
+                        method181(l1 + Class4.method156(j3 & 7, j, i3 & 7), 0, stream, l + Class4.method155(j, j3 & 7, i3 & 7), z, j, 0);
                     } else {
                         method181(-1, 0, stream, -1, 0, 0, 0);
                     }
                 }
-
             }
-
         }
-
     }
 
     public final void method180(byte abyte0[], int i, int j, int k, int l, ClipMap aclass11[]) {

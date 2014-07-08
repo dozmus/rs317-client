@@ -111,19 +111,22 @@ public final class TextDrawingArea extends DrawingArea {
             return 0;
         }
         int j = 0;
+        
         for (int k = 0; k < s.length(); k++) {
             j += anIntArray1496[s.charAt(k)];
         }
         return j;
     }
 
-    public void method385(int i, String s, int j, int l) {
-        if (s == null) {
+    public void method385(int i, String message, int j, int l) {
+        if (message == null) {
             return;
         }
         j -= anInt1497;
-        for (int i1 = 0; i1 < s.length(); i1++) {
-            char c = s.charAt(i1);
+        
+        for (int i1 = 0; i1 < message.length(); i1++) {
+            char c = message.charAt(i1);
+            
             if (c != ' ') {
                 method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
             }
