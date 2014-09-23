@@ -1,31 +1,27 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3)
 final class ObjectManager {
 
     public ObjectManager(byte abyte0[][][], int ai[][][]) {
         anInt145 = 99;
-        anInt146 = 104;
-        anInt147 = 104;
+        regionsX = 104;
+        regionsY = 104;
         anIntArrayArrayArray129 = ai;
         aByteArrayArrayArray149 = abyte0;
-        aByteArrayArrayArray142 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray130 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray136 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray148 = new byte[4][anInt146][anInt147];
-        anIntArrayArrayArray135 = new int[4][anInt146 + 1][anInt147 + 1];
-        aByteArrayArrayArray134 = new byte[4][anInt146 + 1][anInt147 + 1];
-        anIntArrayArray139 = new int[anInt146 + 1][anInt147 + 1];
-        anIntArray124 = new int[anInt147];
-        anIntArray125 = new int[anInt147];
-        anIntArray126 = new int[anInt147];
-        anIntArray127 = new int[anInt147];
-        anIntArray128 = new int[anInt147];
+        aByteArrayArrayArray142 = new byte[4][regionsX][regionsY];
+        aByteArrayArrayArray130 = new byte[4][regionsX][regionsY];
+        aByteArrayArrayArray136 = new byte[4][regionsX][regionsY];
+        aByteArrayArrayArray148 = new byte[4][regionsX][regionsY];
+        anIntArrayArrayArray135 = new int[4][regionsX + 1][regionsY + 1];
+        aByteArrayArrayArray134 = new byte[4][regionsX + 1][regionsY + 1];
+        anIntArrayArray139 = new int[regionsX + 1][regionsY + 1];
+        anIntArray124 = new int[regionsY];
+        anIntArray125 = new int[regionsY];
+        anIntArray126 = new int[regionsY];
+        anIntArray127 = new int[regionsY];
+        anIntArray128 = new int[regionsY];
     }
 
     private static int method170(int i, int j) {
@@ -35,40 +31,45 @@ final class ObjectManager {
         return l >> 19 & 0xff;
     }
 
-    public final void method171(ClipMap aclass11[], WorldController worldController) {
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 104; k++) {
-                for (int i1 = 0; i1 < 104; i1++) {
-                    if ((aByteArrayArrayArray149[j][k][i1] & 1) == 1) {
-                        int k1 = j;
-                        if ((aByteArrayArrayArray149[1][k][i1] & 2) == 2) {
-                            k1--;
+    public final void method171(ClipMap clipMap[], WorldController controller) {
+        for (int z1 = 0; z1 < 4; z1++) {
+            for (int x1 = 0; x1 < 104; x1++) {
+                for (int y1 = 0; y1 < 104; y1++) {
+                    if ((aByteArrayArrayArray149[z1][x1][y1] & 1) == 1) {
+                        int tmpZ = z1;
+                        
+                        if ((aByteArrayArrayArray149[1][x1][y1] & 2) == 2) {
+                            tmpZ--;
                         }
-                        if (k1 >= 0) {
-                            aclass11[k1].setValue3(i1, k);
+                        
+                        if (tmpZ >= 0) {
+                            clipMap[tmpZ].setValue3(y1, x1);
                         }
                     }
                 }
-
             }
-
         }
         anInt123 += (int) (Math.random() * 5D) - 2;
+        
         if (anInt123 < -8) {
             anInt123 = -8;
         }
+        
         if (anInt123 > 8) {
             anInt123 = 8;
         }
         anInt133 += (int) (Math.random() * 5D) - 2;
+        
         if (anInt133 < -16) {
             anInt133 = -16;
         }
+        
         if (anInt133 > 16) {
             anInt133 = 16;
         }
-        for (int l = 0; l < 4; l++) {
-            byte abyte0[][] = aByteArrayArrayArray134[l];
+        
+        for (int z = 0; z < 4; z++) {
+            byte abyte0[][] = aByteArrayArrayArray134[z];
             byte byte0 = 96;
             char c = '\u0300';
             byte byte1 = -50;
@@ -76,10 +77,11 @@ final class ObjectManager {
             byte byte3 = -50;
             int j3 = (int) Math.sqrt(byte1 * byte1 + byte2 * byte2 + byte3 * byte3);
             int l3 = c * j3 >> 8;
-            for (int j4 = 1; j4 < anInt147 - 1; j4++) {
-                for (int j5 = 1; j5 < anInt146 - 1; j5++) {
-                    int k6 = anIntArrayArrayArray129[l][j5 + 1][j4] - anIntArrayArrayArray129[l][j5 - 1][j4];
-                    int l7 = anIntArrayArrayArray129[l][j5][j4 + 1] - anIntArrayArrayArray129[l][j5][j4 - 1];
+            
+            for (int j4 = 1; j4 < regionsY - 1; j4++) {
+                for (int j5 = 1; j5 < regionsX - 1; j5++) {
+                    int k6 = anIntArrayArrayArray129[z][j5 + 1][j4] - anIntArrayArrayArray129[z][j5 - 1][j4];
+                    int l7 = anIntArrayArrayArray129[z][j5][j4 + 1] - anIntArrayArrayArray129[z][j5][j4 - 1];
                     int j9 = (int) Math.sqrt(k6 * k6 + 0x10000 + l7 * l7);
                     int k12 = (k6 << 8) / j9;
                     int l13 = 0x10000 / j9;
@@ -88,10 +90,9 @@ final class ObjectManager {
                     int j17 = (abyte0[j5 - 1][j4] >> 2) + (abyte0[j5 + 1][j4] >> 3) + (abyte0[j5][j4 - 1] >> 2) + (abyte0[j5][j4 + 1] >> 3) + (abyte0[j5][j4] >> 1);
                     anIntArrayArray139[j5][j4] = j16 - j17;
                 }
-
             }
 
-            for (int k5 = 0; k5 < anInt147; k5++) {
+            for (int k5 = 0; k5 < regionsY; k5++) {
                 anIntArray124[k5] = 0;
                 anIntArray125[k5] = 0;
                 anIntArray126[k5] = 0;
@@ -99,11 +100,13 @@ final class ObjectManager {
                 anIntArray128[k5] = 0;
             }
 
-            for (int l6 = -5; l6 < anInt146 + 5; l6++) {
-                for (int i8 = 0; i8 < anInt147; i8++) {
-                    int k9 = l6 + 5;
-                    if (k9 >= 0 && k9 < anInt146) {
-                        int l12 = aByteArrayArrayArray142[l][k9][i8] & 0xff;
+            for (int x = -5; x < regionsX + 5; x++) {
+                for (int i8 = 0; i8 < regionsY; i8++) {
+                    int k9 = x + 5;
+                    
+                    if (k9 >= 0 && k9 < regionsX) {
+                        int l12 = aByteArrayArrayArray142[z][k9][i8] & 0xff;
+                        
                         if (l12 > 0) {
                             Flo flo = Flo.cache[l12 - 1];
                             anIntArray124[i8] += flo.anInt397;
@@ -113,9 +116,10 @@ final class ObjectManager {
                             anIntArray128[i8]++;
                         }
                     }
-                    int i13 = l6 - 5;
-                    if (i13 >= 0 && i13 < anInt146) {
-                        int i14 = aByteArrayArrayArray142[l][i13][i8] & 0xff;
+                    int i13 = x - 5;
+                    
+                    if (i13 >= 0 && i13 < regionsX) {
+                        int i14 = aByteArrayArrayArray142[z][i13][i8] & 0xff;
                         if (i14 > 0) {
                             Flo flo_1 = Flo.cache[i14 - 1];
                             anIntArray124[i8] -= flo_1.anInt397;
@@ -127,46 +131,51 @@ final class ObjectManager {
                     }
                 }
 
-                if (l6 >= 1 && l6 < anInt146 - 1) {
+                if (x >= 1 && x < regionsX - 1) {
                     int l9 = 0;
                     int j13 = 0;
                     int j14 = 0;
                     int k15 = 0;
                     int k16 = 0;
-                    for (int k17 = -5; k17 < anInt147 + 5; k17++) {
-                        int j18 = k17 + 5;
-                        if (j18 >= 0 && j18 < anInt147) {
+                    
+                    for (int y = -5; y < regionsY + 5; y++) {
+                        int j18 = y + 5;
+                        
+                        if (j18 >= 0 && j18 < regionsY) {
                             l9 += anIntArray124[j18];
                             j13 += anIntArray125[j18];
                             j14 += anIntArray126[j18];
                             k15 += anIntArray127[j18];
                             k16 += anIntArray128[j18];
                         }
-                        int k18 = k17 - 5;
-                        if (k18 >= 0 && k18 < anInt147) {
+                        int k18 = y - 5;
+                        
+                        if (k18 >= 0 && k18 < regionsY) {
                             l9 -= anIntArray124[k18];
                             j13 -= anIntArray125[k18];
                             j14 -= anIntArray126[k18];
                             k15 -= anIntArray127[k18];
                             k16 -= anIntArray128[k18];
                         }
-                        if (k17 >= 1 && k17 < anInt147 - 1 && (!lowMem || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == anInt131)) {
-                            if (l < anInt145) {
-                                anInt145 = l;
+                        if (y >= 1 && y < regionsY - 1 && (!lowMem || (aByteArrayArrayArray149[0][x][y] & 2) != 0 || (aByteArrayArrayArray149[z][x][y] & 0x10) == 0 && method182(y, z, x) == anInt131)) {
+                            if (z < anInt145) {
+                                anInt145 = z;
                             }
-                            int l18 = aByteArrayArrayArray142[l][l6][k17] & 0xff;
-                            int i19 = aByteArrayArrayArray130[l][l6][k17] & 0xff;
+                            int l18 = aByteArrayArrayArray142[z][x][y] & 0xff;
+                            int i19 = aByteArrayArrayArray130[z][x][y] & 0xff;
+                            
                             if (l18 > 0 || i19 > 0) {
-                                int j19 = anIntArrayArrayArray129[l][l6][k17];
-                                int k19 = anIntArrayArrayArray129[l][l6 + 1][k17];
-                                int l19 = anIntArrayArrayArray129[l][l6 + 1][k17 + 1];
-                                int i20 = anIntArrayArrayArray129[l][l6][k17 + 1];
-                                int j20 = anIntArrayArray139[l6][k17];
-                                int k20 = anIntArrayArray139[l6 + 1][k17];
-                                int l20 = anIntArrayArray139[l6 + 1][k17 + 1];
-                                int i21 = anIntArrayArray139[l6][k17 + 1];
+                                int j19 = anIntArrayArrayArray129[z][x][y];
+                                int k19 = anIntArrayArrayArray129[z][x + 1][y];
+                                int l19 = anIntArrayArrayArray129[z][x + 1][y + 1];
+                                int i20 = anIntArrayArrayArray129[z][x][y + 1];
+                                int j20 = anIntArrayArray139[x][y];
+                                int k20 = anIntArrayArray139[x + 1][y];
+                                int l20 = anIntArrayArray139[x + 1][y + 1];
+                                int i21 = anIntArrayArray139[x][y + 1];
                                 int j21 = -1;
                                 int k21 = -1;
+                                
                                 if (l18 > 0) {
                                     int l21 = (l9 * 256) / k15;
                                     int j22 = j13 / k16;
@@ -174,6 +183,7 @@ final class ObjectManager {
                                     j21 = method177(l21, j22, l22);
                                     l21 = l21 + anInt123 & 0xff;
                                     l22 += anInt133;
+                                    
                                     if (l22 < 0) {
                                         l22 = 0;
                                     } else if (l22 > 255) {
@@ -181,27 +191,33 @@ final class ObjectManager {
                                     }
                                     k21 = method177(l21, j22, l22);
                                 }
-                                if (l > 0) {
+                                
+                                if (z > 0) {
                                     boolean flag = true;
-                                    if (l18 == 0 && aByteArrayArrayArray136[l][l6][k17] != 0) {
+                                    
+                                    if (l18 == 0 && aByteArrayArrayArray136[z][x][y] != 0) {
                                         flag = false;
                                     }
+                                    
                                     if (i19 > 0 && !Flo.cache[i19 - 1].aBoolean393) {
                                         flag = false;
                                     }
+                                    
                                     if (flag && j19 == k19 && j19 == l19 && j19 == i20) {
-                                        anIntArrayArrayArray135[l][l6][k17] |= 0x924;
+                                        anIntArrayArrayArray135[z][x][y] |= 0x924;
                                     }
                                 }
                                 int i22 = 0;
+                                
                                 if (j21 != -1) {
                                     i22 = Texture.anIntArray1482[method187(k21, 96)];
                                 }
+                                
                                 if (i19 == 0) {
-                                    worldController.method279(l, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
+                                    controller.method279(z, x, y, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
                                 } else {
-                                    int k22 = aByteArrayArrayArray136[l][l6][k17] + 1;
-                                    byte byte4 = aByteArrayArrayArray148[l][l6][k17];
+                                    int k22 = aByteArrayArrayArray136[z][x][y] + 1;
+                                    byte byte4 = aByteArrayArrayArray148[z][x][y];
                                     Flo flo_2 = Flo.cache[i19 - 1];
                                     int i23 = flo_2.anInt391;
                                     int j23;
@@ -217,7 +233,7 @@ final class ObjectManager {
                                         j23 = method177(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
                                         k23 = Texture.anIntArray1482[method185(flo_2.anInt399, 96)];
                                     }
-                                    worldController.method279(l, l6, k17, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, k23);
+                                    controller.method279(z, x, y, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, k23);
                                 }
                             }
                         }
@@ -226,20 +242,20 @@ final class ObjectManager {
                 }
             }
 
-            for (int j8 = 1; j8 < anInt147 - 1; j8++) {
-                for (int i10 = 1; i10 < anInt146 - 1; i10++) {
-                    worldController.method278(l, i10, j8, method182(j8, l, i10));
+            for (int j8 = 1; j8 < regionsY - 1; j8++) {
+                for (int i10 = 1; i10 < regionsX - 1; i10++) {
+                    controller.method278(z, i10, j8, method182(j8, z, i10));
                 }
 
             }
 
         }
 
-        worldController.method305(-10, -50, -50);
-        for (int j1 = 0; j1 < anInt146; j1++) {
-            for (int l1 = 0; l1 < anInt147; l1++) {
+        controller.method305(-10, -50, -50);
+        for (int j1 = 0; j1 < regionsX; j1++) {
+            for (int l1 = 0; l1 < regionsY; l1++) {
                 if ((aByteArrayArrayArray149[1][j1][l1] & 2) == 2) {
-                    worldController.method276(l1, j1);
+                    controller.method276(l1, j1);
                 }
             }
 
@@ -255,15 +271,15 @@ final class ObjectManager {
                 k2 <<= 3;
             }
             for (int i3 = 0; i3 <= l2; i3++) {
-                for (int k3 = 0; k3 <= anInt147; k3++) {
-                    for (int i4 = 0; i4 <= anInt146; i4++) {
+                for (int k3 = 0; k3 <= regionsY; k3++) {
+                    for (int i4 = 0; i4 <= regionsX; i4++) {
                         if ((anIntArrayArrayArray135[i3][i4][k3] & i2) != 0) {
                             int k4 = k3;
                             int l5 = k3;
                             int i7 = i3;
                             int k8 = i3;
                             for (; k4 > 0 && (anIntArrayArrayArray135[i3][i4][k4 - 1] & i2) != 0; k4--);
-                            for (; l5 < anInt147 && (anIntArrayArrayArray135[i3][i4][l5 + 1] & i2) != 0; l5++);
+                            for (; l5 < regionsY && (anIntArrayArrayArray135[i3][i4][l5 + 1] & i2) != 0; l5++);
                             label0:
                             for (; i7 > 0; i7--) {
                                 for (int j10 = k4; j10 <= l5; j10++) {
@@ -305,7 +321,7 @@ final class ObjectManager {
                             int j7 = i3;
                             int l8 = i3;
                             for (; l4 > 0 && (anIntArrayArrayArray135[i3][l4 - 1][k3] & j2) != 0; l4--);
-                            for (; i6 < anInt146 && (anIntArrayArrayArray135[i3][i6 + 1][k3] & j2) != 0; i6++);
+                            for (; i6 < regionsX && (anIntArrayArrayArray135[i3][i6 + 1][k3] & j2) != 0; i6++);
                             label2:
                             for (; j7 > 0; j7--) {
                                 for (int i11 = l4; i11 <= i6; i11++) {
@@ -347,7 +363,7 @@ final class ObjectManager {
                             int k7 = k3;
                             int i9 = k3;
                             for (; k7 > 0 && (anIntArrayArrayArray135[i3][i4][k7 - 1] & k2) != 0; k7--);
-                            for (; i9 < anInt147 && (anIntArrayArrayArray135[i3][i4][i9 + 1] & k2) != 0; i9++);
+                            for (; i9 < regionsY && (anIntArrayArrayArray135[i3][i4][i9 + 1] & k2) != 0; i9++);
                             label4:
                             for (; i5 > 0; i5--) {
                                 for (int l11 = k7; l11 <= i9; l11++) {
@@ -359,7 +375,7 @@ final class ObjectManager {
                             }
 
                             label5:
-                            for (; j6 < anInt146; j6++) {
+                            for (; j6 < regionsX; j6++) {
                                 for (int i12 = k7; i12 <= i9; i12++) {
                                     if ((anIntArrayArrayArray135[i3][j6 + 1][i12] & k2) == 0) {
                                         break label5;
@@ -427,18 +443,18 @@ final class ObjectManager {
     public final void method174(int i, int j, int l, int i1) {
         for (int j1 = i; j1 <= i + j; j1++) {
             for (int k1 = i1; k1 <= i1 + l; k1++) {
-                if (k1 >= 0 && k1 < anInt146 && j1 >= 0 && j1 < anInt147) {
+                if (k1 >= 0 && k1 < regionsX && j1 >= 0 && j1 < regionsY) {
                     aByteArrayArrayArray134[0][k1][j1] = 127;
                     if (k1 == i1 && k1 > 0) {
                         anIntArrayArrayArray129[0][k1][j1] = anIntArrayArrayArray129[0][k1 - 1][j1];
                     }
-                    if (k1 == i1 + l && k1 < anInt146 - 1) {
+                    if (k1 == i1 + l && k1 < regionsX - 1) {
                         anIntArrayArrayArray129[0][k1][j1] = anIntArrayArrayArray129[0][k1 + 1][j1];
                     }
                     if (j1 == i && j1 > 0) {
                         anIntArrayArrayArray129[0][k1][j1] = anIntArrayArrayArray129[0][k1][j1 - 1];
                     }
-                    if (j1 == i + j && j1 < anInt147 - 1) {
+                    if (j1 == i + j && j1 < regionsY - 1) {
                         anIntArrayArrayArray129[0][k1][j1] = anIntArrayArrayArray129[0][k1][j1 + 1];
                     }
                 }
@@ -819,12 +835,12 @@ final class ObjectManager {
         return def.method577(j);
     }
 
-    public final void method179(int i, int j, ClipMap clipMap[], int l, int i1,
-            byte buf[], int j1, int z, int l1) {
-        for (int i2 = 0; i2 < 8; i2++) {
-            for (int j2 = 0; j2 < 8; j2++) {
-                if (l + i2 > 0 && l + i2 < 103 && l1 + j2 > 0 && l1 + j2 < 103) {
-                    clipMap[z].mapFlags[l + i2][l1 + j2] &= 0xfeffffff;
+    public final void method179(int i, int j, ClipMap clipMap[], int x, int i1,
+            byte buf[], int j1, int z, int y) {
+        for (int amtX = 0; amtX < 8; amtX++) {
+            for (int amtY = 0; amtY < 8; amtY++) {
+                if (x + amtX > 0 && x + amtX < 103 && y + amtY > 0 && y + amtY < 103) {
+                    clipMap[z].mapFlags[x + amtX][y + amtY] &= 0xfeffffff;
                 }
             }
         }
@@ -834,7 +850,7 @@ final class ObjectManager {
             for (int i3 = 0; i3 < 64; i3++) {
                 for (int j3 = 0; j3 < 64; j3++) {
                     if (l2 == i && i3 >= i1 && i3 < i1 + 8 && j3 >= j1 && j3 < j1 + 8) {
-                        method181(l1 + Class4.method156(j3 & 7, j, i3 & 7), 0, stream, l + Class4.method155(j, j3 & 7, i3 & 7), z, j, 0);
+                        method181(y + Class4.method156(j3 & 7, j, i3 & 7), 0, stream, x + Class4.method155(j, j3 & 7, i3 & 7), z, j, 0);
                     } else {
                         method181(-1, 0, stream, -1, 0, 0, 0);
                     }
@@ -1354,8 +1370,8 @@ final class ObjectManager {
         0, -1, 0, 1
     };
     static int anInt145 = 99;
-    private final int anInt146;
-    private final int anInt147;
+    private final int regionsX;
+    private final int regionsY;
     private final byte[][][] aByteArrayArrayArray148;
     private final byte[][][] aByteArrayArrayArray149;
     static boolean lowMem = true;

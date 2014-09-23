@@ -59,15 +59,15 @@ public final class Background extends DrawingArea {
     public void method356() {
         anInt1456 /= 2;
         anInt1457 /= 2;
-        byte abyte0[] = new byte[anInt1456 * anInt1457];
+        byte buf[] = new byte[anInt1456 * anInt1457];
         int i = 0;
         
         for (int j = 0; j < anInt1453; j++) {
             for (int k = 0; k < anInt1452; k++) {
-                abyte0[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * anInt1456] = aByteArray1450[i++];
+                buf[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * anInt1456] = aByteArray1450[i++];
             }
         }
-        aByteArray1450 = abyte0;
+        aByteArray1450 = buf;
         anInt1452 = anInt1456;
         anInt1453 = anInt1457;
         anInt1454 = 0;
@@ -78,15 +78,15 @@ public final class Background extends DrawingArea {
         if (anInt1452 == anInt1456 && anInt1453 == anInt1457) {
             return;
         }
-        byte abyte0[] = new byte[anInt1456 * anInt1457];
+        byte buf[] = new byte[anInt1456 * anInt1457];
         int i = 0;
         
         for (int j = 0; j < anInt1453; j++) {
             for (int k = 0; k < anInt1452; k++) {
-                abyte0[k + anInt1454 + (j + anInt1455) * anInt1456] = aByteArray1450[i++];
+                buf[k + anInt1454 + (j + anInt1455) * anInt1456] = aByteArray1450[i++];
             }
         }
-        aByteArray1450 = abyte0;
+        aByteArray1450 = buf;
         anInt1452 = anInt1456;
         anInt1453 = anInt1457;
         anInt1454 = 0;
@@ -94,28 +94,28 @@ public final class Background extends DrawingArea {
     }
 
     public void method358() {
-        byte abyte0[] = new byte[anInt1452 * anInt1453];
+        byte buf[] = new byte[anInt1452 * anInt1453];
         int j = 0;
         
         for (int k = 0; k < anInt1453; k++) {
             for (int l = anInt1452 - 1; l >= 0; l--) {
-                abyte0[j++] = aByteArray1450[l + k * anInt1452];
+                buf[j++] = aByteArray1450[l + k * anInt1452];
             }
         }
-        aByteArray1450 = abyte0;
+        aByteArray1450 = buf;
         anInt1454 = anInt1456 - anInt1452 - anInt1454;
     }
 
     public void method359() {
-        byte abyte0[] = new byte[anInt1452 * anInt1453];
+        byte buf[] = new byte[anInt1452 * anInt1453];
         int i = 0;
         
         for (int j = anInt1453 - 1; j >= 0; j--) {
             for (int k = 0; k < anInt1452; k++) {
-                abyte0[i++] = aByteArray1450[k + j * anInt1452];
+                buf[i++] = aByteArray1450[k + j * anInt1452];
             }
         }
-        aByteArray1450 = abyte0;
+        aByteArray1450 = buf;
         anInt1455 = anInt1457 - anInt1453 - anInt1455;
     }
 

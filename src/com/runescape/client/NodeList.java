@@ -96,5 +96,4 @@ public final class NodeList {
             node.unlink();
         } while (true);
     }
-
 }

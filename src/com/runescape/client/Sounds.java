@@ -1,45 +1,52 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class Sounds {
 
-    private Sounds() {
-        aClass6Array329 = new Class6[10];
-    }
+    private static final Sounds[] cache = new Sounds[5000];
+    public static final int[] anIntArray326 = new int[5000];
+    private static byte[] aByteArray327;
+    private static Stream soundStream;
 
     public static void unpack(Stream stream) {
         aByteArray327 = new byte[0x6baa8];
-        aStream_328 = new Stream(aByteArray327);
+        soundStream = new Stream(aByteArray327);
         Class6.method166();
+
         do {
-            int j = stream.readUShort();
-            if (j == 65535) {
+            int length = stream.readUShort();
+
+            if (length == 65535) {
                 return;
             }
-            aSoundsArray325s[j] = new Sounds();
-            aSoundsArray325s[j].method242(stream);
-            anIntArray326[j] = aSoundsArray325s[j].method243();
+            cache[length] = new Sounds();
+            cache[length].method242(stream);
+            anIntArray326[length] = cache[length].method243();
         } while (true);
     }
 
-    public static Stream method241(int i, int j) {
-        if (aSoundsArray325s[j] != null) {
-            Sounds sounds = aSoundsArray325s[j];
+    public static Stream method241(int i, int id) {
+        if (cache[id] != null) {
+            Sounds sounds = cache[id];
             return sounds.method244(i);
         } else {
             return null;
         }
     }
+    private final Class6[] aClass6Array329;
+    private int anInt330;
+    private int anInt331;
+
+    private Sounds() {
+        aClass6Array329 = new Class6[10];
+    }
 
     private void method242(Stream stream) {
         for (int i = 0; i < 10; i++) {
-            int j = stream.readUByte();
-            if (j != 0) {
+            int pop = stream.readUByte();
+
+            if (pop != 0) {
                 stream.currentOffset--;
                 aClass6Array329[i] = new Class6();
                 aClass6Array329[i].method169(stream);
@@ -78,22 +85,22 @@ final class Sounds {
 
     private Stream method244(int i) {
         int k = method245(i);
-        aStream_328.currentOffset = 0;
-        aStream_328.writeInt(0x52494646);
-        aStream_328.writeIntLE(36 + k);
-        aStream_328.writeInt(0x57415645);
-        aStream_328.writeInt(0x666d7420);
-        aStream_328.writeIntLE(16);
-        aStream_328.writeShortLE(1);
-        aStream_328.writeShortLE(1);
-        aStream_328.writeIntLE(22050);
-        aStream_328.writeIntLE(22050);
-        aStream_328.writeShortLE(1);
-        aStream_328.writeShortLE(8);
-        aStream_328.writeInt(0x64617461);
-        aStream_328.writeIntLE(k);
-        aStream_328.currentOffset += k;
-        return aStream_328;
+        soundStream.currentOffset = 0;
+        soundStream.writeInt(0x52494646);
+        soundStream.writeIntLE(36 + k);
+        soundStream.writeInt(0x57415645);
+        soundStream.writeInt(0x666d7420);
+        soundStream.writeIntLE(16);
+        soundStream.writeShortLE(1);
+        soundStream.writeShortLE(1);
+        soundStream.writeIntLE(22050);
+        soundStream.writeIntLE(22050);
+        soundStream.writeShortLE(1);
+        soundStream.writeShortLE(8);
+        soundStream.writeInt(0x64617461);
+        soundStream.writeIntLE(k);
+        soundStream.currentOffset += k;
+        return soundStream;
     }
 
     private int method245(int i) {
@@ -149,13 +156,4 @@ final class Sounds {
         }
         return k1;
     }
-
-    private static final Sounds[] aSoundsArray325s = new Sounds[5000];
-    public static final int[] anIntArray326 = new int[5000];
-    private static byte[] aByteArray327;
-    private static Stream aStream_328;
-    private final Class6[] aClass6Array329;
-    private int anInt330;
-    private int anInt331;
-
 }

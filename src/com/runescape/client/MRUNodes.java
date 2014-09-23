@@ -1,8 +1,5 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 import com.runescape.client.signlink.Signlink;
 
 public final class MRUNodes {
@@ -15,8 +12,9 @@ public final class MRUNodes {
         nodeCache = new NodeCache();
     }
 
-    public NodeSub insertFromCache(long l) {
-        NodeSub nodeSub = (NodeSub) nodeCache.findNodeByID(l);
+    public NodeSub insertFromCache(long id) {
+        NodeSub nodeSub = (NodeSub) nodeCache.findNodeByID(id);
+        
         if (nodeSub != null) {
             nodeSubList.insertHead(nodeSub);
         }
@@ -29,6 +27,7 @@ public final class MRUNodes {
                 NodeSub nodeSub_1 = nodeSubList.popTail();
                 nodeSub_1.unlink();
                 nodeSub_1.unlinkSub();
+                
                 if (nodeSub_1 == emptyNodeSub) {
                     NodeSub nodeSub_2 = nodeSubList.popTail();
                     nodeSub_2.unlink();
@@ -40,8 +39,8 @@ public final class MRUNodes {
             nodeCache.removeFromCache(nodeSub, l);
             nodeSubList.insertHead(nodeSub);
             return;
-        } catch (RuntimeException runtimeexception) {
-            Signlink.printError("47547, " + nodeSub + ", " + l + ", " + (byte) 2 + ", " + runtimeexception.toString());
+        } catch (RuntimeException ex) {
+            Signlink.printError("47547, " + nodeSub + ", " + l + ", " + (byte) 2 + ", " + ex.toString());
         }
         throw new RuntimeException();
     }
@@ -49,6 +48,7 @@ public final class MRUNodes {
     public void unlinkAll() {
         do {
             NodeSub nodeSub = nodeSubList.popTail();
+            
             if (nodeSub != null) {
                 nodeSub.unlink();
                 nodeSub.unlinkSub();

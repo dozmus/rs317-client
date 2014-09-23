@@ -1,12 +1,53 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.StreamLoader;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class Texture extends DrawingArea {
+
+    public static final int anInt1459 = -477;
+    public static boolean lowMem = true;
+    static boolean aBoolean1462;
+    private static boolean aBoolean1463;
+    public static boolean aBoolean1464 = true;
+    public static int anInt1465;
+    public static int textureInt1;
+    public static int textureInt2;
+    private static int[] anIntArray1468;
+    public static final int[] anIntArray1469;
+    public static int anIntArray1470[];
+    public static int anIntArray1471[];
+    public static int anIntArray1472[];
+    private static int anInt1473;
+    public static Background aBackgroundArray1474s[] = new Background[50];
+    private static boolean[] aBooleanArray1475 = new boolean[50];
+    private static int[] anIntArray1476 = new int[50];
+    private static int anInt1477;
+    private static int[][] anIntArrayArray1478;
+    private static int[][] anIntArrayArray1479 = new int[50][];
+    public static int anIntArray1480[] = new int[50];
+    public static int anInt1481;
+    public static int anIntArray1482[] = new int[0x10000];
+    private static int[][] anIntArrayArray1483 = new int[50][];
+
+    static {
+        anIntArray1468 = new int[512];
+        anIntArray1469 = new int[2048];
+        anIntArray1470 = new int[2048];
+        anIntArray1471 = new int[2048];
+        for (int i = 1; i < 512; i++) {
+            anIntArray1468[i] = 32768 / i;
+        }
+
+        for (int j = 1; j < 2048; j++) {
+            anIntArray1469[j] = 0x10000 / j;
+        }
+
+        for (int k = 0; k < 2048; k++) {
+            anIntArray1470[k] = (int) (65536D * Math.sin((double) k * 0.0030679614999999999D));
+            anIntArray1471[k] = (int) (65536D * Math.cos((double) k * 0.0030679614999999999D));
+        }
+
+    }
 
     public static void nullLoader() {
         anIntArray1468 = null;
@@ -26,44 +67,45 @@ final class Texture extends DrawingArea {
 
     public static void method364() {
         anIntArray1472 = new int[DrawingArea.height];
+
         for (int j = 0; j < DrawingArea.height; j++) {
             anIntArray1472[j] = DrawingArea.width * j;
         }
-
         textureInt1 = DrawingArea.width / 2;
         textureInt2 = DrawingArea.height / 2;
     }
 
     public static void method365(int j, int k) {
         anIntArray1472 = new int[k];
+
         for (int l = 0; l < k; l++) {
             anIntArray1472[l] = j * l;
         }
-
         textureInt1 = j / 2;
         textureInt2 = k / 2;
     }
 
     public static void method366() {
         anIntArrayArray1478 = null;
+
         for (int j = 0; j < 50; j++) {
             anIntArrayArray1479[j] = null;
         }
-
     }
 
     public static void method367() {
         if (anIntArrayArray1478 == null) {
             anInt1477 = 20;//was parameter
+
             if (lowMem) {
                 anIntArrayArray1478 = new int[anInt1477][16384];
             } else {
                 anIntArrayArray1478 = new int[anInt1477][0x10000];
             }
+
             for (int k = 0; k < 50; k++) {
                 anIntArrayArray1479[k] = null;
             }
-
         }
     }
 
@@ -72,6 +114,7 @@ final class Texture extends DrawingArea {
         for (int j = 0; j < 50; j++) {
             try {
                 aBackgroundArray1474s[j] = new Background(streamLoader, String.valueOf(j), 0);
+
                 if (lowMem && aBackgroundArray1474s[j].anInt1456 == 128) {
                     aBackgroundArray1474s[j].method356();
                 } else {
@@ -81,7 +124,6 @@ final class Texture extends DrawingArea {
             } catch (Exception _ex) {
             }
         }
-
     }
 
     public static int method369(int i) {
@@ -92,14 +134,15 @@ final class Texture extends DrawingArea {
         int l = 0;
         int i1 = 0;
         int j1 = anIntArrayArray1483[i].length;
+
         for (int k1 = 0; k1 < j1; k1++) {
             k += anIntArrayArray1483[i][k1] >> 16 & 0xff;
             l += anIntArrayArray1483[i][k1] >> 8 & 0xff;
             i1 += anIntArrayArray1483[i][k1] & 0xff;
         }
-
         int l1 = (k / j1 << 16) + (l / j1 << 8) + i1 / j1;
         l1 = method373(l1, 1.3999999999999999D);
+
         if (l1 == 0) {
             l1 = 1;
         }
@@ -117,33 +160,38 @@ final class Texture extends DrawingArea {
 
     private static int[] method371(int i) {
         anIntArray1480[i] = anInt1481++;
+
         if (anIntArrayArray1479[i] != null) {
             return anIntArrayArray1479[i];
         }
         int ai[];
+
         if (anInt1477 > 0) {
             ai = anIntArrayArray1478[--anInt1477];
             anIntArrayArray1478[anInt1477] = null;
         } else {
             int j = 0;
             int k = -1;
+
             for (int l = 0; l < anInt1473; l++) {
                 if (anIntArrayArray1479[l] != null && (anIntArray1480[l] < j || k == -1)) {
                     j = anIntArray1480[l];
                     k = l;
                 }
             }
-
             ai = anIntArrayArray1479[k];
             anIntArrayArray1479[k] = null;
         }
         anIntArrayArray1479[i] = ai;
         Background background = aBackgroundArray1474s[i];
         int ai1[] = anIntArrayArray1483[i];
+
         if (lowMem) {
             aBooleanArray1475[i] = false;
+
             for (int i1 = 0; i1 < 4096; i1++) {
                 int i2 = ai[i1] = ai1[background.aByteArray1450[i1]] & 0xf8f8ff;
+
                 if (i2 == 0) {
                     aBooleanArray1475[i] = true;
                 }
@@ -158,19 +206,18 @@ final class Texture extends DrawingArea {
                     for (int j2 = 0; j2 < 128; j2++) {
                         ai[j2 + (j1 << 7)] = ai1[background.aByteArray1450[(j2 >> 1) + ((j1 >> 1) << 6)]];
                     }
-
                 }
-
             } else {
                 for (int k1 = 0; k1 < 16384; k1++) {
                     ai[k1] = ai1[background.aByteArray1450[k1]];
                 }
-
             }
             aBooleanArray1475[i] = false;
+
             for (int l1 = 0; l1 < 16384; l1++) {
                 ai[l1] &= 0xf8f8ff;
                 int k2 = ai[l1];
+
                 if (k2 == 0) {
                     aBooleanArray1475[i] = true;
                 }
@@ -178,7 +225,6 @@ final class Texture extends DrawingArea {
                 ai[32768 + l1] = k2 - (k2 >>> 2) & 0xf8f8ff;
                 ai[49152 + l1] = k2 - (k2 >>> 2) - (k2 >>> 3) & 0xf8f8ff;
             }
-
         }
         return ai;
     }
@@ -269,7 +315,6 @@ final class Texture extends DrawingArea {
         for (int i1 = 0; i1 < 50; i1++) {
             method370(i1);
         }
-
     }
 
     private static int method373(int i, double d) {
@@ -285,8 +330,7 @@ final class Texture extends DrawingArea {
         return (j << 16) + (k << 8) + l;
     }
 
-    public static void method374(int i, int j, int k, int l, int i1, int j1, int k1, int l1,
-            int i2) {
+    public static void method374(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2) {
         int j2 = 0;
         int k2 = 0;
         if (j != i) {
@@ -1139,12 +1183,9 @@ final class Texture extends DrawingArea {
         for (k = i1 - l & 3; --k >= 0;) {
             ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
         }
-
     }
 
-    public static void method378(int i, int j, int k, int l, int i1, int j1, int k1, int l1,
-            int i2, int j2, int k2, int l2, int i3, int j3, int k3,
-            int l3, int i4, int j4, int k4) {
+    public static void method378(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int k4) {
         int ai[] = method371(k4);
         aBoolean1463 = !aBooleanArray1475[k4];
         k2 = j2 - k2;
@@ -1662,8 +1703,7 @@ final class Texture extends DrawingArea {
         }
     }
 
-    private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1,
-            int k1, int l1, int i2, int j2, int k2, int l2, int i3) {
+    private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3) {
         int i = 0;//was parameter
         int j = 0;//was parameter
         if (l >= i1) {
@@ -2029,51 +2069,5 @@ final class Texture extends DrawingArea {
             i += j7;
             j += l7;
         }
-
-    }
-
-    public static final int anInt1459 = -477;
-    public static boolean lowMem = true;
-    static boolean aBoolean1462;
-    private static boolean aBoolean1463;
-    public static boolean aBoolean1464 = true;
-    public static int anInt1465;
-    public static int textureInt1;
-    public static int textureInt2;
-    private static int[] anIntArray1468;
-    public static final int[] anIntArray1469;
-    public static int anIntArray1470[];
-    public static int anIntArray1471[];
-    public static int anIntArray1472[];
-    private static int anInt1473;
-    public static Background aBackgroundArray1474s[] = new Background[50];
-    private static boolean[] aBooleanArray1475 = new boolean[50];
-    private static int[] anIntArray1476 = new int[50];
-    private static int anInt1477;
-    private static int[][] anIntArrayArray1478;
-    private static int[][] anIntArrayArray1479 = new int[50][];
-    public static int anIntArray1480[] = new int[50];
-    public static int anInt1481;
-    public static int anIntArray1482[] = new int[0x10000];
-    private static int[][] anIntArrayArray1483 = new int[50][];
-
-    static {
-        anIntArray1468 = new int[512];
-        anIntArray1469 = new int[2048];
-        anIntArray1470 = new int[2048];
-        anIntArray1471 = new int[2048];
-        for (int i = 1; i < 512; i++) {
-            anIntArray1468[i] = 32768 / i;
-        }
-
-        for (int j = 1; j < 2048; j++) {
-            anIntArray1469[j] = 0x10000 / j;
-        }
-
-        for (int k = 0; k < 2048; k++) {
-            anIntArray1470[k] = (int) (65536D * Math.sin((double) k * 0.0030679614999999999D));
-            anIntArray1471[k] = (int) (65536D * Math.cos((double) k * 0.0030679614999999999D));
-        }
-
     }
 }

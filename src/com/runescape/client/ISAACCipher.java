@@ -1,8 +1,16 @@
 package com.runescape.client;
 
+/**
+ * A generic ISAAC cipher implementation.
+ * 
+ * @author Jagex
+ */
 public final class ISAACCipher {
 
-    private static final int KEY = 0x9e3779b9;
+    /**
+     * The golden ratio.
+     */
+    private static final int RATIO = 0x9e3779b9;
     private final int[] results;
     private final int[] memory;
     private int count;
@@ -14,7 +22,7 @@ public final class ISAACCipher {
         memory = new int[256];
         results = new int[256];
         System.arraycopy(seed, 0, results, 0, seed.length);
-        initializeKeySet();
+        init();
     }
 
     public int getNextKey() {
@@ -47,7 +55,7 @@ public final class ISAACCipher {
         }
     }
 
-    private void initializeKeySet() {
+    private void init() {
         int i1;
         int j1;
         int k1;
@@ -55,7 +63,7 @@ public final class ISAACCipher {
         int i2;
         int j2;
         int k2;
-        int l = i1 = j1 = k1 = l1 = i2 = j2 = k2 = KEY;
+        int l = i1 = j1 = k1 = l1 = i2 = j2 = k2 = RATIO;
         
         for (int i = 0; i < 4; i++) {
             l ^= i1 << 11;

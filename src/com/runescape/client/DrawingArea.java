@@ -1,15 +1,12 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public class DrawingArea extends NodeSub {
 
-    public static void initDrawingArea(int i, int j, int ai[]) {
-        pixels = ai;
-        width = j;
-        height = i;
-        setDrawingArea(i, 0, j, 0);
+    public static void initDrawingArea(int height, int width, int pixels[]) {
+        DrawingArea.pixels = pixels;
+        DrawingArea.width = width;
+        DrawingArea.height = height;
+        setDrawingArea(height, 0, width, 0);
     }
 
     public static void defaultDrawingAreaSize() {

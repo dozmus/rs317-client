@@ -1,13 +1,20 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 import java.util.Random;
 
 public final class TextDrawingArea extends DrawingArea {
+
+    private final byte[][] aByteArrayArray1491;
+    private final int[] anIntArray1492;
+    private final int[] anIntArray1493;
+    private final int[] anIntArray1494;
+    private final int[] anIntArray1495;
+    private final int[] characterWidths;
+    public int anInt1497;
+    private final Random random;
+    private boolean aBoolean1499;
 
     public TextDrawingArea(boolean flag, String s, StreamLoader streamLoader) {
         aByteArrayArray1491 = new byte[256][];
@@ -15,16 +22,18 @@ public final class TextDrawingArea extends DrawingArea {
         anIntArray1493 = new int[256];
         anIntArray1494 = new int[256];
         anIntArray1495 = new int[256];
-        anIntArray1496 = new int[256];
-        aRandom1498 = new Random();
+        characterWidths = new int[256];
+        random = new Random();
         aBoolean1499 = false;
         Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
         Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
         stream_1.currentOffset = stream.readUShort() + 4;
         int k = stream_1.readUByte();
+
         if (k > 0) {
             stream_1.currentOffset += 3 * (k - 1);
         }
+
         for (int l = 0; l < 256; l++) {
             anIntArray1494[l] = stream_1.readUByte();
             anIntArray1495[l] = stream_1.readUByte();
@@ -33,57 +42,57 @@ public final class TextDrawingArea extends DrawingArea {
             int k1 = stream_1.readUByte();
             int l1 = i1 * j1;
             aByteArrayArray1491[l] = new byte[l1];
+
             if (k1 == 0) {
                 for (int i2 = 0; i2 < l1; i2++) {
                     aByteArrayArray1491[l][i2] = stream.readByte();
                 }
-
             } else if (k1 == 1) {
                 for (int j2 = 0; j2 < i1; j2++) {
                     for (int l2 = 0; l2 < j1; l2++) {
                         aByteArrayArray1491[l][j2 + l2 * i1] = stream.readByte();
                     }
-
                 }
-
             }
             if (j1 > anInt1497 && l < 128) {
                 anInt1497 = j1;
             }
             anIntArray1494[l] = 1;
-            anIntArray1496[l] = i1 + 2;
+            characterWidths[l] = i1 + 2;
             int k2 = 0;
+
             for (int i3 = j1 / 7; i3 < j1; i3++) {
                 k2 += aByteArrayArray1491[l][i3 * i1];
             }
 
             if (k2 <= j1 / 7) {
-                anIntArray1496[l]--;
+                characterWidths[l]--;
                 anIntArray1494[l] = 0;
             }
             k2 = 0;
+
             for (int j3 = j1 / 7; j3 < j1; j3++) {
                 k2 += aByteArrayArray1491[l][(i1 - 1) + j3 * i1];
             }
 
             if (k2 <= j1 / 7) {
-                anIntArray1496[l]--;
+                characterWidths[l]--;
             }
         }
 
         if (flag) {
-            anIntArray1496[32] = anIntArray1496[73];
+            characterWidths[32] = characterWidths[73];
         } else {
-            anIntArray1496[32] = anIntArray1496[105];
+            characterWidths[32] = characterWidths[105];
         }
     }
 
     public void method380(String s, int i, int j, int k) {
-        method385(j, s, k, i - method384(s));
+        method385(j, s, k, i - getTextWidthXXX(s));
     }
 
     public void drawText(int i, String s, int k, int l) {
-        method385(i, s, k, l - method384(s) / 2);
+        method385(i, s, k, l - getTextWidthXXX(s) / 2);
     }
 
     public void method382(int i, int j, String s, int l, boolean flag) {
@@ -94,28 +103,29 @@ public final class TextDrawingArea extends DrawingArea {
         if (s == null) {
             return 0;
         }
-        int j = 0;
-        for (int k = 0; k < s.length(); k++) {
-            if (s.charAt(k) == '@' && k + 4 < s.length() && s.charAt(k + 4) == '@') {
-                k += 4;
+        int totalWidth = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '@' && i + 4 < s.length() && s.charAt(i + 4) == '@') {
+                i += 4;
             } else {
-                j += anIntArray1496[s.charAt(k)];
+                totalWidth += characterWidths[s.charAt(i)];
             }
         }
 
-        return j;
+        return totalWidth;
     }
 
-    public int method384(String s) {
+    public int getTextWidthXXX(String s) {
         if (s == null) {
             return 0;
         }
-        int j = 0;
-        
-        for (int k = 0; k < s.length(); k++) {
-            j += anIntArray1496[s.charAt(k)];
+        int totalWidth = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            totalWidth += characterWidths[s.charAt(i)];
         }
-        return j;
+        return totalWidth;
     }
 
     public void method385(int i, String message, int j, int l) {
@@ -123,50 +133,52 @@ public final class TextDrawingArea extends DrawingArea {
             return;
         }
         j -= anInt1497;
-        
+
         for (int i1 = 0; i1 < message.length(); i1++) {
             char c = message.charAt(i1);
-            
+
             if (c != ' ') {
                 method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
             }
-            l += anIntArray1496[c];
+            l += characterWidths[c];
         }
     }
 
-    public void method386(int i, String s, int j, int k, int l) {
+    public void method386(int i, String s, int textWidth, int k, int l) {
         if (s == null) {
             return;
         }
-        j -= method384(s) / 2;
+        textWidth -= getTextWidthXXX(s) / 2;
         l -= anInt1497;
+
         for (int i1 = 0; i1 < s.length(); i1++) {
             char c = s.charAt(i1);
-            if (c != ' ') {
-                method392(aByteArrayArray1491[c], j + anIntArray1494[c], l + anIntArray1495[c] + (int) (Math.sin((double) i1 / 2D + (double) k / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], i);
-            }
-            j += anIntArray1496[c];
-        }
 
+            if (c != ' ') {
+                method392(aByteArrayArray1491[c], textWidth + anIntArray1494[c], l + anIntArray1495[c] + (int) (Math.sin((double) i1 / 2D + (double) k / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], i);
+            }
+            textWidth += characterWidths[c];
+        }
     }
 
-    public void method387(int i, String s, int j, int k, int l) {
+    public void method387(int textWidth, String s, int j, int k, int l) {
         if (s == null) {
             return;
         }
-        i -= method384(s) / 2;
+        textWidth -= getTextWidthXXX(s) / 2;
         k -= anInt1497;
+
         for (int i1 = 0; i1 < s.length(); i1++) {
             char c = s.charAt(i1);
-            if (c != ' ') {
-                method392(aByteArrayArray1491[c], i + anIntArray1494[c] + (int) (Math.sin((double) i1 / 5D + (double) j / 5D) * 5D), k + anIntArray1495[c] + (int) (Math.sin((double) i1 / 3D + (double) j / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], l);
-            }
-            i += anIntArray1496[c];
-        }
 
+            if (c != ' ') {
+                method392(aByteArrayArray1491[c], textWidth + anIntArray1494[c] + (int) (Math.sin((double) i1 / 5D + (double) j / 5D) * 5D), k + anIntArray1495[c] + (int) (Math.sin((double) i1 / 3D + (double) j / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], l);
+            }
+            textWidth += characterWidths[c];
+        }
     }
 
-    public void method388(int i, String s, int j, int k, int l, int i1) {
+    public void method388(int i, String s, int j, int k, int textWidth, int i1) {
         if (s == null) {
             return;
         }
@@ -174,43 +186,48 @@ public final class TextDrawingArea extends DrawingArea {
         if (d < 0.0D) {
             d = 0.0D;
         }
-        l -= method384(s) / 2;
+        textWidth -= getTextWidthXXX(s) / 2;
         k -= anInt1497;
+
         for (int k1 = 0; k1 < s.length(); k1++) {
             char c = s.charAt(k1);
             if (c != ' ') {
-                method392(aByteArrayArray1491[c], l + anIntArray1494[c], k + anIntArray1495[c] + (int) (Math.sin((double) k1 / 1.5D + (double) j) * d), anIntArray1492[c], anIntArray1493[c], i1);
+                method392(aByteArrayArray1491[c], textWidth + anIntArray1494[c], k + anIntArray1495[c] + (int) (Math.sin((double) k1 / 1.5D + (double) j) * d), anIntArray1492[c], anIntArray1493[c], i1);
             }
-            l += anIntArray1496[c];
+            textWidth += characterWidths[c];
         }
-
     }
 
     public void method389(boolean flag1, int i, int j, String s, int k) {
         aBoolean1499 = false;
         int l = i;
+
         if (s == null) {
             return;
         }
         k -= anInt1497;
+
         for (int i1 = 0; i1 < s.length(); i1++) {
             if (s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
                 int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
+
                 if (j1 != -1) {
                     j = j1;
                 }
                 i1 += 4;
             } else {
                 char c = s.charAt(i1);
+
                 if (c != ' ') {
                     if (flag1) {
                         method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1, anIntArray1492[c], anIntArray1493[c], 0);
                     }
                     method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], j);
                 }
-                i += anIntArray1496[c];
+                i += characterWidths[c];
             }
         }
+
         if (aBoolean1499) {
             DrawingArea.method339(k + (int) ((double) anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
         }
@@ -220,8 +237,8 @@ public final class TextDrawingArea extends DrawingArea {
         if (s == null) {
             return;
         }
-        aRandom1498.setSeed(k);
-        int j1 = 192 + (aRandom1498.nextInt() & 0x1f);
+        random.setSeed(k);
+        int j1 = 192 + (random.nextInt() & 0x1f);
         i1 -= anInt1497;
         for (int k1 = 0; k1 < s.length(); k1++) {
             if (s.charAt(k1) == '@' && k1 + 4 < s.length() && s.charAt(k1 + 4) == '@') {
@@ -236,13 +253,12 @@ public final class TextDrawingArea extends DrawingArea {
                     method394(192, i + anIntArray1494[c] + 1, aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c] + 1, anIntArray1493[c], 0);
                     method394(j1, i + anIntArray1494[c], aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c], anIntArray1493[c], j);
                 }
-                i += anIntArray1496[c];
-                if ((aRandom1498.nextInt() & 3) == 0) {
+                i += characterWidths[c];
+                if ((random.nextInt() & 3) == 0) {
                     i++;
                 }
             }
         }
-
     }
 
     private int getColorByName(String s) {
@@ -341,29 +357,28 @@ public final class TextDrawingArea extends DrawingArea {
         }
     }
 
-    private void method393(int ai[], byte abyte0[], int i, int j, int k, int l, int i1,
-            int j1, int k1) {
+    private void method393(int pixels[], byte abyte0[], int i, int j, int k, int l, int i1, int j1, int k1) {
         int l1 = -(l >> 2);
         l = -(l & 3);
         for (int i2 = -i1; i2 < 0; i2++) {
             for (int j2 = l1; j2 < 0; j2++) {
                 if (abyte0[j++] != 0) {
-                    ai[k++] = i;
+                    pixels[k++] = i;
                 } else {
                     k++;
                 }
                 if (abyte0[j++] != 0) {
-                    ai[k++] = i;
+                    pixels[k++] = i;
                 } else {
                     k++;
                 }
                 if (abyte0[j++] != 0) {
-                    ai[k++] = i;
+                    pixels[k++] = i;
                 } else {
                     k++;
                 }
                 if (abyte0[j++] != 0) {
-                    ai[k++] = i;
+                    pixels[k++] = i;
                 } else {
                     k++;
                 }
@@ -371,20 +386,17 @@ public final class TextDrawingArea extends DrawingArea {
 
             for (int k2 = l; k2 < 0; k2++) {
                 if (abyte0[j++] != 0) {
-                    ai[k++] = i;
+                    pixels[k++] = i;
                 } else {
                     k++;
                 }
             }
-
             k += j1;
             j += k1;
         }
-
     }
 
-    private void method394(int i, int j, byte abyte0[], int k, int l, int i1,
-            int j1) {
+    private void method394(int i, int j, byte abyte0[], int k, int l, int i1, int j1) {
         int k1 = j + l * DrawingArea.width;
         int l1 = DrawingArea.width - k;
         int i2 = 0;
@@ -420,8 +432,7 @@ public final class TextDrawingArea extends DrawingArea {
         method395(abyte0, i1, k1, DrawingArea.pixels, j2, k, i2, l1, j1, i);
     }
 
-    private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1,
-            int j1, int k1, int l1, int i2) {
+    private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1, int j1, int k1, int l1, int i2) {
         l1 = ((l1 & 0xff00ff) * i2 & 0xff00ff00) + ((l1 & 0xff00) * i2 & 0xff0000) >> 8;
         i2 = 256 - i2;
         for (int j2 = -i; j2 < 0; j2++) {
@@ -437,16 +448,5 @@ public final class TextDrawingArea extends DrawingArea {
             j += k1;
             l += j1;
         }
-
     }
-
-    private final byte[][] aByteArrayArray1491;
-    private final int[] anIntArray1492;
-    private final int[] anIntArray1493;
-    private final int[] anIntArray1494;
-    private final int[] anIntArray1495;
-    private final int[] anIntArray1496;
-    public int anInt1497;
-    private final Random aRandom1498;
-    private boolean aBoolean1499;
 }

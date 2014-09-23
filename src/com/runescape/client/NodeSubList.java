@@ -1,9 +1,9 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class NodeSubList {
+
+    private final NodeSub head;
+    private NodeSub current;
 
     public NodeSubList() {
         head = new NodeSub();
@@ -23,6 +23,7 @@ final class NodeSubList {
 
     public NodeSub popTail() {
         NodeSub nodeSub = head.prevNodeSub;
+
         if (nodeSub == head) {
             return null;
         } else {
@@ -33,6 +34,7 @@ final class NodeSubList {
 
     public NodeSub reverseGetFirst() {
         NodeSub nodeSub = head.prevNodeSub;
+
         if (nodeSub == head) {
             current = null;
             return null;
@@ -44,6 +46,7 @@ final class NodeSubList {
 
     public NodeSub reverseGetNext() {
         NodeSub nodeSub = current;
+
         if (nodeSub == head) {
             current = null;
             return null;
@@ -55,13 +58,10 @@ final class NodeSubList {
 
     public int getNodeCount() {
         int i = 0;
+
         for (NodeSub nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub) {
             i++;
         }
-
         return i;
     }
-
-    private final NodeSub head;
-    private NodeSub current;
 }

@@ -1,8 +1,5 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 import java.awt.*;
@@ -10,28 +7,36 @@ import java.awt.image.PixelGrabber;
 
 public final class Sprite extends DrawingArea {
 
-    public Sprite(int i, int j) {
-        myPixels = new int[i * j];
-        myWidth = anInt1444 = i;
-        myHeight = anInt1445 = j;
+    public int[] spritePixels;
+    public int spriteWidth;
+    public int spriteHeight;
+    private int anInt1442;
+    private int anInt1443;
+    public int anInt1444;
+    public int anInt1445;
+
+    public Sprite(int width, int height) {
+        spritePixels = new int[width * height];
+        spriteWidth = anInt1444 = width;
+        spriteHeight = anInt1445 = height;
         anInt1442 = anInt1443 = 0;
     }
 
-    public Sprite(byte abyte0[], Component component) {
+    public Sprite(byte imageBuf[], Component component) {
         try {
-//            Image image = Toolkit.getDefaultToolkit().getImage(signlink.findcachedir()+"mopar.jpg");
-            Image image = Toolkit.getDefaultToolkit().createImage(abyte0);
+            // Image image = Toolkit.getDefaultToolkit().getImage(signlink.findcachedir()+"mopar.jpg");
+            Image image = Toolkit.getDefaultToolkit().createImage(imageBuf);
             MediaTracker mediatracker = new MediaTracker(component);
             mediatracker.addImage(image, 0);
             mediatracker.waitForAll();
-            myWidth = image.getWidth(component);
-            myHeight = image.getHeight(component);
-            anInt1444 = myWidth;
-            anInt1445 = myHeight;
+            spriteWidth = image.getWidth(component);
+            spriteHeight = image.getHeight(component);
+            anInt1444 = spriteWidth;
+            anInt1445 = spriteHeight;
             anInt1442 = 0;
             anInt1443 = 0;
-            myPixels = new int[myWidth * myHeight];
-            PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, myWidth, myHeight, myPixels, 0, myWidth);
+            spritePixels = new int[spriteWidth * spriteHeight];
+            PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, spriteWidth, spriteHeight, spritePixels, 0, spriteWidth);
             pixelgrabber.grabPixels();
         } catch (Exception _ex) {
             System.out.println("Error converting jpg");
@@ -61,36 +66,34 @@ public final class Sprite extends DrawingArea {
 
         anInt1442 = stream_1.readUByte();
         anInt1443 = stream_1.readUByte();
-        myWidth = stream_1.readUShort();
-        myHeight = stream_1.readUShort();
+        spriteWidth = stream_1.readUShort();
+        spriteHeight = stream_1.readUShort();
         int i1 = stream_1.readUByte();
-        int j1 = myWidth * myHeight;
-        myPixels = new int[j1];
-        if (i1 == 0) {
-            for (int k1 = 0; k1 < j1; k1++) {
-                myPixels[k1] = ai[stream.readUByte()];
-            }
+        int pixelCount = spriteWidth * spriteHeight;
+        spritePixels = new int[pixelCount];
 
+        if (i1 == 0) {
+            for (int k1 = 0; k1 < pixelCount; k1++) {
+                spritePixels[k1] = ai[stream.readUByte()];
+            }
             return;
         }
         if (i1 == 1) {
-            for (int l1 = 0; l1 < myWidth; l1++) {
-                for (int i2 = 0; i2 < myHeight; i2++) {
-                    myPixels[l1 + i2 * myWidth] = ai[stream.readUByte()];
+            for (int l1 = 0; l1 < spriteWidth; l1++) {
+                for (int i2 = 0; i2 < spriteHeight; i2++) {
+                    spritePixels[l1 + i2 * spriteWidth] = ai[stream.readUByte()];
                 }
-
             }
-
         }
     }
 
-    public void method343() {
-        DrawingArea.initDrawingArea(myHeight, myWidth, myPixels);
+    public void initDrawingAreaForSprite() {
+        DrawingArea.initDrawingArea(spriteHeight, spriteWidth, spritePixels);
     }
 
     public void method344(int i, int j, int k) {
-        for (int i1 = 0; i1 < myPixels.length; i1++) {
-            int j1 = myPixels[i1];
+        for (int i1 = 0; i1 < spritePixels.length; i1++) {
+            int j1 = spritePixels[i1];
             if (j1 != 0) {
                 int k1 = j1 >> 16 & 0xff;
                 k1 += i;
@@ -113,21 +116,20 @@ public final class Sprite extends DrawingArea {
                 } else if (i2 > 255) {
                     i2 = 255;
                 }
-                myPixels[i1] = (k1 << 16) + (l1 << 8) + i2;
+                spritePixels[i1] = (k1 << 16) + (l1 << 8) + i2;
             }
         }
-
     }
 
     public void method345() {
         int ai[] = new int[anInt1444 * anInt1445];
-        for (int j = 0; j < myHeight; j++) {
-            System.arraycopy(myPixels, j * myWidth, ai, j + anInt1443 * anInt1444 + anInt1442, myWidth);
-        }
 
-        myPixels = ai;
-        myWidth = anInt1444;
-        myHeight = anInt1445;
+        for (int j = 0; j < spriteHeight; j++) {
+            System.arraycopy(spritePixels, j * spriteWidth, ai, j + anInt1443 * anInt1444 + anInt1442, spriteWidth);
+        }
+        spritePixels = ai;
+        spriteWidth = anInt1444;
+        spriteHeight = anInt1445;
         anInt1442 = 0;
         anInt1443 = 0;
     }
@@ -137,8 +139,8 @@ public final class Sprite extends DrawingArea {
         j += anInt1443;
         int l = i + j * DrawingArea.width;
         int i1 = 0;
-        int j1 = myHeight;
-        int k1 = myWidth;
+        int j1 = spriteHeight;
+        int k1 = spriteWidth;
         int l1 = DrawingArea.width - k1;
         int i2 = 0;
         if (j < DrawingArea.topY) {
@@ -168,12 +170,11 @@ public final class Sprite extends DrawingArea {
         }
         if (k1 <= 0 || j1 <= 0) {
         } else {
-            method347(l, k1, j1, i2, i1, l1, myPixels, DrawingArea.pixels);
+            method347(l, k1, j1, i2, i1, l1, spritePixels, DrawingArea.pixels);
         }
     }
 
-    private void method347(int i, int j, int k, int l, int i1, int k1,
-            int ai[], int ai1[]) {
+    private void method347(int i, int j, int k, int l, int i1, int k1, int ai[], int ai1[]) {
         int l1 = -(j >> 2);
         j = -(j & 3);
         for (int i2 = -k; i2 < 0; i2++) {
@@ -199,8 +200,8 @@ public final class Sprite extends DrawingArea {
         j += anInt1443;
         int i1 = i + j * DrawingArea.width;
         int j1 = 0;
-        int k1 = myHeight;
-        int l1 = myWidth;
+        int k1 = spriteHeight;
+        int l1 = spriteWidth;
         int i2 = DrawingArea.width - l1;
         int j2 = 0;
         if (j < DrawingArea.topY) {
@@ -229,7 +230,7 @@ public final class Sprite extends DrawingArea {
             i2 += i3;
         }
         if (!(l1 <= 0 || k1 <= 0)) {
-            method351(j1, l1, DrawingArea.pixels, myPixels, j2, k1, i2, k, i1);
+            method351(j1, l1, DrawingArea.pixels, spritePixels, j2, k1, i2, k, i1);
         }
     }
 
@@ -238,8 +239,8 @@ public final class Sprite extends DrawingArea {
         k += anInt1443;
         int l = i + k * DrawingArea.width;
         int i1 = 0;
-        int j1 = myHeight;
-        int k1 = myWidth;
+        int j1 = spriteHeight;
+        int k1 = spriteWidth;
         int l1 = DrawingArea.width - k1;
         int i2 = 0;
         if (k < DrawingArea.topY) {
@@ -268,12 +269,11 @@ public final class Sprite extends DrawingArea {
             l1 += l2;
         }
         if (!(k1 <= 0 || j1 <= 0)) {
-            method349(DrawingArea.pixels, myPixels, i1, l, k1, j1, l1, i2);
+            method349(DrawingArea.pixels, spritePixels, i1, l, k1, j1, l1, i2);
         }
     }
 
-    private void method349(int ai[], int ai1[], int j, int k, int l, int i1,
-            int j1, int k1) {
+    private void method349(int ai[], int ai1[], int j, int k, int l, int i1, int j1, int k1) {
         int i;//was parameter
         int l1 = -(l >> 2);
         l = -(l & 3);
@@ -317,11 +317,9 @@ public final class Sprite extends DrawingArea {
             k += j1;
             j += k1;
         }
-
     }
 
-    private void method351(int i, int j, int ai[], int ai1[], int l, int i1,
-            int j1, int k1, int l1) {
+    private void method351(int i, int j, int ai[], int ai1[], int l, int i1, int j1, int k1, int l1) {
         int k;//was parameter
         int j2 = 256 - k1;
         for (int k2 = -i1; k2 < 0; k2++) {
@@ -340,8 +338,7 @@ public final class Sprite extends DrawingArea {
         }
     }
 
-    public void method352(int i, int j, int ai[], int k, int ai1[], int i1,
-            int j1, int k1, int l1, int i2) {
+    public void method352(int i, int j, int ai[], int k, int ai1[], int i1, int j1, int k1, int l1, int i2) {
         try {
             int j2 = -l1 / 2;
             int k2 = -i / 2;
@@ -358,7 +355,7 @@ public final class Sprite extends DrawingArea {
                 int k4 = j3 + i3 * i4;
                 int l4 = k3 - l2 * i4;
                 for (k1 = -ai[j1]; k1 < 0; k1++) {
-                    DrawingArea.pixels[j4++] = myPixels[(k4 >> 16) + (l4 >> 16) * myWidth];
+                    DrawingArea.pixels[j4++] = spritePixels[(k4 >> 16) + (l4 >> 16) * spriteWidth];
                     k4 += i3;
                     l4 -= l2;
                 }
@@ -372,8 +369,7 @@ public final class Sprite extends DrawingArea {
         }
     }
 
-    public void method353(int i,
-            double d, int l1) {
+    public void method353(int i, double d, int l1) {
         //all of the following were parameters
         int j = 15;
         int k = 20;
@@ -396,7 +392,7 @@ public final class Sprite extends DrawingArea {
                 int i4 = i3;
                 int j4 = j3;
                 for (l1 = -k; l1 < 0; l1++) {
-                    int k4 = myPixels[(i4 >> 16) + (j4 >> 16) * myWidth];
+                    int k4 = spritePixels[(i4 >> 16) + (j4 >> 16) * spriteWidth];
                     if (k4 != 0) {
                         DrawingArea.pixels[l3++] = k4;
                     } else {
@@ -420,8 +416,8 @@ public final class Sprite extends DrawingArea {
         i += anInt1443;
         int k = j + i * DrawingArea.width;
         int l = 0;
-        int i1 = myHeight;
-        int j1 = myWidth;
+        int i1 = spriteHeight;
+        int j1 = spriteWidth;
         int k1 = DrawingArea.width - j1;
         int l1 = 0;
         if (i < DrawingArea.topY) {
@@ -450,12 +446,11 @@ public final class Sprite extends DrawingArea {
             k1 += k2;
         }
         if (!(j1 <= 0 || i1 <= 0)) {
-            method355(myPixels, j1, background.aByteArray1450, i1, DrawingArea.pixels, 0, k1, k, l1, l);
+            method355(spritePixels, j1, background.aByteArray1450, i1, DrawingArea.pixels, 0, k1, k, l1, l);
         }
     }
 
-    private void method355(int ai[], int i, byte abyte0[], int j, int ai1[], int k,
-            int l, int i1, int j1, int k1) {
+    private void method355(int ai[], int i, byte abyte0[], int j, int ai1[], int k, int l, int i1, int j1, int k1) {
         int l1 = -(i >> 2);
         i = -(i & 3);
         for (int j2 = -j; j2 < 0; j2++) {
@@ -498,14 +493,5 @@ public final class Sprite extends DrawingArea {
             i1 += l;
             k1 += j1;
         }
-
     }
-
-    public int myPixels[];
-    public int myWidth;
-    public int myHeight;
-    private int anInt1442;
-    private int anInt1443;
-    public int anInt1444;
-    public int anInt1445;
 }
