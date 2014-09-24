@@ -104,5 +104,4 @@ final class StringHelper {
         }
         return sb.toString();
     }
-
 }

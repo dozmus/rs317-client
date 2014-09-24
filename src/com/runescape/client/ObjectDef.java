@@ -363,16 +363,16 @@ public final class ObjectDef {
         
         label0:
         do {
-            int j;
+            int opcode;
             
             do {
-                j = stream.readUByte();
+                opcode = stream.readUByte();
                 
-                if (j == 0) {
+                if (opcode == 0) {
                     break label0;
                 }
                 
-                if (j == 1) {
+                if (opcode == 1) {
                     int k = stream.readUByte();
                     
                     if (k > 0) {
@@ -388,11 +388,11 @@ public final class ObjectDef {
                             stream.currentOffset += k * 3;
                         }
                     }
-                } else if (j == 2) {
+                } else if (opcode == 2) {
                     name = stream.readString();
-                } else if (j == 3) {
+                } else if (opcode == 3) {
                     description = stream.readBytes();
-                } else if (j == 5) {
+                } else if (opcode == 5) {
                     int l = stream.readUByte();
                     
                     if (l > 0) {
@@ -407,48 +407,48 @@ public final class ObjectDef {
                             stream.currentOffset += l * 2;
                         }
                     }
-                } else if (j == 14) {
+                } else if (opcode == 14) {
                     anInt744 = stream.readUByte();
-                } else if (j == 15) {
+                } else if (opcode == 15) {
                     anInt761 = stream.readUByte();
-                } else if (j == 17) {
+                } else if (opcode == 17) {
                     aBoolean767 = false;
-                } else if (j == 18) {
+                } else if (opcode == 18) {
                     aBoolean757 = false;
-                } else if (j == 19) {
+                } else if (opcode == 19) {
                     i = stream.readUByte();
                     
                     if (i == 1) {
                         hasActions = true;
                     }
-                } else if (j == 21) {
+                } else if (opcode == 21) {
                     aBoolean762 = true;
-                } else if (j == 22) {
+                } else if (opcode == 22) {
                     aBoolean769 = true;
-                } else if (j == 23) {
+                } else if (opcode == 23) {
                     aBoolean764 = true;
-                } else if (j == 24) {
+                } else if (opcode == 24) {
                     anInt781 = stream.readUShort();
                     
                     if (anInt781 == 65535) {
                         anInt781 = -1;
                     }
-                } else if (j == 28) {
+                } else if (opcode == 28) {
                     anInt775 = stream.readUByte();
-                } else if (j == 29) {
+                } else if (opcode == 29) {
                     aByte737 = stream.readByte();
-                } else if (j == 39) {
+                } else if (opcode == 39) {
                     aByte742 = stream.readByte();
-                } else if (j >= 30 && j < 39) {
+                } else if (opcode >= 30 && opcode < 39) {
                     if (actions == null) {
                         actions = new String[5];
                     }
-                    actions[j - 30] = stream.readString();
+                    actions[opcode - 30] = stream.readString();
                     
-                    if (actions[j - 30].equalsIgnoreCase("hidden")) {
-                        actions[j - 30] = null;
+                    if (actions[opcode - 30].equalsIgnoreCase("hidden")) {
+                        actions[opcode - 30] = null;
                     }
-                } else if (j == 40) {
+                } else if (opcode == 40) {
                     int len = stream.readUByte();
                     modifiedModelColors = new int[len];
                     originalModelColors = new int[len];
@@ -457,40 +457,40 @@ public final class ObjectDef {
                         modifiedModelColors[colourIndex] = stream.readUShort();
                         originalModelColors[colourIndex] = stream.readUShort();
                     }
-                } else if (j == 60) {
+                } else if (opcode == 60) {
                     anInt746 = stream.readUShort();
-                } else if (j == 62) {
+                } else if (opcode == 62) {
                     aBoolean751 = true;
-                } else if (j == 64) {
+                } else if (opcode == 64) {
                     aBoolean779 = false;
-                } else if (j == 65) {
+                } else if (opcode == 65) {
                     anInt748 = stream.readUShort();
-                } else if (j == 66) {
+                } else if (opcode == 66) {
                     anInt772 = stream.readUShort();
-                } else if (j == 67) {
+                } else if (opcode == 67) {
                     anInt740 = stream.readUShort();
-                } else if (j == 68) {
+                } else if (opcode == 68) {
                     anInt758 = stream.readUShort();
-                } else if (j == 69) {
+                } else if (opcode == 69) {
                     anInt768 = stream.readUByte();
-                } else if (j == 70) {
+                } else if (opcode == 70) {
                     anInt738 = stream.readShort();
-                } else if (j == 71) {
+                } else if (opcode == 71) {
                     anInt745 = stream.readShort();
-                } else if (j == 72) {
+                } else if (opcode == 72) {
                     anInt783 = stream.readShort();
-                } else if (j == 73) {
+                } else if (opcode == 73) {
                     aBoolean736 = true;
-                } else if (j == 74) {
+                } else if (opcode == 74) {
                     aBoolean766 = true;
                 } else {
-                    if (j != 75) {
+                    if (opcode != 75) {
                         continue;
                     }
                     anInt760 = stream.readUByte();
                 }
                 continue label0;
-            } while (j != 77);
+            } while (opcode != 77);
             anInt774 = stream.readUShort();
             
             if (anInt774 == 65535) {

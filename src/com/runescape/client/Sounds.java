@@ -34,6 +34,7 @@ final class Sounds {
             return null;
         }
     }
+    
     private final Class6[] aClass6Array329;
     private int anInt330;
     private int anInt331;

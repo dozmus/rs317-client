@@ -49,36 +49,36 @@ public final class SpotAnim {
 
     private void readValues(Stream stream) {
         do {
-            int i = stream.readUByte();
+            int opcode = stream.readUByte();
 
-            if (i == 0) {
+            if (opcode == 0) {
                 return;
             }
 
-            if (i == 1) {
+            if (opcode == 1) {
                 anInt405 = stream.readUShort();
-            } else if (i == 2) {
+            } else if (opcode == 2) {
                 animId = stream.readUShort();
 
                 if (Animation.anims != null) {
                     anim = Animation.anims[animId];
                 }
-            } else if (i == 4) {
+            } else if (opcode == 4) {
                 anInt410 = stream.readUShort();
-            } else if (i == 5) {
+            } else if (opcode == 5) {
                 anInt411 = stream.readUShort();
-            } else if (i == 6) {
+            } else if (opcode == 6) {
                 anInt412 = stream.readUShort();
-            } else if (i == 7) {
+            } else if (opcode == 7) {
                 anInt413 = stream.readUByte();
-            } else if (i == 8) {
+            } else if (opcode == 8) {
                 anInt414 = stream.readUByte();
-            } else if (i >= 40 && i < 50) {
-                anIntArray408[i - 40] = stream.readUShort();
-            } else if (i >= 50 && i < 60) {
-                anIntArray409[i - 50] = stream.readUShort();
+            } else if (opcode >= 40 && opcode < 50) {
+                anIntArray408[opcode - 40] = stream.readUShort();
+            } else if (opcode >= 50 && opcode < 60) {
+                anIntArray409[opcode - 50] = stream.readUShort();
             } else {
-                System.out.println("Error unrecognised spotanim config code: " + i);
+                System.out.println("Error unrecognised spotanim config code: " + opcode);
             }
         } while (true);
     }

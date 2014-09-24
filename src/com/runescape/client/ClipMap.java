@@ -186,7 +186,7 @@ public final class ClipMap {
     }
 
     public void method212(boolean flag, int lengthX, int lengthY, int x, int y,
-            int j1) {
+            int primaryOrientationId) {
         int val = 256;
 
         if (flag) {
@@ -195,7 +195,7 @@ public final class ClipMap {
         x -= offsetX;
         y -= offsetY;
 
-        if (j1 == 1 || j1 == 3) {
+        if (primaryOrientationId == 1 || primaryOrientationId == 3) {
             int tmp = lengthX;
             lengthX = lengthY;
             lengthY = tmp;

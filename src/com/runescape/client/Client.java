@@ -2975,9 +2975,9 @@ public final class Client extends RSApplet {
         }
         aClass30_Sub2_Sub1_Sub1_1201 = new Sprite(128, 265);
         aClass30_Sub2_Sub1_Sub1_1202 = new Sprite(128, 265);
-        System.arraycopy(aRSImageProducer_1110.anIntArray315, 0, aClass30_Sub2_Sub1_Sub1_1201.spritePixels, 0, 33920);
+        System.arraycopy(aRSImageProducer_1110.pixels, 0, aClass30_Sub2_Sub1_Sub1_1201.spritePixels, 0, 33920);
 
-        System.arraycopy(aRSImageProducer_1111.anIntArray315, 0, aClass30_Sub2_Sub1_Sub1_1202.spritePixels, 0, 33920);
+        System.arraycopy(aRSImageProducer_1111.pixels, 0, aClass30_Sub2_Sub1_Sub1_1202.spritePixels, 0, 33920);
 
         anIntArray851 = new int[256];
         for (int k1 = 0; k1 < 64; k1++) {
@@ -8602,7 +8602,7 @@ public final class Client extends RSApplet {
                         s = Censor.apply(s);
                         player.textSpoken = s;
                         player.anInt1513 = i1 >> 8;
-                        player.privelage = j2;
+                        player.privilege = j2;
 
                         //entityMessage(player);
                         player.anInt1531 = i1 & 0xff;
@@ -9710,7 +9710,7 @@ public final class Client extends RSApplet {
             System.arraycopy(anIntArray851, 0, anIntArray850, 0, 256);
 
         }
-        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1201.spritePixels, 0, aRSImageProducer_1110.anIntArray315, 0, 33920);
+        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1201.spritePixels, 0, aRSImageProducer_1110.pixels, 0, 33920);
 
         int i1 = 0;
         int j1 = 1152;
@@ -9727,8 +9727,8 @@ public final class Client extends RSApplet {
                     int l3 = j3;
                     int j4 = 256 - j3;
                     j3 = anIntArray850[j3];
-                    int l4 = aRSImageProducer_1110.anIntArray315[j1];
-                    aRSImageProducer_1110.anIntArray315[j1++] = ((j3 & 0xff00ff) * l3 + (l4 & 0xff00ff) * j4 & 0xff00ff00) + ((j3 & 0xff00) * l3 + (l4 & 0xff00) * j4 & 0xff0000) >> 8;
+                    int l4 = aRSImageProducer_1110.pixels[j1];
+                    aRSImageProducer_1110.pixels[j1++] = ((j3 & 0xff00ff) * l3 + (l4 & 0xff00ff) * j4 & 0xff00ff00) + ((j3 & 0xff00) * l3 + (l4 & 0xff00) * j4 & 0xff0000) >> 8;
                 } else {
                     j1++;
                 }
@@ -9738,7 +9738,7 @@ public final class Client extends RSApplet {
         }
 
         aRSImageProducer_1110.drawGraphics(0, super.graphics, 0);
-        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1202.spritePixels, 0, aRSImageProducer_1111.anIntArray315, 0, 33920);
+        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1202.spritePixels, 0, aRSImageProducer_1111.pixels, 0, 33920);
 
         i1 = 0;
         j1 = 1176;
@@ -9752,8 +9752,8 @@ public final class Client extends RSApplet {
                     int i5 = k4;
                     int j5 = 256 - k4;
                     k4 = anIntArray850[k4];
-                    int k5 = aRSImageProducer_1111.anIntArray315[j1];
-                    aRSImageProducer_1111.anIntArray315[j1++] = ((k4 & 0xff00ff) * i5 + (k5 & 0xff00ff) * j5 & 0xff00ff00) + ((k4 & 0xff00) * i5 + (k5 & 0xff00) * j5 & 0xff0000) >> 8;
+                    int k5 = aRSImageProducer_1111.pixels[j1];
+                    aRSImageProducer_1111.pixels[j1++] = ((k4 & 0xff00ff) * i5 + (k5 & 0xff00ff) * j5 & 0xff00ff00) + ((k4 & 0xff00) * i5 + (k5 & 0xff00) * j5 & 0xff0000) >> 8;
                 } else {
                     j1++;
                 }
@@ -10048,7 +10048,7 @@ public final class Client extends RSApplet {
                 if (j16 == 1) {
                     Object2 obj2 = worldController.getObject2(x, y, plane);
                     if (obj2 != null) {
-                        obj2.aClass30_Sub2_Sub4_504 = new Animable_Sub5(obj2.uid >> 14 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
+                        obj2.anim = new Animable_Sub5(obj2.uid >> 14 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
                     }
                 }
                 if (j16 == 2) {
@@ -10059,7 +10059,7 @@ public final class Client extends RSApplet {
                     }
                     
                     if (obj5 != null) {
-                        obj5.aClass30_Sub2_Sub4_521 = new Animable_Sub5(obj5.uid >> 14 & 0x7fff, k14, j12, i19, l19, j18, k20, j17, false);
+                        obj5.anim = new Animable_Sub5(obj5.uid >> 14 & 0x7fff, k14, j12, i19, l19, j18, k20, j17, false);
                     }
                 }
                 
@@ -10067,7 +10067,7 @@ public final class Client extends RSApplet {
                     Object3 obj3 = worldController.getObject3(y, x, plane);
                     
                     if (obj3 != null) {
-                        obj3.aClass30_Sub2_Sub4_814 = new Animable_Sub5(obj3.uid >> 14 & 0x7fff, k14, 22, i19, l19, j18, k20, j17, false);
+                        obj3.anim = new Animable_Sub5(obj3.uid >> 14 & 0x7fff, k14, 22, i19, l19, j18, k20, j17, false);
                     }
                 }
             }
@@ -10679,11 +10679,11 @@ public final class Client extends RSApplet {
                 int interfaceId = inStream.readUShortLEA();
                 RSInterface.interfaceCache[interfaceId].anInt233 = 3;
                 
-                if (myPlayer.desc == null) {
+                if (myPlayer.def == null) {
                     // Generating the model, if it's not available
                     RSInterface.interfaceCache[interfaceId].mediaId = (myPlayer.anIntArray1700[0] << 25) + (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15) + (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
                 } else {
-                    RSInterface.interfaceCache[interfaceId].mediaId = (int) (0x12345678L + myPlayer.desc.type);
+                    RSInterface.interfaceCache[interfaceId].mediaId = (int) (0x12345678L + myPlayer.def.type);
                 }
                 packetOpcode = -1;
                 return true;

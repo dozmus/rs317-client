@@ -6,7 +6,7 @@ public final class Object5 {
     int anInt518;
     int anInt519;
     int anInt520;
-    public Animable aClass30_Sub2_Sub4_521;
+    public Animable anim;
     public int anInt522;
     int x;
     int anInt524;

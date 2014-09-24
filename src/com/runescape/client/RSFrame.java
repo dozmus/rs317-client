@@ -1,21 +1,19 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-import java.awt.*;
+import java.awt.Frame;
+import java.awt.Graphics;
 
 final class RSFrame extends Frame {
 
-    public RSFrame(RSApplet RSApplet_, int i, int j) {
-        rsApplet = RSApplet_;
+    private final RSApplet rsApplet;
+
+    public RSFrame(RSApplet rsApplet, int width, int height) {
+        this.rsApplet = rsApplet;
         setTitle("Jagex");
         setResizable(false);
-        //show();        //deprecated
         setVisible(true);
         toFront();
-        //resize(i + 8, j + 28);   //deprecated
-        setSize(i + 8, j + 28);
+        setSize(width + 8, height + 28);
     }
 
     public Graphics getGraphics() {
@@ -31,6 +29,4 @@ final class RSFrame extends Frame {
     public void paint(Graphics g) {
         rsApplet.paint(g);
     }
-
-    private final RSApplet rsApplet;
 }

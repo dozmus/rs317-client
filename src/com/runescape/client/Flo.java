@@ -1,47 +1,61 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public final class Flo {
+
+    public static Flo cache[];
 
     public static void unpackConfig(StreamLoader streamLoader) {
         Stream stream = new Stream(streamLoader.getDataForName("flo.dat"));
         int cacheSize = stream.readUShort();
+
         if (cache == null) {
             cache = new Flo[cacheSize];
         }
+
         for (int j = 0; j < cacheSize; j++) {
             if (cache[j] == null) {
                 cache[j] = new Flo();
             }
             cache[j].readValues(stream);
         }
+    }
+    public int anInt390;
+    public int anInt391;
+    public boolean aBoolean393;
+    public int anInt394;
+    public int anInt395;
+    public int anInt396;
+    public int anInt397;
+    public int anInt398;
+    public int anInt399;
 
+    private Flo() {
+        anInt391 = -1;
+        aBoolean393 = true;
     }
 
     private void readValues(Stream stream) {
         do {
-            int i = stream.readUByte();
+            int opcode = stream.readUByte();
             boolean dummy;
-            if (i == 0) {
+
+            if (opcode == 0) {
                 return;
-            } else if (i == 1) {
+            } else if (opcode == 1) {
                 anInt390 = stream.readUTriByte();
                 method262(anInt390);
-            } else if (i == 2) {
+            } else if (opcode == 2) {
                 anInt391 = stream.readUByte();
-            } else if (i == 3) {
+            } else if (opcode == 3) {
                 dummy = true;
-            } else if (i == 5) {
+            } else if (opcode == 5) {
                 aBoolean393 = false;
-            } else if (i == 6) {
+            } else if (opcode == 6) {
                 stream.readString();
-            } else if (i == 7) {
+            } else if (opcode == 7) {
                 int j = anInt394;
                 int k = anInt395;
                 int l = anInt396;
@@ -54,7 +68,7 @@ public final class Flo {
                 anInt397 = i1;
                 anInt398 = i1;
             } else {
-                System.out.println("Error unrecognised config code: " + i);
+                System.out.println("Error unrecognised config code: " + opcode);
             }
         } while (true);
     }
@@ -154,20 +168,4 @@ public final class Flo {
         }
         return (i / 4 << 10) + (j / 32 << 7) + k / 2;
     }
-
-    private Flo() {
-        anInt391 = -1;
-        aBoolean393 = true;
-    }
-
-    public static Flo cache[];
-    public int anInt390;
-    public int anInt391;
-    public boolean aBoolean393;
-    public int anInt394;
-    public int anInt395;
-    public int anInt396;
-    public int anInt397;
-    public int anInt398;
-    public int anInt399;
 }

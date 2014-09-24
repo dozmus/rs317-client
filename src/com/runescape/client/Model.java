@@ -393,7 +393,7 @@ public final class Model extends Animable {
         }
     }
 
-    public Model(int i, Model aclass30_sub2_sub4_sub6s[]) {
+    public Model(int amount, Model models[]) {
         aBoolean1659 = false;
         boolean flag = false;
         boolean flag1 = false;
@@ -403,19 +403,23 @@ public final class Model extends Animable {
         anInt1630 = 0;
         anInt1642 = 0;
         anInt1641 = -1;
-        for (int k = 0; k < i; k++) {
-            Model model = aclass30_sub2_sub4_sub6s[k];
+        
+        for (int k = 0; k < amount; k++) {
+            Model model = models[k];
+            
             if (model != null) {
                 anInt1626 += model.anInt1626;
                 anInt1630 += model.anInt1630;
                 anInt1642 += model.anInt1642;
                 flag |= model.anIntArray1637 != null;
+                
                 if (model.anIntArray1638 != null) {
                     flag1 = true;
                 } else {
                     if (anInt1641 == -1) {
                         anInt1641 = model.anInt1641;
                     }
+                    
                     if (anInt1641 != model.anInt1641) {
                         flag1 = true;
                     }
@@ -424,7 +428,6 @@ public final class Model extends Animable {
                 flag3 |= model.anIntArray1656 != null;
             }
         }
-
         anIntArray1627 = new int[anInt1626];
         anIntArray1628 = new int[anInt1626];
         anIntArray1629 = new int[anInt1626];
@@ -435,15 +438,19 @@ public final class Model extends Animable {
         anIntArray1643 = new int[anInt1642];
         anIntArray1644 = new int[anInt1642];
         anIntArray1645 = new int[anInt1642];
+        
         if (flag) {
             anIntArray1637 = new int[anInt1630];
         }
+        
         if (flag1) {
             anIntArray1638 = new int[anInt1630];
         }
+        
         if (flag2) {
             anIntArray1639 = new int[anInt1630];
         }
+        
         if (flag3) {
             anIntArray1656 = new int[anInt1630];
         }
@@ -452,8 +459,10 @@ public final class Model extends Animable {
         anInt1630 = 0;
         anInt1642 = 0;
         int l = 0;
-        for (int i1 = 0; i1 < i; i1++) {
-            Model model_1 = aclass30_sub2_sub4_sub6s[i1];
+        
+        for (int i1 = 0; i1 < amount; i1++) {
+            Model model_1 = models[i1];
+            
             if (model_1 != null) {
                 for (int j1 = 0; j1 < model_1.anInt1630; j1++) {
                     if (flag) {
@@ -461,12 +470,14 @@ public final class Model extends Animable {
                             anIntArray1637[anInt1630] = 0;
                         } else {
                             int k1 = model_1.anIntArray1637[j1];
+                            
                             if ((k1 & 2) == 2) {
                                 k1 += l << 2;
                             }
                             anIntArray1637[anInt1630] = k1;
                         }
                     }
+                    
                     if (flag1) {
                         if (model_1.anIntArray1638 == null) {
                             anIntArray1638[anInt1630] = model_1.anInt1641;
@@ -474,6 +485,7 @@ public final class Model extends Animable {
                             anIntArray1638[anInt1630] = model_1.anIntArray1638[j1];
                         }
                     }
+                    
                     if (flag2) {
                         if (model_1.anIntArray1639 == null) {
                             anIntArray1639[anInt1630] = 0;
@@ -481,6 +493,7 @@ public final class Model extends Animable {
                             anIntArray1639[anInt1630] = model_1.anIntArray1639[j1];
                         }
                     }
+                    
                     if (flag3 && model_1.anIntArray1656 != null) {
                         anIntArray1656[anInt1630] = model_1.anIntArray1656[j1];
                     }
@@ -497,14 +510,13 @@ public final class Model extends Animable {
                     anIntArray1645[anInt1642] = method465(model_1, model_1.anIntArray1645[l1]);
                     anInt1642++;
                 }
-
                 l += model_1.anInt1642;
             }
         }
     }
 
-    public Model(Model aclass30_sub2_sub4_sub6s[]) {
-        int i = 2;//was parameter
+    public Model(Model models[]) {
+        int amount = 2;//was parameter
         aBoolean1659 = false;
         boolean flag1 = false;
         boolean flag2 = false;
@@ -514,13 +526,16 @@ public final class Model extends Animable {
         anInt1630 = 0;
         anInt1642 = 0;
         anInt1641 = -1;
-        for (int k = 0; k < i; k++) {
-            Model model = aclass30_sub2_sub4_sub6s[k];
+        
+        for (int k = 0; k < amount; k++) {
+            Model model = models[k];
+            
             if (model != null) {
                 anInt1626 += model.anInt1626;
                 anInt1630 += model.anInt1630;
                 anInt1642 += model.anInt1642;
                 flag1 |= model.anIntArray1637 != null;
+                
                 if (model.anIntArray1638 != null) {
                     flag2 = true;
                 } else {
@@ -535,7 +550,6 @@ public final class Model extends Animable {
                 flag4 |= model.colours != null;
             }
         }
-
         anIntArray1627 = new int[anInt1626];
         anIntArray1628 = new int[anInt1626];
         anIntArray1629 = new int[anInt1626];
@@ -548,15 +562,19 @@ public final class Model extends Animable {
         anIntArray1643 = new int[anInt1642];
         anIntArray1644 = new int[anInt1642];
         anIntArray1645 = new int[anInt1642];
+        
         if (flag1) {
             anIntArray1637 = new int[anInt1630];
         }
+        
         if (flag2) {
             anIntArray1638 = new int[anInt1630];
         }
+        
         if (flag3) {
             anIntArray1639 = new int[anInt1630];
         }
+        
         if (flag4) {
             colours = new int[anInt1630];
         }
@@ -564,10 +582,13 @@ public final class Model extends Animable {
         anInt1630 = 0;
         anInt1642 = 0;
         int i1 = 0;
-        for (int j1 = 0; j1 < i; j1++) {
-            Model model_1 = aclass30_sub2_sub4_sub6s[j1];
+        
+        for (int j1 = 0; j1 < amount; j1++) {
+            Model model_1 = models[j1];
+            
             if (model_1 != null) {
                 int k1 = anInt1626;
+                
                 for (int l1 = 0; l1 < model_1.anInt1626; l1++) {
                     anIntArray1627[anInt1626] = model_1.anIntArray1627[l1];
                     anIntArray1628[anInt1626] = model_1.anIntArray1628[l1];
@@ -582,17 +603,20 @@ public final class Model extends Animable {
                     anIntArray1634[anInt1630] = model_1.anIntArray1634[i2];
                     anIntArray1635[anInt1630] = model_1.anIntArray1635[i2];
                     anIntArray1636[anInt1630] = model_1.anIntArray1636[i2];
+                    
                     if (flag1) {
                         if (model_1.anIntArray1637 == null) {
                             anIntArray1637[anInt1630] = 0;
                         } else {
                             int j2 = model_1.anIntArray1637[i2];
+                            
                             if ((j2 & 2) == 2) {
                                 j2 += i1 << 2;
                             }
                             anIntArray1637[anInt1630] = j2;
                         }
                     }
+                    
                     if (flag2) {
                         if (model_1.anIntArray1638 == null) {
                             anIntArray1638[anInt1630] = model_1.anInt1641;
@@ -600,6 +624,7 @@ public final class Model extends Animable {
                             anIntArray1638[anInt1630] = model_1.anIntArray1638[i2];
                         }
                     }
+                    
                     if (flag3) {
                         if (model_1.anIntArray1639 == null) {
                             anIntArray1639[anInt1630] = 0;
@@ -607,6 +632,7 @@ public final class Model extends Animable {
                             anIntArray1639[anInt1630] = model_1.anIntArray1639[i2];
                         }
                     }
+                    
                     if (flag4 && model_1.colours != null) {
                         colours[anInt1630] = model_1.colours[i2];
                     }
@@ -619,11 +645,9 @@ public final class Model extends Animable {
                     anIntArray1645[anInt1642] = model_1.anIntArray1645[k2] + k1;
                     anInt1642++;
                 }
-
                 i1 += model_1.anInt1642;
             }
         }
-
         method466();
     }
 
@@ -834,17 +858,21 @@ public final class Model extends Animable {
         super.modelHeight = 0;
         anInt1650 = 0;
         anInt1651 = 0;
+        
         for (int i = 0; i < anInt1626; i++) {
             int j = anIntArray1627[i];
             int k = anIntArray1628[i];
             int l = anIntArray1629[i];
+            
             if (-k > super.modelHeight) {
                 super.modelHeight = -k;
             }
+            
             if (k > anInt1651) {
                 anInt1651 = k;
             }
             int i1 = j * j + l * l;
+            
             if (i1 > anInt1650) {
                 anInt1650 = i1;
             }
@@ -857,16 +885,18 @@ public final class Model extends Animable {
     public void method467() {
         super.modelHeight = 0;
         anInt1651 = 0;
+        
         for (int i = 0; i < anInt1626; i++) {
             int j = anIntArray1628[i];
+            
             if (-j > super.modelHeight) {
                 super.modelHeight = -j;
             }
+            
             if (j > anInt1651) {
                 anInt1651 = j;
             }
         }
-
         anInt1653 = (int) (Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight) + 0.98999999999999999D);
         anInt1652 = anInt1653 + (int) (Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651) + 0.98999999999999999D);
     }
@@ -879,34 +909,41 @@ public final class Model extends Animable {
         anInt1647 = 0xfff0bdc1;
         anInt1648 = 0xfffe7961;
         anInt1649 = 0x1869f;
+        
         for (int j = 0; j < anInt1626; j++) {
             int k = anIntArray1627[j];
             int l = anIntArray1628[j];
             int i1 = anIntArray1629[j];
+            
             if (k < anInt1646) {
                 anInt1646 = k;
             }
+            
             if (k > anInt1647) {
                 anInt1647 = k;
             }
+            
             if (i1 < anInt1649) {
                 anInt1649 = i1;
             }
+            
             if (i1 > anInt1648) {
                 anInt1648 = i1;
             }
+            
             if (-l > super.modelHeight) {
                 super.modelHeight = -l;
             }
+            
             if (l > anInt1651) {
                 anInt1651 = l;
             }
             int j1 = k * k + i1 * i1;
+            
             if (j1 > anInt1650) {
                 anInt1650 = j1;
             }
         }
-
         anInt1650 = (int) Math.sqrt(anInt1650);
         anInt1653 = (int) Math.sqrt(anInt1650 * anInt1650 + super.modelHeight * super.modelHeight);
         anInt1652 = anInt1653 + (int) Math.sqrt(anInt1650 * anInt1650 + anInt1651 * anInt1651);
@@ -916,15 +953,17 @@ public final class Model extends Animable {
         if (anIntArray1655 != null) {
             int ai[] = new int[256];
             int j = 0;
+            
             for (int l = 0; l < anInt1626; l++) {
                 int j1 = anIntArray1655[l];
                 ai[j1]++;
+                
                 if (j1 > j) {
                     j = j1;
                 }
             }
-
             anIntArrayArray1657 = new int[j + 1][];
+            
             for (int k1 = 0; k1 <= j; k1++) {
                 anIntArrayArray1657[k1] = new int[ai[k1]];
                 ai[k1] = 0;
@@ -934,21 +973,23 @@ public final class Model extends Animable {
                 int l2 = anIntArray1655[j2];
                 anIntArrayArray1657[l2][ai[l2]++] = j2;
             }
-
             anIntArray1655 = null;
         }
+        
         if (anIntArray1656 != null) {
             int ai1[] = new int[256];
             int k = 0;
+            
             for (int i1 = 0; i1 < anInt1630; i1++) {
                 int l1 = anIntArray1656[i1];
                 ai1[l1]++;
+                
                 if (l1 > k) {
                     k = l1;
                 }
             }
-
             anIntArrayArray1658 = new int[k + 1][];
+            
             for (int i2 = 0; i2 <= k; i2++) {
                 anIntArrayArray1658[i2] = new int[ai1[i2]];
                 ai1[i2] = 0;
@@ -958,7 +999,6 @@ public final class Model extends Animable {
                 int i3 = anIntArray1656[k2];
                 anIntArrayArray1658[i3][ai1[i3]++] = k2;
             }
-
             anIntArray1656 = null;
         }
     }
@@ -967,10 +1007,12 @@ public final class Model extends Animable {
         if (anIntArrayArray1657 == null) {
             return;
         }
+        
         if (i == -1) {
             return;
         }
         Class36 class36 = Class36.method531(i);
+        
         if (class36 == null) {
             return;
         }
@@ -978,6 +1020,7 @@ public final class Model extends Animable {
         anInt1681 = 0;
         anInt1682 = 0;
         anInt1683 = 0;
+        
         for (int k = 0; k < class36.anInt638; k++) {
             int l = class36.anIntArray639[k];
             method472(class18.anIntArray342[l], class18.anIntArrayArray343[l], class36.anIntArray640[k], class36.anIntArray641[k], class36.anIntArray642[k]);
@@ -988,15 +1031,18 @@ public final class Model extends Animable {
         if (k == -1) {
             return;
         }
+        
         if (ai == null || j == -1) {
             method470(k);
             return;
         }
         Class36 class36 = Class36.method531(k);
+        
         if (class36 == null) {
             return;
         }
         Class36 class36_1 = Class36.method531(j);
+        
         if (class36_1 == null) {
             method470(k);
             return;
@@ -1007,22 +1053,25 @@ public final class Model extends Animable {
         anInt1683 = 0;
         int l = 0;
         int i1 = ai[l++];
+        
         for (int j1 = 0; j1 < class36.anInt638; j1++) {
             int k1;
             for (k1 = class36.anIntArray639[j1]; k1 > i1; i1 = ai[l++]);
+            
             if (k1 != i1 || class18.anIntArray342[k1] == 0) {
                 method472(class18.anIntArray342[k1], class18.anIntArrayArray343[k1], class36.anIntArray640[j1], class36.anIntArray641[j1], class36.anIntArray642[j1]);
             }
         }
-
         anInt1681 = 0;
         anInt1682 = 0;
         anInt1683 = 0;
         l = 0;
         i1 = ai[l++];
+        
         for (int l1 = 0; l1 < class36_1.anInt638; l1++) {
             int i2;
             for (i2 = class36_1.anIntArray639[l1]; i2 > i1; i1 = ai[l++]);
+            
             if (i2 == i1 || class18.anIntArray342[i2] == 0) {
                 method472(class18.anIntArray342[i2], class18.anIntArrayArray343[i2], class36_1.anIntArray640[l1], class36_1.anIntArray641[l1], class36_1.anIntArray642[l1]);
             }

@@ -88,25 +88,27 @@ public class Entity extends Animable {
         anInt1557 = -1;
     }
 
-    public final void setPos(int i, int j, boolean flag) {
+    public final void setPos(int x, int y, boolean flag) {
         if (anim != -1 && Animation.anims[anim].anInt364 == 1) {
             anim = -1;
         }
+
         if (!flag) {
-            int k = i - smallX[0];
-            int l = j - smallY[0];
-            if (k >= -8 && k <= 8 && l >= -8 && l <= 8) {
+            int newX = x - smallX[0];
+            int newY = y - smallY[0];
+
+            if (newX >= -8 && newX <= 8 && newY >= -8 && newY <= 8) {
                 if (smallXYIndex < 9) {
                     smallXYIndex++;
                 }
+
                 for (int i1 = smallXYIndex; i1 > 0; i1--) {
                     smallX[i1] = smallX[i1 - 1];
                     smallY[i1] = smallY[i1 - 1];
                     aBooleanArray1553[i1] = aBooleanArray1553[i1 - 1];
                 }
-
-                smallX[0] = i;
-                smallY[0] = j;
+                smallX[0] = x;
+                smallY[0] = y;
                 aBooleanArray1553[0] = false;
                 return;
             }
@@ -114,8 +116,8 @@ public class Entity extends Animable {
         smallXYIndex = 0;
         anInt1542 = 0;
         anInt1503 = 0;
-        smallX[0] = i;
-        smallY[0] = j;
+        smallX[0] = x;
+        smallY[0] = y;
         x = smallX[0] * 128 + anInt1540 * 64;
         y = smallY[0] * 128 + anInt1540 * 64;
     }

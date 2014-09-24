@@ -1,80 +1,81 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public final class Varp {
+
+    public static Varp cache[];
+    private static int anInt702;
+    private static int[] anIntArray703;
 
     public static void unpackConfig(StreamLoader streamLoader) {
         Stream stream = new Stream(streamLoader.getDataForName("varp.dat"));
         anInt702 = 0;
         int cacheSize = stream.readUShort();
+
         if (cache == null) {
             cache = new Varp[cacheSize];
         }
+
         if (anIntArray703 == null) {
             anIntArray703 = new int[cacheSize];
         }
+
         for (int j = 0; j < cacheSize; j++) {
             if (cache[j] == null) {
                 cache[j] = new Varp();
             }
             cache[j].readValues(stream, j);
         }
+
         if (stream.currentOffset != stream.buffer.length) {
             System.out.println("varptype load mismatch");
         }
     }
-
-    private void readValues(Stream stream, int i) {
-        do {
-            int j = stream.readUByte();
-            if (j == 0) {
-                return;
-            }
-            int dummy;
-            if (j == 1) {
-                stream.readUByte();
-            } else if (j == 2) {
-                stream.readUByte();
-            } else if (j == 3) {
-                anIntArray703[anInt702++] = i;
-            } else if (j == 4) {
-                dummy = 2;
-            } else if (j == 5) {
-                anInt709 = stream.readUShort();
-            } else if (j == 6) {
-                dummy = 2;
-            } else if (j == 7) {
-                stream.readUInt();
-            } else if (j == 8) {
-                aBoolean713 = true;
-            } else if (j == 10) {
-                stream.readString();
-            } else if (j == 11) {
-                aBoolean713 = true;
-            } else if (j == 12) {
-                stream.readUInt();
-            } else if (j == 13) {
-                dummy = 2;
-            } else {
-                System.out.println("Error unrecognised config code: " + j);
-            }
-        } while (true);
-    }
+    public int anInt709;
+    public boolean aBoolean713;
 
     private Varp() {
         aBoolean713 = false;
     }
 
-    public static Varp cache[];
-    private static int anInt702;
-    private static int[] anIntArray703;
-    public int anInt709;
-    public boolean aBoolean713;
+    private void readValues(Stream stream, int i) {
+        do {
+            int opcode = stream.readUByte();
 
+            if (opcode == 0) {
+                return;
+            }
+            int dummy;
+
+            if (opcode == 1) {
+                stream.readUByte();
+            } else if (opcode == 2) {
+                stream.readUByte();
+            } else if (opcode == 3) {
+                anIntArray703[anInt702++] = i;
+            } else if (opcode == 4) {
+                dummy = 2;
+            } else if (opcode == 5) {
+                anInt709 = stream.readUShort();
+            } else if (opcode == 6) {
+                dummy = 2;
+            } else if (opcode == 7) {
+                stream.readUInt();
+            } else if (opcode == 8) {
+                aBoolean713 = true;
+            } else if (opcode == 10) {
+                stream.readString();
+            } else if (opcode == 11) {
+                aBoolean713 = true;
+            } else if (opcode == 12) {
+                stream.readUInt();
+            } else if (opcode == 13) {
+                dummy = 2;
+            } else {
+                System.out.println("Error unrecognised config code: " + opcode);
+            }
+        } while (true);
+    }
 }

@@ -1,19 +1,16 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 final class Object4 {
-
-    Object4() {
-    }
 
     int anInt45;
     int x;
     int y;
-    Animable aClass30_Sub2_Sub4_48;
-    Animable aClass30_Sub2_Sub4_49;
-    Animable aClass30_Sub2_Sub4_50;
+    Animable anim1;
+    Animable anim2;
+    Animable anim3;
     int uid;
     int anInt52;
+
+    Object4() {
+    }
 }

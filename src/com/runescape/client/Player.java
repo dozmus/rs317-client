@@ -1,29 +1,67 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public final class Player extends Entity {
+
+    static MRUNodes mruNodes = new MRUNodes(260);
+
+    public int privilege;
+
+    private long aLong1697;
+    public EntityDef def;
+    boolean aBoolean1699;
+    final int[] anIntArray1700;
+    public int team;
+    private int anInt1702;
+    public String name;
+    public int combatLevel;
+    public int headIcon;
+    public int anInt1707;
+    int anInt1708;
+    int anInt1709;
+    boolean visible;
+    int anInt1711;
+    int anInt1712;
+    int anInt1713;
+    Model aModel_1714;
+    private int anInt1715;
+    public final int[] equipment;
+    private long aLong1718;
+    int anInt1719;
+    int anInt1720;
+    int anInt1721;
+    int anInt1722;
+    int skill;
+
+    Player() {
+        aLong1697 = -1L;
+        aBoolean1699 = false;
+        anIntArray1700 = new int[5];
+        visible = false;
+        anInt1715 = 9;
+        equipment = new int[12];
+    }
 
     public Model getRotatedModel() {
         if (!visible) {
             return null;
         }
         Model model = method452();
+
         if (model == null) {
             return null;
         }
         super.height = model.modelHeight;
         model.aBoolean1659 = true;
+
         if (aBoolean1699) {
             return model;
         }
         if (super.anInt1520 != -1 && super.anInt1521 != -1) {
             SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
             Model model_2 = spotAnim.getModel();
+
             if (model_2 != null) {
                 Model model_3 = new Model(true, Class36.method532(super.anInt1521), false, model_2);
                 model_3.method475(0, -super.anInt1524, 0);
@@ -31,23 +69,27 @@ public final class Player extends Entity {
                 model_3.method470(spotAnim.anim.anIntArray353[super.anInt1521]);
                 model_3.anIntArrayArray1658 = null;
                 model_3.anIntArrayArray1657 = null;
+
                 if (spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128) {
                     model_3.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
                 }
                 model_3.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
-                Model aclass30_sub2_sub4_sub6_1s[] = {
+                Model models[] = {
                     model, model_3
                 };
-                model = new Model(aclass30_sub2_sub4_sub6_1s);
+                model = new Model(models);
             }
         }
+
         if (aModel_1714 != null) {
             if (Client.loopCycle >= anInt1708) {
                 aModel_1714 = null;
             }
+
             if (Client.loopCycle >= anInt1707 && Client.loopCycle < anInt1708) {
                 Model model_1 = aModel_1714;
                 model_1.method475(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
+
                 if (super.turnDirection == 512) {
                     model_1.method473();
                     model_1.method473();
@@ -58,10 +100,10 @@ public final class Player extends Entity {
                 } else if (super.turnDirection == 1536) {
                     model_1.method473();
                 }
-                Model aclass30_sub2_sub4_sub6s[] = {
+                Model models[] = {
                     model, model_1
                 };
-                model = new Model(aclass30_sub2_sub4_sub6s);
+                model = new Model(models);
                 if (super.turnDirection == 512) {
                     model_1.method473();
                 } else if (super.turnDirection == 1024) {
@@ -83,7 +125,7 @@ public final class Player extends Entity {
         stream.currentOffset = 0;
         anInt1702 = stream.readUByte();
         headIcon = stream.readUByte();
-        desc = null;
+        def = null;
         team = 0;
         for (int j = 0; j < 12; j++) {
             int k = stream.readUByte();
@@ -94,7 +136,7 @@ public final class Player extends Entity {
             int i1 = stream.readUByte();
             equipment[j] = (k << 8) + i1;
             if (j == 0 && equipment[0] == 65535) {
-                desc = EntityDef.forID(stream.readUShort());
+                def = EntityDef.forID(stream.readUShort());
                 break;
             }
             if (equipment[j] >= 512 && equipment[j] - 512 < ItemDef.totalItems) {
@@ -163,20 +205,19 @@ public final class Player extends Entity {
             aLong1718 <<= 3;
             aLong1718 += anIntArray1700[i2];
         }
-
         aLong1718 <<= 1;
         aLong1718 += anInt1702;
     }
 
     private Model method452() {
-        if (desc != null) {
+        if (def != null) {
             int j = -1;
             if (super.anim >= 0 && super.anInt1529 == 0) {
                 j = Animation.anims[super.anim].anIntArray353[super.anInt1527];
             } else if (super.anInt1517 >= 0) {
                 j = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
             }
-            Model model = desc.method164(-1, j, null);
+            Model model = def.method164(-1, j, null);
             return model;
         }
         long l = aLong1718;
@@ -230,8 +271,9 @@ public final class Player extends Entity {
             }
         }
         if (model_1 == null) {
-            Model aclass30_sub2_sub4_sub6s[] = new Model[12];
-            int j2 = 0;
+            Model models[] = new Model[12];
+            int amount = 0;
+
             for (int l2 = 0; l2 < 12; l2++) {
                 int i3 = equipment[l2];
                 if (k1 >= 0 && l2 == 3) {
@@ -243,18 +285,18 @@ public final class Player extends Entity {
                 if (i3 >= 256 && i3 < 512) {
                     Model model_3 = IDK.cache[i3 - 256].method538();
                     if (model_3 != null) {
-                        aclass30_sub2_sub4_sub6s[j2++] = model_3;
+                        models[amount++] = model_3;
                     }
                 }
                 if (i3 >= 512) {
                     Model model_4 = ItemDef.forID(i3 - 512).method196(anInt1702);
                     if (model_4 != null) {
-                        aclass30_sub2_sub4_sub6s[j2++] = model_4;
+                        models[amount++] = model_4;
                     }
                 }
             }
+            model_1 = new Model(amount, models);
 
-            model_1 = new Model(j2, aclass30_sub2_sub4_sub6s);
             for (int j3 = 0; j3 < 5; j3++) {
                 if (anIntArray1700[j3] != 0) {
                     model_1.method476(Client.anIntArrayArray1003[j3][0], Client.anIntArrayArray1003[j3][anIntArray1700[j3]]);
@@ -263,7 +305,6 @@ public final class Player extends Entity {
                     }
                 }
             }
-
             model_1.method469();
             model_1.method479(64, 850, -30, -50, -30, true);
             mruNodes.removeFromCache(model_1, l);
@@ -289,22 +330,24 @@ public final class Player extends Entity {
         return visible;
     }
 
-    public int privelage;
-
     public Model method453() {
         if (!visible) {
             return null;
         }
-        if (desc != null) {
-            return desc.method160();
+        
+        if (def != null) {
+            return def.method160();
         }
         boolean flag = false;
+        
         for (int i = 0; i < 12; i++) {
-            int j = equipment[i];
-            if (j >= 256 && j < 512 && !IDK.cache[j - 256].method539()) {
+            int id = equipment[i];
+            
+            if (id >= 256 && id < 512 && !IDK.cache[id - 256].method539()) {
                 flag = true;
             }
-            if (j >= 512 && !ItemDef.forID(j - 512).method192(anInt1702)) {
+            
+            if (id >= 512 && !ItemDef.forID(id - 512).method192(anInt1702)) {
                 flag = true;
             }
         }
@@ -312,71 +355,39 @@ public final class Player extends Entity {
         if (flag) {
             return null;
         }
-        Model aclass30_sub2_sub4_sub6s[] = new Model[12];
-        int k = 0;
+        Model models[] = new Model[12];
+        int amount = 0;
+        
         for (int l = 0; l < 12; l++) {
-            int i1 = equipment[l];
-            if (i1 >= 256 && i1 < 512) {
-                Model model_1 = IDK.cache[i1 - 256].method540();
+            int id = equipment[l];
+            
+            if (id >= 256 && id < 512) {
+                Model model_1 = IDK.cache[id - 256].method540();
+                
                 if (model_1 != null) {
-                    aclass30_sub2_sub4_sub6s[k++] = model_1;
+                    models[amount++] = model_1;
                 }
             }
-            if (i1 >= 512) {
-                Model model_2 = ItemDef.forID(i1 - 512).method194(anInt1702);
+            
+            if (id >= 512) {
+                Model model_2 = ItemDef.forID(id - 512).method194(anInt1702);
+                
                 if (model_2 != null) {
-                    aclass30_sub2_sub4_sub6s[k++] = model_2;
+                    models[amount++] = model_2;
                 }
             }
         }
-
-        Model model = new Model(k, aclass30_sub2_sub4_sub6s);
+        Model model = new Model(amount, models);
+        
         for (int j1 = 0; j1 < 5; j1++) {
             if (anIntArray1700[j1] != 0) {
                 model.method476(Client.anIntArrayArray1003[j1][0], Client.anIntArrayArray1003[j1][anIntArray1700[j1]]);
+                
                 if (j1 == 1) {
                     model.method476(Client.anIntArray1204[0], Client.anIntArray1204[anIntArray1700[j1]]);
                 }
             }
         }
-
         return model;
     }
-
-    Player() {
-        aLong1697 = -1L;
-        aBoolean1699 = false;
-        anIntArray1700 = new int[5];
-        visible = false;
-        anInt1715 = 9;
-        equipment = new int[12];
-    }
-
-    private long aLong1697;
-    public EntityDef desc;
-    boolean aBoolean1699;
-    final int[] anIntArray1700;
-    public int team;
-    private int anInt1702;
-    public String name;
-    static MRUNodes mruNodes = new MRUNodes(260);
-    public int combatLevel;
-    public int headIcon;
-    public int anInt1707;
-    int anInt1708;
-    int anInt1709;
-    boolean visible;
-    int anInt1711;
-    int anInt1712;
-    int anInt1713;
-    Model aModel_1714;
-    private int anInt1715;
-    public final int[] equipment;
-    private long aLong1718;
-    int anInt1719;
-    int anInt1720;
-    int anInt1721;
-    int anInt1722;
-    int skill;
-
 }
