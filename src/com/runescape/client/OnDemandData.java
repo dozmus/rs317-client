@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.NodeSub;
+
 public final class OnDemandData extends NodeSub {
 
     int dataType;

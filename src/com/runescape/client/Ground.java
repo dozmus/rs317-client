@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.Node;
+
 public final class Ground extends Node {
 
     int anInt1307;

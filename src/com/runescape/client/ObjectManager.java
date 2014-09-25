@@ -359,7 +359,7 @@ final class ObjectManager {
         }
     }
 
-    public static boolean method189(int i, byte[] is, int i_250_) //xxx bad method, decompiled with JODE
+    public static boolean method189(int i, byte[] is, int i_250_) // XXX: bad method, decompiled with JODE
     {
         boolean bool = true;
         Stream stream = new Stream(is);
@@ -1439,5 +1439,4 @@ final class ObjectManager {
             } while (true);
         }
     }
-
 }

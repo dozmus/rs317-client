@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.Node;
+
 final class Class30_Sub1 extends Node {
 
     public int anInt1291;

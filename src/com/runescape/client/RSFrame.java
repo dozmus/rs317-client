@@ -3,6 +3,11 @@ package com.runescape.client;
 import java.awt.Frame;
 import java.awt.Graphics;
 
+/**
+ * The parent game frame component.
+ * 
+ * @author Pure_
+ */
 final class RSFrame extends Frame {
 
     private final RSApplet rsApplet;

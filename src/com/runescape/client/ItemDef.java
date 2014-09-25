@@ -93,9 +93,9 @@ public final class ItemDef {
         if (j > 1) {
             int tmpId = -1;
             
-            for (int id1 = 0; id1 < 10; id1++) {
-                if (j >= itemDef.stackAmounts[id1] && itemDef.stackAmounts[id1] != 0) {
-                    tmpId = itemDef.stackIDs[id1];
+            for (int slotId = 0; slotId < 10; slotId++) {
+                if (j >= itemDef.stackAmounts[slotId] && itemDef.stackAmounts[slotId] != 0) {
+                    tmpId = itemDef.stackIDs[slotId];
                 }
             }
 
@@ -121,28 +121,28 @@ public final class ItemDef {
         int k1 = Texture.textureInt1;
         int l1 = Texture.textureInt2;
         int ai[] = Texture.anIntArray1472;
-        int ai1[] = DrawingArea.pixels;
-        int i2 = DrawingArea.width;
-        int j2 = DrawingArea.height;
-        int k2 = DrawingArea.topX;
-        int l2 = DrawingArea.bottomX;
-        int i3 = DrawingArea.topY;
-        int j3 = DrawingArea.bottomY;
+        int dAreaPixels[] = DrawingArea.pixels;
+        int dAreaWidth = DrawingArea.width;
+        int dAreaHeight = DrawingArea.height;
+        int dAreatopX = DrawingArea.topX;
+        int dAreaBottomX = DrawingArea.bottomX;
+        int dAreaTopY = DrawingArea.topY;
+        int dAreaBottomY = DrawingArea.bottomY;
         Texture.aBoolean1464 = false;
         DrawingArea.initDrawingArea(32, 32, sprite2.spritePixels);
         DrawingArea.method336(32, 0, 0, 0, 32);
         Texture.method364();
-        int k3 = itemDef.modelZoom;
+        int modelZoom = itemDef.modelZoom;
         
         if (k == -1) {
-            k3 = (int) ((double) k3 * 1.5D);
+            modelZoom = (int) ((double) modelZoom * 1.5D);
         }
         
         if (k > 0) {
-            k3 = (int) ((double) k3 * 1.04D);
+            modelZoom = (int) ((double) modelZoom * 1.04D);
         }
-        int l3 = Texture.anIntArray1470[itemDef.modelRotation1] * k3 >> 16;
-        int i4 = Texture.anIntArray1471[itemDef.modelRotation1] * k3 >> 16;
+        int l3 = Texture.anIntArray1470[itemDef.modelRotation1] * modelZoom >> 16;
+        int i4 = Texture.anIntArray1471[itemDef.modelRotation1] * modelZoom >> 16;
         model.method482(itemDef.modelRotation2, itemDef.anInt204, itemDef.modelRotation1, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
         
         for (int i5 = 31; i5 >= 0; i5--) {
@@ -199,8 +199,8 @@ public final class ItemDef {
         if (k == 0) {
             mruNodes1.removeFromCache(sprite2, id);
         }
-        DrawingArea.initDrawingArea(j2, i2, ai1);
-        DrawingArea.setDrawingArea(j3, k2, l2, i3);
+        DrawingArea.initDrawingArea(dAreaHeight, dAreaWidth, dAreaPixels);
+        DrawingArea.setDrawingArea(dAreaBottomY, dAreatopX, dAreaBottomX, dAreaTopY);
         Texture.textureInt1 = k1;
         Texture.textureInt2 = l1;
         Texture.anIntArray1472 = ai;
@@ -286,26 +286,29 @@ public final class ItemDef {
     public Model method194(int j) {
         int k = anInt175;
         int l = anInt166;
+        
         if (j == 1) {
             k = anInt197;
             l = anInt173;
         }
+        
         if (k == -1) {
             return null;
         }
         Model model = Model.method462(k);
+        
         if (l != -1) {
             Model model_1 = Model.method462(l);
-            Model aclass30_sub2_sub4_sub6s[] = {
+            Model models[] = {
                 model, model_1
             };
-            model = new Model(2, aclass30_sub2_sub4_sub6s);
+            model = new Model(2, models);
         }
+        
         if (modifiedModelColors != null) {
             for (int i1 = 0; i1 < modifiedModelColors.length; i1++) {
                 model.method476(modifiedModelColors[i1], originalModelColors[i1]);
             }
-
         }
         return model;
     }
@@ -314,21 +317,26 @@ public final class ItemDef {
         int k = anInt165;
         int l = anInt188;
         int i1 = anInt185;
+        
         if (j == 1) {
             k = anInt200;
             l = anInt164;
             i1 = anInt162;
         }
+        
         if (k == -1) {
             return true;
         }
         boolean flag = true;
+        
         if (!Model.method463(k)) {
             flag = false;
         }
+        
         if (l != -1 && !Model.method463(l)) {
             flag = false;
         }
+        
         if (i1 != -1 && !Model.method463(i1)) {
             flag = false;
         }
@@ -339,15 +347,18 @@ public final class ItemDef {
         int j = anInt165;
         int k = anInt188;
         int l = anInt185;
+        
         if (i == 1) {
             j = anInt200;
             k = anInt164;
             l = anInt162;
         }
+        
         if (j == -1) {
             return null;
         }
         Model model = Model.method462(j);
+        
         if (k != -1) {
             if (l != -1) {
                 Model model_1 = Model.method462(k);
@@ -364,17 +375,19 @@ public final class ItemDef {
                 model = new Model(2, aclass30_sub2_sub4_sub6s);
             }
         }
+        
         if (i == 0 && aByte205 != 0) {
             model.method475(0, aByte205, 0);
         }
+        
         if (i == 1 && aByte154 != 0) {
             model.method475(0, aByte154, 0);
         }
+        
         if (modifiedModelColors != null) {
             for (int i1 = 0; i1 < modifiedModelColors.length; i1++) {
                 model.method476(modifiedModelColors[i1], originalModelColors[i1]);
             }
-
         }
         return model;
     }
@@ -421,59 +434,62 @@ public final class ItemDef {
     }
 
     private void toNote() {
-        ItemDef itemDef = forID(certTemplateID);
-        modelID = itemDef.modelID;
-        modelZoom = itemDef.modelZoom;
-        modelRotation1 = itemDef.modelRotation1;
-        modelRotation2 = itemDef.modelRotation2;
-
-        anInt204 = itemDef.anInt204;
-        modelOffset1 = itemDef.modelOffset1;
-        modelOffset2 = itemDef.modelOffset2;
-        modifiedModelColors = itemDef.modifiedModelColors;
-        originalModelColors = itemDef.originalModelColors;
-        ItemDef itemDef_1 = forID(certID);
-        name = itemDef_1.name;
-        membersObject = itemDef_1.membersObject;
-        value = itemDef_1.value;
+        ItemDef regDef = forID(certTemplateID);
+        modelID = regDef.modelID;
+        modelZoom = regDef.modelZoom;
+        modelRotation1 = regDef.modelRotation1;
+        modelRotation2 = regDef.modelRotation2;
+        anInt204 = regDef.anInt204;
+        modelOffset1 = regDef.modelOffset1;
+        modelOffset2 = regDef.modelOffset2;
+        modifiedModelColors = regDef.modifiedModelColors;
+        originalModelColors = regDef.originalModelColors;
+        ItemDef notedDef = forID(certID);
+        name = notedDef.name;
+        membersObject = notedDef.membersObject;
+        value = notedDef.value;
         String s = "a";
-        char c = itemDef_1.name.charAt(0);
+        char c = notedDef.name.charAt(0);
+        
         if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
             s = "an";
         }
-        description = ("Swap this note at any bank for " + s + " " + itemDef_1.name + ".").getBytes();
+        description = ("Swap this note at any bank for " + s + " " + notedDef.name + ".").getBytes();
         stackable = true;
     }
 
     public Model method201(int i) {
         if (stackIDs != null && i > 1) {
-            int j = -1;
-            for (int k = 0; k < 10; k++) {
-                if (i >= stackAmounts[k] && stackAmounts[k] != 0) {
-                    j = stackIDs[k];
+            int itemId = -1;
+            
+            for (int slotId = 0; slotId < 10; slotId++) {
+                if (i >= stackAmounts[slotId] && stackAmounts[slotId] != 0) {
+                    itemId = stackIDs[slotId];
                 }
             }
-
-            if (j != -1) {
-                return forID(j).method201(1);
+            if (itemId != -1) {
+                return forID(itemId).method201(1);
             }
         }
         Model model = (Model) mruNodes2.insertFromCache(id);
+        
         if (model != null) {
             return model;
         }
         model = Model.method462(modelID);
+        
         if (model == null) {
             return null;
         }
+        
         if (anInt167 != 128 || anInt192 != 128 || anInt191 != 128) {
             model.method478(anInt167, anInt191, anInt192);
         }
+        
         if (modifiedModelColors != null) {
             for (int l = 0; l < modifiedModelColors.length; l++) {
                 model.method476(modifiedModelColors[l], originalModelColors[l]);
             }
-
         }
         model.method479(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
         model.aBoolean1659 = true;

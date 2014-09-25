@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.NodeSub;
+
 public class Animable extends NodeSub {
 
     Class33 aClass33Array1425[];

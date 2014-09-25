@@ -49,8 +49,8 @@ final class StringHelper {
                 ac[11 - i++] = VALID_CHARACTERS[(int) (l1 - l * 37L)];
             }
             return new String(ac, 12 - i, i);
-        } catch (RuntimeException runtimeexception) {
-            Signlink.printError("81570, " + l + ", " + (byte) -99 + ", " + runtimeexception.toString());
+        } catch (RuntimeException ex) {
+            Signlink.printError("81570, " + l + ", " + (byte) -99 + ", " + ex.toString());
         }
         throw new RuntimeException();
     }

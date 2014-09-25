@@ -13,7 +13,7 @@ public final class Animable_Sub5 extends Animable {
     private final int anInt1605;
     private final int anInt1606;
     private Animation anim;
-    private int anInt1608;
+    private int loopCycle;
     private final int objectId;
     private final int anInt1611;
     private final int anInt1612;
@@ -31,15 +31,15 @@ public final class Animable_Sub5 extends Animable {
         if (animId != -1) {
             anim = Animation.anims[animId];
             anInt1599 = 0;
-            anInt1608 = Client.loopCycle;
+            loopCycle = Client.loopCycle;
             
             if (flag && anim.anInt356 != -1) {
                 anInt1599 = (int) (Math.random() * (double) anim.anInt352);
-                anInt1608 -= (int) (Math.random() * (double) anim.method258(anInt1599));
+                loopCycle -= (int) (Math.random() * (double) anim.method258(anInt1599));
             }
         }
         ObjectDef objDef = ObjectDef.forID(objectId);
-        varBitId = objDef.anInt774;
+        varBitId = objDef.varBitId;
         clientSettingId = objDef.anInt749;
         objectChildrenIds = objDef.childrenIDs;
     }
@@ -48,7 +48,7 @@ public final class Animable_Sub5 extends Animable {
         int j = -1;
         
         if (anim != null) {
-            int k = Client.loopCycle - anInt1608;
+            int k = Client.loopCycle - loopCycle;
             
             if (k > 100 && anim.anInt356 > 0) {
                 k = 100;
@@ -69,7 +69,7 @@ public final class Animable_Sub5 extends Animable {
                 anim = null;
                 break;
             }
-            anInt1608 = Client.loopCycle - k;
+            loopCycle = Client.loopCycle - k;
             
             if (anim != null) {
                 j = anim.anIntArray353[anInt1599];
@@ -95,11 +95,11 @@ public final class Animable_Sub5 extends Animable {
         
         if (varBitId != -1) {
             VarBit varBit = VarBit.cache[varBitId];
-            int k = varBit.anInt648;
+            int settingId = varBit.anInt648;
             int l = varBit.anInt649;
             int i1 = varBit.anInt650;
             int j1 = Client.anIntArray1232[i1 - l];
-            i = clientInstance.currentUserSetting[k] >> l & j1;
+            i = clientInstance.currentUserSetting[settingId] >> l & j1;
         } else if (clientSettingId != -1) {
             i = clientInstance.currentUserSetting[clientSettingId];
         }

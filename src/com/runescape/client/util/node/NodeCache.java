@@ -1,8 +1,8 @@
-package com.runescape.client;
+package com.runescape.client.util.node;
 
 import com.runescape.client.signlink.Signlink;
 
-final class NodeCache {
+public final class NodeCache {
 
     private final int size;
     private final Node[] cache;

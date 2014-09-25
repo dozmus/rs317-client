@@ -1,8 +1,7 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+import com.runescape.client.util.node.NodeList;
+import com.runescape.client.util.node.NodeSubList;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 import java.io.*;
@@ -14,14 +13,72 @@ import com.runescape.client.signlink.Signlink;
 public final class OnDemandFetcher extends OnDemandFetcherParent
         implements Runnable {
 
-    private boolean crcMatches(int i, int j, byte abyte0[]) {
-        if (abyte0 == null || abyte0.length < 2) {
+    private int totalFiles;
+    private final NodeList requested;
+    private int anInt1332;
+    public String statusString;
+    private int writeLoopCycle;
+    private long openSocketTime;
+    private int[] mapIndices3;
+    private final CRC32 crc32;
+    private final byte[] ioBuffer;
+    public int onDemandCycle;
+    private final byte[][] fileStatus;
+    private Client clientInstance;
+    private final NodeList onDemandDataNodeList;
+    private int completedSize;
+    private int expectedSize;
+    private int[] anIntArray1348;
+    public int anInt1349;
+    private int[] mapIndices2;
+    private int filesLoaded;
+    private boolean running;
+    private OutputStream outputStream;
+    private int[] mapIndices4;
+    private boolean waiting;
+    private final NodeList completeOnDemandDataNodeList;
+    private final byte[] gzipInputBuffer;
+    private int[] anIntArray1360;
+    private final NodeSubList nodeSubList;
+    private InputStream inputStream;
+    private Socket socket;
+    private final int[][] versions;
+    private final int[][] crcs;
+    private int uncompletedCount;
+    private int completedCount;
+    private final NodeList queuedOnDemandDataNodeList;
+    private OnDemandData current;
+    private final NodeList nodeList;
+    private int[] mapIndices1;
+    private byte[] modelIndices;
+    private int loopCycle;
+
+    public OnDemandFetcher() {
+        requested = new NodeList();
+        statusString = "";
+        crc32 = new CRC32();
+        ioBuffer = new byte[500];
+        fileStatus = new byte[4][];
+        onDemandDataNodeList = new NodeList();
+        running = true;
+        waiting = false;
+        completeOnDemandDataNodeList = new NodeList();
+        gzipInputBuffer = new byte[65000];
+        nodeSubList = new NodeSubList();
+        versions = new int[4][];
+        crcs = new int[4][];
+        queuedOnDemandDataNodeList = new NodeList();
+        nodeList = new NodeList();
+    }
+
+    private boolean crcMatches(int i, int j, byte buf[]) {
+        if (buf == null || buf.length < 2) {
             return false;
         }
-        int k = abyte0.length - 2;
-        int l = ((abyte0[k] & 0xff) << 8) + (abyte0[k + 1] & 0xff);
+        int length = buf.length - 2;
+        int l = ((buf[length] & 0xff) << 8) + (buf[length + 1] & 0xff);
         crc32.reset();
-        crc32.update(abyte0, 0, k);
+        crc32.update(buf, 0, length);
         int i1 = (int) crc32.getValue();
         return l == i && i1 == j;
     }
@@ -52,8 +109,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                         Signlink.printError("Rej: " + l + "," + j1);
                         current.buffer = null;
                         if (current.incomplete) {
-                            synchronized (aClass19_1358) {
-                                aClass19_1358.insertHead(current);
+                            synchronized (completeOnDemandDataNodeList) {
+                                completeOnDemandDataNodeList.insertHead(current);
                             }
                         } else {
                             current.unlink();
@@ -92,8 +149,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                         current.dataType = 93;
                     }
                     if (current.incomplete) {
-                        synchronized (aClass19_1358) {
-                            aClass19_1358.insertHead(current);
+                        synchronized (completeOnDemandDataNodeList) {
+                            completeOnDemandDataNodeList.insertHead(current);
                         }
                     } else {
                         current.unlink();
@@ -113,78 +170,78 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public void start(StreamLoader streamLoader, Client client1) {
+    public void start(StreamLoader streamLoader, Client instance) {
         String as[] = {
             "model_version", "anim_version", "midi_version", "map_version"
         };
-        for (int i = 0; i < 4; i++) {
-            byte abyte0[] = streamLoader.getDataForName(as[i]);
-            int j = abyte0.length / 2;
+
+        for (int dataType = 0; dataType < 4; dataType++) {
+            byte abyte0[] = streamLoader.getDataForName(as[dataType]);
+            int idCount = abyte0.length / 2;
             Stream stream = new Stream(abyte0);
-            versions[i] = new int[j];
-            fileStatus[i] = new byte[j];
-            for (int l = 0; l < j; l++) {
-                versions[i][l] = stream.readUShort();
+            versions[dataType] = new int[idCount];
+            fileStatus[dataType] = new byte[idCount];
+
+            for (int id = 0; id < idCount; id++) {
+                versions[dataType][id] = stream.readUShort();
             }
-
         }
-
         String as1[] = {
             "model_crc", "anim_crc", "midi_crc", "map_crc"
         };
+
         for (int k = 0; k < 4; k++) {
             byte abyte1[] = streamLoader.getDataForName(as1[k]);
             int i1 = abyte1.length / 4;
             Stream stream_1 = new Stream(abyte1);
             crcs[k] = new int[i1];
+
             for (int l1 = 0; l1 < i1; l1++) {
                 crcs[k][l1] = stream_1.readUInt();
             }
-
         }
-
-        byte abyte2[] = streamLoader.getDataForName("model_index");
+        byte buf[] = streamLoader.getDataForName("model_index");
         int j1 = versions[0].length;
         modelIndices = new byte[j1];
+
         for (int k1 = 0; k1 < j1; k1++) {
-            if (k1 < abyte2.length) {
-                modelIndices[k1] = abyte2[k1];
+            if (k1 < buf.length) {
+                modelIndices[k1] = buf[k1];
             } else {
                 modelIndices[k1] = 0;
             }
         }
-
-        abyte2 = streamLoader.getDataForName("map_index");
-        Stream stream2 = new Stream(abyte2);
-        j1 = abyte2.length / 7;
+        buf = streamLoader.getDataForName("map_index");
+        Stream stream2 = new Stream(buf);
+        j1 = buf.length / 7;
         mapIndices1 = new int[j1];
         mapIndices2 = new int[j1];
         mapIndices3 = new int[j1];
         mapIndices4 = new int[j1];
+
         for (int i2 = 0; i2 < j1; i2++) {
             mapIndices1[i2] = stream2.readUShort();
             mapIndices2[i2] = stream2.readUShort();
             mapIndices3[i2] = stream2.readUShort();
             mapIndices4[i2] = stream2.readUByte();
         }
-
-        abyte2 = streamLoader.getDataForName("anim_index");
-        stream2 = new Stream(abyte2);
-        j1 = abyte2.length / 2;
+        buf = streamLoader.getDataForName("anim_index");
+        stream2 = new Stream(buf);
+        j1 = buf.length / 2;
         anIntArray1360 = new int[j1];
+
         for (int j2 = 0; j2 < j1; j2++) {
             anIntArray1360[j2] = stream2.readUShort();
         }
-
-        abyte2 = streamLoader.getDataForName("midi_index");
-        stream2 = new Stream(abyte2);
-        j1 = abyte2.length;
+        buf = streamLoader.getDataForName("midi_index");
+        stream2 = new Stream(buf);
+        j1 = buf.length;
         anIntArray1348 = new int[j1];
+
         for (int k2 = 0; k2 < j1; k2++) {
             anIntArray1348[k2] = stream2.readUByte();
         }
-
-        clientInstance = client1;
+        clientInstance = instance;
         running = true;
         clientInstance.startRunnable(this, 2);
     }
@@ -201,7 +258,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
     public void method554(boolean flag) {
         int j = mapIndices1.length;
-        
+
         for (int k = 0; k < j; k++) {
             if (flag || mapIndices4[k] != 0) {
                 method563((byte) 2, 3, mapIndices3[k]);
@@ -218,7 +275,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         try {
             if (socket == null) {
                 long l = System.currentTimeMillis();
-                
+
                 if (l - openSocketTime < 4000L) {
                     return;
                 }
@@ -227,7 +284,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
                 outputStream.write(15);
-                
+
                 for (int j = 0; j < 8; j++) {
                     inputStream.read();
                 }
@@ -236,7 +293,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             ioBuffer[0] = (byte) onDemandData.dataType;
             ioBuffer[1] = (byte) (onDemandData.ID >> 8);
             ioBuffer[2] = (byte) onDemandData.ID;
-            
+
             if (onDemandData.incomplete) {
                 ioBuffer[3] = 2;
             } else if (!clientInstance.loggedIn) {
@@ -250,7 +307,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             return;
         } catch (IOException ioexception) {
         }
-        
+
         try {
             socket.close();
         } catch (IOException _ex) {
@@ -266,32 +323,32 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return anIntArray1360.length;
     }
 
-    public void fetchItem(int dataType, int songId) {
-        if (dataType < 0 || dataType > versions.length || songId < 0 || songId > versions[dataType].length) {
+    public void fetchItem(int dataType, int id) {
+        if (dataType < 0 || dataType > versions.length || id < 0 || id > versions[dataType].length) {
             return;
         }
-        
-        if (versions[dataType][songId] == 0) {
+
+        if (versions[dataType][id] == 0) {
             return;
         }
-        
+
         synchronized (nodeSubList) {
             for (OnDemandData onDemandData = (OnDemandData) nodeSubList.reverseGetFirst();
                     onDemandData != null;
                     onDemandData = (OnDemandData) nodeSubList.reverseGetNext()) {
-                if (onDemandData.dataType == dataType && onDemandData.ID == songId) {
+                if (onDemandData.dataType == dataType && onDemandData.ID == id) {
                     return;
                 }
             }
-            OnDemandData onDemandData_1 = new OnDemandData();
-            onDemandData_1.dataType = dataType;
-            onDemandData_1.ID = songId;
-            onDemandData_1.incomplete = true;
-            
+            OnDemandData data = new OnDemandData();
+            data.dataType = dataType;
+            data.ID = id;
+            data.incomplete = true;
+
             synchronized (nodeList) {
-                nodeList.insertHead(onDemandData_1);
+                nodeList.insertHead(data);
             }
-            nodeSubList.insertHead(onDemandData_1);
+            nodeSubList.insertHead(data);
         }
     }
 
@@ -304,14 +361,17 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             while (running) {
                 onDemandCycle++;
                 int i = 20;
+
                 if (anInt1332 == 0 && clientInstance.decompressors[0] != null) {
                     i = 50;
                 }
+
                 try {
                     Thread.sleep(i);
                 } catch (Exception _ex) {
                 }
                 waiting = true;
+
                 for (int j = 0; j < 100; j++) {
                     if (!waiting) {
                         break;
@@ -319,38 +379,44 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     waiting = false;
                     checkReceived();
                     handleFailed();
+
                     if (uncompletedCount == 0 && j >= 5) {
                         break;
                     }
                     method568();
+
                     if (inputStream != null) {
                         readData();
                     }
                 }
-
                 boolean flag = false;
-                for (OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext()) {
-                    if (onDemandData.incomplete) {
+
+                for (OnDemandData data = (OnDemandData) requested.reverseGetFirst();
+                        data != null; data = (OnDemandData) requested.reverseGetNext()) {
+                    if (data.incomplete) {
                         flag = true;
-                        onDemandData.loopCycle++;
-                        if (onDemandData.loopCycle > 50) {
-                            onDemandData.loopCycle = 0;
-                            closeRequest(onDemandData);
+                        data.loopCycle++;
+
+                        if (data.loopCycle > 50) {
+                            data.loopCycle = 0;
+                            closeRequest(data);
                         }
                     }
                 }
 
                 if (!flag) {
-                    for (OnDemandData onDemandData_1 = (OnDemandData) requested.reverseGetFirst(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested.reverseGetNext()) {
+                    for (OnDemandData data = (OnDemandData) requested.reverseGetFirst();
+                            data != null; data = (OnDemandData) requested.reverseGetNext()) {
                         flag = true;
-                        onDemandData_1.loopCycle++;
-                        if (onDemandData_1.loopCycle > 50) {
-                            onDemandData_1.loopCycle = 0;
-                            closeRequest(onDemandData_1);
+                        data.loopCycle++;
+
+                        if (data.loopCycle > 50) {
+                            data.loopCycle = 0;
+                            closeRequest(data);
                         }
                     }
-
                 }
+
                 if (flag) {
                     loopCycle++;
                     if (loopCycle > 750) {
@@ -367,14 +433,17 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     loopCycle = 0;
                     statusString = "";
                 }
-                if (clientInstance.loggedIn && socket != null && outputStream != null && (anInt1332 > 0 || clientInstance.decompressors[0] == null)) {
+                if (clientInstance.loggedIn && socket != null && outputStream != null
+                        && (anInt1332 > 0 || clientInstance.decompressors[0] == null)) {
                     writeLoopCycle++;
+
                     if (writeLoopCycle > 500) {
                         writeLoopCycle = 0;
                         ioBuffer[0] = 0;
                         ioBuffer[1] = 0;
                         ioBuffer[2] = 0;
                         ioBuffer[3] = 10;
+
                         try {
                             outputStream.write(ioBuffer, 0, 4);
                         } catch (IOException _ex) {
@@ -388,66 +457,77 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public void method560(int i, int j) {
+    public void method560(int id, int dataType) {
         if (clientInstance.decompressors[0] == null) {
             return;
         }
-        if (versions[j][i] == 0) {
+
+        if (versions[dataType][id] == 0) {
             return;
         }
-        if (fileStatus[j][i] == 0) {
+
+        if (fileStatus[dataType][id] == 0) {
             return;
         }
+
         if (anInt1332 == 0) {
             return;
         }
         OnDemandData onDemandData = new OnDemandData();
-        onDemandData.dataType = j;
-        onDemandData.ID = i;
+        onDemandData.dataType = dataType;
+        onDemandData.ID = id;
         onDemandData.incomplete = false;
-        synchronized (aClass19_1344) {
-            aClass19_1344.insertHead(onDemandData);
+
+        synchronized (onDemandDataNodeList) {
+            onDemandDataNodeList.insertHead(onDemandData);
         }
     }
 
     public OnDemandData getNextNode() {
         OnDemandData onDemandData;
-        synchronized (aClass19_1358) {
-            onDemandData = (OnDemandData) aClass19_1358.popHead();
+
+        synchronized (completeOnDemandDataNodeList) {
+            onDemandData = (OnDemandData) completeOnDemandDataNodeList.popHead();
         }
+
         if (onDemandData == null) {
             return null;
         }
+
         synchronized (nodeSubList) {
             onDemandData.unlinkSub();
         }
+
         if (onDemandData.buffer == null) {
             return onDemandData;
         }
-        int i = 0;
+        int length = 0;
+
         try {
             GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
+
             do {
-                if (i == gzipInputBuffer.length) {
+                if (length == gzipInputBuffer.length) {
                     throw new RuntimeException("buffer overflow!");
                 }
-                int k = gzipinputstream.read(gzipInputBuffer, i, gzipInputBuffer.length - i);
+                int k = gzipinputstream.read(gzipInputBuffer, length, gzipInputBuffer.length - length);
+
                 if (k == -1) {
                     break;
                 }
-                i += k;
+                length += k;
             } while (true);
         } catch (IOException _ex) {
             throw new RuntimeException("error unzipping");
         }
-        onDemandData.buffer = new byte[i];
-        System.arraycopy(gzipInputBuffer, 0, onDemandData.buffer, 0, i);
-
+        onDemandData.buffer = new byte[length];
+        System.arraycopy(gzipInputBuffer, 0, onDemandData.buffer, 0, length);
         return onDemandData;
     }
 
     public int method562(int i, int k, int l) {
         int i1 = (l << 8) + k;
+
         for (int j1 = 0; j1 < mapIndices1.length; j1++) {
             if (mapIndices1[j1] == i1) {
                 if (i == 0) {
@@ -460,22 +540,24 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return -1;
     }
 
-    public void method548(int i) {
-        fetchItem(0, i);
+    public void method548(int id) {
+        fetchItem(0, id);
     }
 
-    public void method563(byte byte0, int i, int j) {
+    public void method563(byte byte0, int dataType, int id) {
         if (clientInstance.decompressors[0] == null) {
             return;
         }
-        if (versions[i][j] == 0) {
+        if (versions[dataType][id] == 0) {
             return;
         }
-        byte abyte0[] = clientInstance.decompressors[i + 1].decompress(j);
-        if (crcMatches(versions[i][j], crcs[i][j], abyte0)) {
+        byte data[] = clientInstance.decompressors[dataType + 1].decompress(id);
+
+        if (crcMatches(versions[dataType][id], crcs[dataType][id], data)) {
             return;
         }
-        fileStatus[i][j] = byte0;
+        fileStatus[dataType][id] = byte0;
+
         if (byte0 > anInt1332) {
             anInt1332 = byte0;
         }
@@ -494,8 +576,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     private void handleFailed() {
         uncompletedCount = 0;
         completedCount = 0;
-        for (OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext()) {
-            if (onDemandData.incomplete) {
+
+        for (OnDemandData data = (OnDemandData) requested.reverseGetFirst();
+                data != null;
+                data = (OnDemandData) requested.reverseGetNext()) {
+            if (data.incomplete) {
                 uncompletedCount++;
             } else {
                 completedCount++;
@@ -503,48 +588,56 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
 
         while (uncompletedCount < 10) {
-            OnDemandData onDemandData_1 = (OnDemandData) aClass19_1368.popHead();
-            if (onDemandData_1 == null) {
+            OnDemandData data = (OnDemandData) queuedOnDemandDataNodeList.popHead();
+
+            if (data == null) {
                 break;
             }
-            if (fileStatus[onDemandData_1.dataType][onDemandData_1.ID] != 0) {
+
+            if (fileStatus[data.dataType][data.ID] != 0) {
                 filesLoaded++;
             }
-            fileStatus[onDemandData_1.dataType][onDemandData_1.ID] = 0;
-            requested.insertHead(onDemandData_1);
+            fileStatus[data.dataType][data.ID] = 0;
+            requested.insertHead(data);
             uncompletedCount++;
-            closeRequest(onDemandData_1);
+            closeRequest(data);
             waiting = true;
         }
     }
 
-    public void method566() {
-        synchronized (aClass19_1344) {
-            aClass19_1344.removeAll();
+    public void clearOnDemandDataNodeList() {
+        synchronized (onDemandDataNodeList) {
+            onDemandDataNodeList.removeAll();
         }
     }
 
     private void checkReceived() {
         OnDemandData onDemandData;
+
         synchronized (nodeList) {
             onDemandData = (OnDemandData) nodeList.popHead();
         }
+
         while (onDemandData != null) {
             waiting = true;
-            byte abyte0[] = null;
+            byte buf[] = null;
+
             if (clientInstance.decompressors[0] != null) {
-                abyte0 = clientInstance.decompressors[onDemandData.dataType + 1].decompress(onDemandData.ID);
+                buf = clientInstance.decompressors[onDemandData.dataType + 1].decompress(onDemandData.ID);
             }
-            if (!crcMatches(versions[onDemandData.dataType][onDemandData.ID], crcs[onDemandData.dataType][onDemandData.ID], abyte0)) {
-                abyte0 = null;
+
+            if (!crcMatches(versions[onDemandData.dataType][onDemandData.ID], crcs[onDemandData.dataType][onDemandData.ID], buf)) {
+                buf = null;
             }
+
             synchronized (nodeList) {
-                if (abyte0 == null) {
-                    aClass19_1368.insertHead(onDemandData);
+                if (buf == null) {
+                    queuedOnDemandDataNodeList.insertHead(onDemandData);
                 } else {
-                    onDemandData.buffer = abyte0;
-                    synchronized (aClass19_1358) {
-                        aClass19_1358.insertHead(onDemandData);
+                    onDemandData.buffer = buf;
+
+                    synchronized (completeOnDemandDataNodeList) {
+                        completeOnDemandDataNodeList.insertHead(onDemandData);
                     }
                 }
                 onDemandData = (OnDemandData) nodeList.popHead();
@@ -558,54 +651,60 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 break;
             }
             OnDemandData onDemandData;
-            synchronized (aClass19_1344) {
-                onDemandData = (OnDemandData) aClass19_1344.popHead();
+
+            synchronized (onDemandDataNodeList) {
+                onDemandData = (OnDemandData) onDemandDataNodeList.popHead();
             }
+
             while (onDemandData != null) {
                 if (fileStatus[onDemandData.dataType][onDemandData.ID] != 0) {
                     fileStatus[onDemandData.dataType][onDemandData.ID] = 0;
                     requested.insertHead(onDemandData);
                     closeRequest(onDemandData);
                     waiting = true;
+
                     if (filesLoaded < totalFiles) {
                         filesLoaded++;
                     }
                     statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
                     completedCount++;
+
                     if (completedCount == 10) {
                         return;
                     }
                 }
-                synchronized (aClass19_1344) {
-                    onDemandData = (OnDemandData) aClass19_1344.popHead();
+                synchronized (onDemandDataNodeList) {
+                    onDemandData = (OnDemandData) onDemandDataNodeList.popHead();
                 }
             }
-            for (int j = 0; j < 4; j++) {
-                byte abyte0[] = fileStatus[j];
-                int k = abyte0.length;
-                for (int l = 0; l < k; l++) {
-                    if (abyte0[l] == anInt1332) {
-                        abyte0[l] = 0;
-                        OnDemandData onDemandData_1 = new OnDemandData();
-                        onDemandData_1.dataType = j;
-                        onDemandData_1.ID = l;
-                        onDemandData_1.incomplete = false;
-                        requested.insertHead(onDemandData_1);
-                        closeRequest(onDemandData_1);
+
+            for (int dataType = 0; dataType < 4; dataType++) {
+                byte buf[] = fileStatus[dataType];
+                int idCount = buf.length;
+
+                for (int id = 0; id < idCount; id++) {
+                    if (buf[id] == anInt1332) {
+                        buf[id] = 0;
+                        OnDemandData data = new OnDemandData();
+                        data.dataType = dataType;
+                        data.ID = id;
+                        data.incomplete = false;
+                        requested.insertHead(data);
+                        closeRequest(data);
                         waiting = true;
+
                         if (filesLoaded < totalFiles) {
                             filesLoaded++;
                         }
                         statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
                         completedCount++;
+
                         if (completedCount == 10) {
                             return;
                         }
                     }
                 }
-
             }
-
             anInt1332--;
         }
     }
@@ -613,62 +712,4 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     public boolean method569(int i) {
         return anIntArray1348[i] == 1;
     }
-
-    public OnDemandFetcher() {
-        requested = new NodeList();
-        statusString = "";
-        crc32 = new CRC32();
-        ioBuffer = new byte[500];
-        fileStatus = new byte[4][];
-        aClass19_1344 = new NodeList();
-        running = true;
-        waiting = false;
-        aClass19_1358 = new NodeList();
-        gzipInputBuffer = new byte[65000];
-        nodeSubList = new NodeSubList();
-        versions = new int[4][];
-        crcs = new int[4][];
-        aClass19_1368 = new NodeList();
-        nodeList = new NodeList();
-    }
-
-    private int totalFiles;
-    private final NodeList requested;
-    private int anInt1332;
-    public String statusString;
-    private int writeLoopCycle;
-    private long openSocketTime;
-    private int[] mapIndices3;
-    private final CRC32 crc32;
-    private final byte[] ioBuffer;
-    public int onDemandCycle;
-    private final byte[][] fileStatus;
-    private Client clientInstance;
-    private final NodeList aClass19_1344;
-    private int completedSize;
-    private int expectedSize;
-    private int[] anIntArray1348;
-    public int anInt1349;
-    private int[] mapIndices2;
-    private int filesLoaded;
-    private boolean running;
-    private OutputStream outputStream;
-    private int[] mapIndices4;
-    private boolean waiting;
-    private final NodeList aClass19_1358;
-    private final byte[] gzipInputBuffer;
-    private int[] anIntArray1360;
-    private final NodeSubList nodeSubList;
-    private InputStream inputStream;
-    private Socket socket;
-    private final int[][] versions;
-    private final int[][] crcs;
-    private int uncompletedCount;
-    private int completedCount;
-    private final NodeList aClass19_1368;
-    private OnDemandData current;
-    private final NodeList nodeList;
-    private int[] mapIndices1;
-    private byte[] modelIndices;
-    private int loopCycle;
 }

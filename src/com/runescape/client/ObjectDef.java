@@ -83,7 +83,7 @@ public final class ObjectDef {
     private boolean aBoolean769;
     private int anInt772;
     private int[] anIntArray773;
-    public int anInt774;
+    public int varBitId;
     public int anInt775;
     private int[] anIntArray776;
     public byte description[];
@@ -132,18 +132,18 @@ public final class ObjectDef {
         aBoolean736 = false;
         aBoolean766 = false;
         anInt760 = -1;
-        anInt774 = -1;
+        varBitId = -1;
         anInt749 = -1;
         childrenIDs = null;
     }
 
-    public void method574(OnDemandFetcher class42_sub1) {
+    public void method574(OnDemandFetcher ondemandFetcher) {
         if (anIntArray773 == null) {
             return;
         }
         
         for (int j = 0; j < anIntArray773.length; j++) {
-            class42_sub1.method560(anIntArray773[j] & 0xffff, 0);
+            ondemandFetcher.method560(anIntArray773[j] & 0xffff, 0);
         }
     }
 
@@ -214,8 +214,8 @@ public final class ObjectDef {
     public ObjectDef method580() {
         int i = -1;
         
-        if (anInt774 != -1) {
-            VarBit varBit = VarBit.cache[anInt774];
+        if (varBitId != -1) {
+            VarBit varBit = VarBit.cache[varBitId];
             int j = varBit.anInt648;
             int k = varBit.anInt649;
             int l = varBit.anInt650;
@@ -491,10 +491,10 @@ public final class ObjectDef {
                 }
                 continue label0;
             } while (opcode != 77);
-            anInt774 = stream.readUShort();
+            varBitId = stream.readUShort();
             
-            if (anInt774 == 65535) {
-                anInt774 = -1;
+            if (varBitId == 65535) {
+                varBitId = -1;
             }
             anInt749 = stream.readUShort();
             

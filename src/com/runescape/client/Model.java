@@ -1401,19 +1401,21 @@ public final class Model extends Animable {
         colours = null;
     }
 
-    public void method482(int j, int k, int l, int i1, int j1, int k1) {
+    public void method482(int modelRotation2, int k, int modelRotation1,
+            int modelOffset1, int j1, int k1) {
         int i = 0; //was a parameter
         int l1 = Texture.textureInt1;
         int i2 = Texture.textureInt2;
         int j2 = modelIntArray1[i];
         int k2 = modelIntArray2[i];
-        int l2 = modelIntArray1[j];
-        int i3 = modelIntArray2[j];
+        int l2 = modelIntArray1[modelRotation2];
+        int i3 = modelIntArray2[modelRotation2];
         int j3 = modelIntArray1[k];
         int k3 = modelIntArray2[k];
-        int l3 = modelIntArray1[l];
-        int i4 = modelIntArray2[l];
+        int l3 = modelIntArray1[modelRotation1];
+        int i4 = modelIntArray2[modelRotation1];
         int j4 = j1 * l3 + k1 * i4 >> 16;
+        
         for (int k4 = 0; k4 < anInt1626; k4++) {
             int l4 = anIntArray1627[k4];
             int i5 = anIntArray1628[k4];
@@ -1428,12 +1430,12 @@ public final class Model extends Animable {
                 j5 = i5 * j2 + j5 * k2 >> 16;
                 i5 = l5;
             }
-            if (j != 0) {
+            if (modelRotation2 != 0) {
                 int i6 = j5 * l2 + l4 * i3 >> 16;
                 j5 = j5 * i3 - l4 * l2 >> 16;
                 l4 = i6;
             }
-            l4 += i1;
+            l4 += modelOffset1;
             i5 += j1;
             j5 += k1;
             int j6 = i5 * i4 - j5 * l3 >> 16;

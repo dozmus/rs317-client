@@ -1,6 +1,6 @@
-package com.runescape.client;
+package com.runescape.client.util.node;
 
-final class NodeSubList {
+public final class NodeSubList {
 
     private final NodeSub head;
     private NodeSub current;

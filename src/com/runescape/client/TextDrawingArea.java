@@ -432,9 +432,11 @@ public final class TextDrawingArea extends DrawingArea {
         method395(abyte0, i1, k1, DrawingArea.pixels, j2, k, i2, l1, j1, i);
     }
 
-    private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1, int j1, int k1, int l1, int i2) {
+    private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1,
+            int j1, int k1, int l1, int i2) {
         l1 = ((l1 & 0xff00ff) * i2 & 0xff00ff00) + ((l1 & 0xff00) * i2 & 0xff0000) >> 8;
         i2 = 256 - i2;
+        
         for (int j2 = -i; j2 < 0; j2++) {
             for (int k2 = -i1; k2 < 0; k2++) {
                 if (abyte0[l++] != 0) {
@@ -444,7 +446,6 @@ public final class TextDrawingArea extends DrawingArea {
                     j++;
                 }
             }
-
             j += k1;
             l += j1;
         }

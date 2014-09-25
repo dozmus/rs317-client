@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.util.node;
 
 public final class NodeList {
 

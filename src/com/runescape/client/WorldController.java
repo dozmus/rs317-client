@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.NodeList;
+
 final class WorldController {
 
     public static boolean lowMem = true;

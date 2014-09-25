@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.NodeSub;
+
 public class DrawingArea extends NodeSub {
 
     public static void initDrawingArea(int height, int width, int pixels[]) {

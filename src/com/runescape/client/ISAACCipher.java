@@ -7,9 +7,6 @@ package com.runescape.client;
  */
 public final class ISAACCipher {
 
-    /**
-     * The golden ratio.
-     */
     private static final int RATIO = 0x9e3779b9;
     private final int[] results;
     private final int[] memory;

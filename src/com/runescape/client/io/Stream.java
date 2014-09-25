@@ -1,8 +1,8 @@
 package com.runescape.client.io;
 
 import com.runescape.client.ISAACCipher;
-import com.runescape.client.NodeList;
-import com.runescape.client.NodeSub;
+import com.runescape.client.util.node.NodeList;
+import com.runescape.client.util.node.NodeSub;
 import java.math.BigInteger;
 import com.runescape.client.signlink.Signlink;
 

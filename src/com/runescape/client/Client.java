@@ -1,5 +1,7 @@
 package com.runescape.client;
 
+import com.runescape.client.util.node.Node;
+import com.runescape.client.util.node.NodeList;
 import com.runescape.client.util.Censor;
 import com.runescape.client.util.TextInput;
 import com.runescape.client.io.Stream;
@@ -1345,7 +1347,7 @@ public final class Client extends RSApplet {
         }
         System.gc();
         Texture.method367();
-        onDemandFetcher.method566();
+        onDemandFetcher.clearOnDemandDataNodeList();
         int k = (anInt1069 - 6) / 8 - 1;
         int j1 = (anInt1069 + 6) / 8 + 1;
         int i2 = (anInt1070 - 6) / 8 - 1;
@@ -7509,7 +7511,7 @@ public final class Client extends RSApplet {
         Graphics g = getGameComponent().getGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, 765, 503);
-        method4(1);
+        setDelayTime(1);
         
         if (loadingError) {
             aBoolean831 = false;
@@ -10520,7 +10522,7 @@ public final class Client extends RSApplet {
         }
         
         if (i2 != 0) {
-            /* xxx 
+            /* XXX: Ignores camera toggle 
             if(cameratoggle){
              if(zoom == 0)
              zoom = k2;
