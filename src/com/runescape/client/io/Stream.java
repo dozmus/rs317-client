@@ -20,16 +20,16 @@ public final class Stream extends NodeSub {
         0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff,
         0x3fffffff, 0x7fffffff, -1
     };
-    private static int availableNodes;
-    private static final NodeList nodeList = new NodeList();
+    private static int cacheCount;
+    private static final NodeList CACHED_STREAMS = new NodeList();
 
     public static Stream fetch() {
-        synchronized (nodeList) {
+        synchronized (CACHED_STREAMS) {
             Stream stream = null;
 
-            if (availableNodes > 0) {
-                availableNodes--;
-                stream = (Stream) nodeList.popHead();
+            if (cacheCount > 0) {
+                cacheCount--;
+                stream = (Stream) CACHED_STREAMS.popHead();
             }
             
             if (stream != null) {
@@ -71,10 +71,10 @@ public final class Stream extends NodeSub {
         readBytes(size, 0, buf);
         BigInteger biginteger2 = new BigInteger(buf);
         BigInteger biginteger3 = biginteger2;
-        byte abyte1[] = biginteger3.toByteArray();
+        byte buf2[] = biginteger3.toByteArray();
         currentOffset = 0;
-        writeByte(abyte1.length);
-        writeBytes(abyte1, abyte1.length, 0);
+        writeByte(buf2.length);
+        writeBytes(buf2, buf2.length, 0);
     }
 
     public void writePacketHeaderEnc(int opcode) {
@@ -316,15 +316,15 @@ public final class Stream extends NodeSub {
         }
     }
 
-    public void method441(int i, byte buf[], int j) {
-        for (int k = (i + j) - 1; k >= i; k--) {
+    public void writeBytesA(int lowerLimit, byte buf[], int startOffset) {
+        for (int k = (lowerLimit + startOffset) - 1; k >= lowerLimit; k--) {
             buffer[currentOffset++] = (byte) (buf[k] + 128);
         }
     }
 
-    public void method442(int i, int j, byte buf[]) {
-        for (int k = (j + i) - 1; k >= j; k--) {
-            buf[k] = buffer[currentOffset++];
+    public void writeBytes(int startOffset, int lowerLimit, byte destBuffer[]) {
+        for (int k = (lowerLimit + startOffset) - 1; k >= lowerLimit; k--) {
+            destBuffer[k] = buffer[currentOffset++];
         }
     }
 
@@ -341,40 +341,40 @@ public final class Stream extends NodeSub {
     }
 
     public byte[] readBytes() {
-        int i = currentOffset;
+        int startPosition = currentOffset;
         while (buffer[currentOffset++] != 10) ;
-        byte abyte0[] = new byte[currentOffset - i - 1];
-        System.arraycopy(buffer, i, abyte0, i - i, currentOffset - 1 - i);
-        return abyte0;
+        byte buf[] = new byte[currentOffset - startPosition - 1];
+        System.arraycopy(buffer, startPosition, buf, startPosition - startPosition, currentOffset - 1 - startPosition);
+        return buf;
     }
 
-    public void readBytes(int length, int startIndex, byte buf[]) {
+    public void readBytes(int length, int startIndex, byte destBuffer[]) {
         for (int i = startIndex; i < startIndex + length; i++) {
-            buf[i] = buffer[currentOffset++];
+            destBuffer[i] = buffer[currentOffset++];
         }
     }
 
-    public int readBits(int i) {
+    public int readBits(int amount) {
         int k = bitPosition >> 3;
         int l = 8 - (bitPosition & 7);
         int i1 = 0;
-        bitPosition += i;
+        bitPosition += amount;
         
-        for (; i > l; l = 8) {
-            i1 += (buffer[k++] & BITMASKS[l]) << i - l;
-            i -= l;
+        for (; amount > l; l = 8) {
+            i1 += (buffer[k++] & BITMASKS[l]) << amount - l;
+            amount -= l;
         }
-        if (i == l) {
+        if (amount == l) {
             i1 += buffer[k] & BITMASKS[l];
         } else {
-            i1 += buffer[k] >> l - i & BITMASKS[i];
+            i1 += buffer[k] >> l - amount & BITMASKS[amount];
         }
         return i1;
     }
 
-    public void writeBytes(byte buf[], int length, int startIndex) {
+    public void writeBytes(byte srcBuffer[], int length, int startIndex) {
         for (int i = startIndex; i < startIndex + length; i++) {
-            buffer[currentOffset++] = buf[i];
+            buffer[currentOffset++] = srcBuffer[i];
         }
     }
 }

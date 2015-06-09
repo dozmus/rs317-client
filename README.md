@@ -9,10 +9,10 @@ A partially refactored RuneScape client for revision #317.
 ```
 
 #### License
-I cannot provide the cache as such content is not my intellectual property (try googling for one), however any code
-in this repository is made available under the GNU v3 license.
+I cannot provide the cache as such content is not my intellectual property (try using Google for one), however any code
+in this repository, where applicable is made available under the GNU v3 license.
 
 #### Contributors
 * [Pure_](https://github.com/PureCS)
-* Moparisthebest
+* [Moparisthebest](https://github.com/moparisthebest)
 * t4

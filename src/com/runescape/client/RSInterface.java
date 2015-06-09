@@ -339,8 +339,8 @@ public final class RSInterface {
     public Sprite sprite2;
     public int scrollMax;
     public int type;
-    public int anInt263;
-    public int anInt265;
+    public int offsetX;
+    public int offsetY;
     public boolean aBoolean266;
     public int height;
     public boolean aBoolean268;

@@ -2,10 +2,6 @@ package com.runescape.client;
 
 public class Entity extends Animable {
 
-    public int entScreenX;
-    public int entScreenY;
-    public final int index = -1;
-
     public final int[] smallX;
     public final int[] smallY;
     public int interactingEntity;
@@ -17,20 +13,20 @@ public class Entity extends Animable {
     public int turnDirection;
     int anInt1511;
     int anInt1512;
-    int anInt1513;
+    int chatAttributes;
     final int[] hitArray;
     final int[] hitMarkTypes;
     final int[] hitsLoopCycle;
     int anInt1517;
     int anInt1518;
     int anInt1519;
-    int anInt1520;
+    int currentGraphicsId;
     int anInt1521;
     int anInt1522;
-    int anInt1523;
-    int anInt1524;
+    int currentGraphicsTargetLoop;
+    int currentGraphicsDelaySegment;
     int smallXYIndex;
-    public int anim;
+    public int currentAnimationId;
     int anInt1527;
     int anInt1528;
     int anInt1529;
@@ -41,18 +37,18 @@ public class Entity extends Animable {
     public int maxHealth;
     int textCycle;
     int loopCycle;
-    int anInt1538;
-    int anInt1539;
+    int facingCoordinateX;
+    int facingCoordinateY;
     int anInt1540;
     boolean aBoolean1541;
     int anInt1542;
-    int anInt1543;
-    int anInt1544;
-    int anInt1545;
-    int anInt1546;
-    int anInt1547;
-    int anInt1548;
-    int anInt1549;
+    int asyncMovementStartX;
+    int asyncMovementEndX;
+    int asyncMovementStartY;
+    int asyncMovementEndY;
+    int asyncMovementSpeedStartToEnd;
+    int asyncMovementSpeedEndToStart;
+    int asyncMovementDirection;
     public int x;
     public int y;
     int anInt1552;
@@ -75,8 +71,8 @@ public class Entity extends Animable {
         hitMarkTypes = new int[4];
         hitsLoopCycle = new int[4];
         anInt1517 = -1;
-        anInt1520 = -1;
-        anim = -1;
+        currentGraphicsId = -1;
+        currentAnimationId = -1;
         loopCycleStatus = -1000;
         textCycle = 100;
         anInt1540 = 1;
@@ -88,9 +84,9 @@ public class Entity extends Animable {
         anInt1557 = -1;
     }
 
-    public final void setPos(int x, int y, boolean flag) {
-        if (anim != -1 && Animation.anims[anim].anInt364 == 1) {
-            anim = -1;
+    public final void setPosition(int x, int y, boolean flag) {
+        if (currentAnimationId != -1 && Animation.anims[currentAnimationId].anInt364 == 1) {
+            currentAnimationId = -1;
         }
 
         if (!flag) {
@@ -127,12 +123,12 @@ public class Entity extends Animable {
         anInt1542 = 0;
     }
 
-    public final void updateHitData(int j, int k, int l) {
-        for (int i1 = 0; i1 < 4; i1++) {
-            if (hitsLoopCycle[i1] <= l) {
-                hitArray[i1] = k;
-                hitMarkTypes[i1] = j;
-                hitsLoopCycle[i1] = l + 70;
+    public final void updateHitData(int hitMarkType, int hitValue, int hitsLoopCycleValue) {
+        for (int idx = 0; idx < 4; idx++) {
+            if (hitsLoopCycle[idx] <= hitsLoopCycleValue) {
+                hitArray[idx] = hitValue;
+                hitMarkTypes[idx] = hitMarkType;
+                hitsLoopCycle[idx] = hitsLoopCycleValue + 70;
                 return;
             }
         }
@@ -178,8 +174,8 @@ public class Entity extends Animable {
             tmpY--;
         }
 
-        if (anim != -1 && Animation.anims[anim].anInt364 == 1) {
-            anim = -1;
+        if (currentAnimationId != -1 && Animation.anims[currentAnimationId].anInt364 == 1) {
+            currentAnimationId = -1;
         }
 
         if (smallXYIndex < 9) {
@@ -199,4 +195,5 @@ public class Entity extends Animable {
     public boolean isVisible() {
         return false;
     }
+
 }

@@ -58,13 +58,13 @@ public final class Player extends Entity {
         if (aBoolean1699) {
             return model;
         }
-        if (super.anInt1520 != -1 && super.anInt1521 != -1) {
-            SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
+        if (super.currentGraphicsId != -1 && super.anInt1521 != -1) {
+            SpotAnim spotAnim = SpotAnim.cache[super.currentGraphicsId];
             Model model_2 = spotAnim.getModel();
 
             if (model_2 != null) {
                 Model model_3 = new Model(true, Class36.method532(super.anInt1521), false, model_2);
-                model_3.method475(0, -super.anInt1524, 0);
+                model_3.method475(0, -super.currentGraphicsDelaySegment, 0);
                 model_3.method469();
                 model_3.method470(spotAnim.anim.anIntArray353[super.anInt1521]);
                 model_3.anIntArrayArray1658 = null;
@@ -212,8 +212,8 @@ public final class Player extends Entity {
     private Model method452() {
         if (def != null) {
             int j = -1;
-            if (super.anim >= 0 && super.anInt1529 == 0) {
-                j = Animation.anims[super.anim].anIntArray353[super.anInt1527];
+            if (super.currentAnimationId >= 0 && super.anInt1529 == 0) {
+                j = Animation.anims[super.currentAnimationId].anIntArray353[super.anInt1527];
             } else if (super.anInt1517 >= 0) {
                 j = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
             }
@@ -225,8 +225,8 @@ public final class Player extends Entity {
         int i1 = -1;
         int j1 = -1;
         int k1 = -1;
-        if (super.anim >= 0 && super.anInt1529 == 0) {
-            Animation animation = Animation.anims[super.anim];
+        if (super.currentAnimationId >= 0 && super.anInt1529 == 0) {
+            Animation animation = Animation.anims[super.currentAnimationId];
             k = animation.anIntArray353[super.anInt1527];
             if (super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511) {
                 i1 = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
@@ -316,7 +316,7 @@ public final class Player extends Entity {
         Model model_2 = Model.aModel_1621;
         model_2.method464(model_1, Class36.method532(k) & Class36.method532(i1));
         if (k != -1 && i1 != -1) {
-            model_2.method471(Animation.anims[super.anim].anIntArray357, i1, k);
+            model_2.method471(Animation.anims[super.currentAnimationId].anIntArray357, i1, k);
         } else if (k != -1) {
             model_2.method470(k);
         }
