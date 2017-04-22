@@ -59,21 +59,21 @@ public final class Player extends Entity {
             return model;
         }
         if (super.currentGraphicsId != -1 && super.anInt1521 != -1) {
-            SpotAnim spotAnim = SpotAnim.cache[super.currentGraphicsId];
-            Model model_2 = spotAnim.getModel();
+            StaticAnimation staticAnimation = StaticAnimation.cache[super.currentGraphicsId];
+            Model model_2 = staticAnimation.getModel();
 
             if (model_2 != null) {
                 Model model_3 = new Model(true, Class36.method532(super.anInt1521), false, model_2);
                 model_3.method475(0, -super.currentGraphicsDelaySegment, 0);
                 model_3.method469();
-                model_3.method470(spotAnim.anim.anIntArray353[super.anInt1521]);
+                model_3.method470(staticAnimation.anim.anIntArray353[super.anInt1521]);
                 model_3.anIntArrayArray1658 = null;
                 model_3.anIntArrayArray1657 = null;
 
-                if (spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128) {
-                    model_3.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
+                if (staticAnimation.anInt410 != 128 || staticAnimation.anInt411 != 128) {
+                    model_3.method478(staticAnimation.anInt410, staticAnimation.anInt410, staticAnimation.anInt411);
                 }
-                model_3.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
+                model_3.method479(64 + staticAnimation.anInt413, 850 + staticAnimation.anInt414, -30, -50, -30, true);
                 Model models[] = {
                     model, model_3
                 };

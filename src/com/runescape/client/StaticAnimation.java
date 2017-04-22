@@ -3,9 +3,9 @@ package com.runescape.client;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 
-public final class SpotAnim {
+public final class StaticAnimation {
 
-    public static SpotAnim[] cache;
+    public static StaticAnimation[] cache;
     public static MRUNodes aMRUNodes_415 = new MRUNodes(30);
 
     public static void unpackConfig(StreamLoader streamLoader) {
@@ -13,19 +13,18 @@ public final class SpotAnim {
         int length = stream.readUShort();
 
         if (cache == null) {
-            cache = new SpotAnim[length];
+            cache = new StaticAnimation[length];
         }
 
         for (int j = 0; j < length; j++) {
             if (cache[j] == null) {
-                cache[j] = new SpotAnim();
+                cache[j] = new StaticAnimation();
             }
             cache[j].anInt404 = j;
             cache[j].readValues(stream);
         }
     }
 
-    private final int anInt400;
     private int anInt404;
     private int anInt405;
     private int animId;
@@ -38,8 +37,8 @@ public final class SpotAnim {
     public int anInt413;
     public int anInt414;
 
-    private SpotAnim() {
-        anInt400 = 9;
+    private StaticAnimation() {
+        int anInt400 = 9;
         animId = -1;
         anIntArray408 = new int[6];
         anIntArray409 = new int[6];

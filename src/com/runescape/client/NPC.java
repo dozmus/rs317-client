@@ -37,20 +37,20 @@ public final class NPC extends Entity {
         super.height = model.modelHeight;
         
         if (super.currentGraphicsId != -1 && super.anInt1521 != -1) {
-            SpotAnim spotAnim = SpotAnim.cache[super.currentGraphicsId];
-            Model model_1 = spotAnim.getModel();
+            StaticAnimation staticAnimation = StaticAnimation.cache[super.currentGraphicsId];
+            Model model_1 = staticAnimation.getModel();
             if (model_1 != null) {
-                int j = spotAnim.anim.anIntArray353[super.anInt1521];
+                int j = staticAnimation.anim.anIntArray353[super.anInt1521];
                 Model model_2 = new Model(true, Class36.method532(j), false, model_1);
                 model_2.method475(0, -super.currentGraphicsDelaySegment, 0);
                 model_2.method469();
                 model_2.method470(j);
                 model_2.anIntArrayArray1658 = null;
                 model_2.anIntArrayArray1657 = null;
-                if (spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128) {
-                    model_2.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
+                if (staticAnimation.anInt410 != 128 || staticAnimation.anInt411 != 128) {
+                    model_2.method478(staticAnimation.anInt410, staticAnimation.anInt410, staticAnimation.anInt411);
                 }
-                model_2.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
+                model_2.method479(64 + staticAnimation.anInt413, 850 + staticAnimation.anInt414, -30, -50, -30, true);
                 Model aModel[] = {
                     model, model_2
                 };

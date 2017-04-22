@@ -4,8 +4,6 @@ import com.runescape.client.io.Stream;
 
 final class Class29 {
 
-    public static int anInt546;
-
     private int length;
     private int[] anIntArray536;
     private int[] anIntArray537;

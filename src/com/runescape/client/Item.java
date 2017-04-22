@@ -12,6 +12,6 @@ final class Item extends Animable {
 
     public final Model getRotatedModel() {
         ItemDef itemDef = ItemDef.forID(ID);
-        return itemDef.method201(anInt1559);
+        return itemDef.getRotatedModel(anInt1559);
     }
 }

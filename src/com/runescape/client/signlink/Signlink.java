@@ -30,8 +30,8 @@ public final class Signlink
     private static byte[] saveItemData = null;
     private static boolean midiplay;
     private static int midiPos;
-    public static String midi = null;
-    public static int midivol;
+    public static String midiName = null;
+    public static int midiVolume;
     public static int midifade;
     private static boolean waveplay;
     private static int wavePos;
@@ -278,7 +278,7 @@ public final class Signlink
                 }
                 
                 if (midiplay) {
-                    midi = cacheDir + savereq;
+                    midiName = cacheDir + savereq;
                     midiplay = false;
                 }
                 savereq = null;

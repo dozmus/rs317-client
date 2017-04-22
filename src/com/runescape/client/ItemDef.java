@@ -2,9 +2,6 @@ package com.runescape.client;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class ItemDef {
 
@@ -103,7 +100,7 @@ public final class ItemDef {
                 itemDef = forID(tmpId);
             }
         }
-        Model model = itemDef.method201(1);
+        Model model = itemDef.getRotatedModel(1);
         
         if (model == null) {
             return null;
@@ -458,7 +455,7 @@ public final class ItemDef {
         stackable = true;
     }
 
-    public Model method201(int i) {
+    public Model getRotatedModel(int i) {
         if (stackIDs != null && i > 1) {
             int itemId = -1;
             
@@ -468,7 +465,7 @@ public final class ItemDef {
                 }
             }
             if (itemId != -1) {
-                return forID(itemId).method201(1);
+                return forID(itemId).getRotatedModel(1);
             }
         }
         Model model = (Model) mruNodes2.insertFromCache(id);

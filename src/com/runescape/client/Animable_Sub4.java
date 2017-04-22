@@ -20,7 +20,7 @@ public final class Animable_Sub4 extends Animable {
     private final int anInt1588;
     private final int anInt1589;
     public final int anInt1590;
-    private final SpotAnim spotAnim;
+    private final StaticAnimation staticAnimation;
     private int anInt1593;
     private int anInt1594;
     public int anInt1595;
@@ -30,7 +30,7 @@ public final class Animable_Sub4 extends Animable {
     public Animable_Sub4(int i, int j, int l, int i1, int j1, int k1, int l1,
             int i2, int j2, int k2, int spotAnimId) {
         aBoolean1579 = false;
-        spotAnim = SpotAnim.cache[spotAnimId];
+        staticAnimation = StaticAnimation.cache[spotAnimId];
         anInt1597 = k1;
         anInt1580 = j2;
         anInt1581 = i2;
@@ -65,15 +65,15 @@ public final class Animable_Sub4 extends Animable {
     }
 
     public Model getRotatedModel() {
-        Model model = spotAnim.getModel();
+        Model model = staticAnimation.getModel();
         
         if (model == null) {
             return null;
         }
         int j = -1;
         
-        if (spotAnim.anim != null) {
-            j = spotAnim.anim.anIntArray353[anInt1593];
+        if (staticAnimation.anim != null) {
+            j = staticAnimation.anim.anIntArray353[anInt1593];
         }
         Model model_1 = new Model(true, Class36.method532(j), false, model);
         
@@ -83,11 +83,11 @@ public final class Animable_Sub4 extends Animable {
             model_1.anIntArrayArray1658 = null;
             model_1.anIntArrayArray1657 = null;
         }
-        if (spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128) {
-            model_1.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
+        if (staticAnimation.anInt410 != 128 || staticAnimation.anInt411 != 128) {
+            model_1.method478(staticAnimation.anInt410, staticAnimation.anInt410, staticAnimation.anInt411);
         }
         model_1.method474(anInt1596);
-        model_1.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
+        model_1.method479(64 + staticAnimation.anInt413, 850 + staticAnimation.anInt414, -30, -50, -30, true);
         return model_1;
     }
 
@@ -100,12 +100,12 @@ public final class Animable_Sub4 extends Animable {
         anInt1595 = (int) (Math.atan2(aDouble1574, aDouble1575) * 325.94900000000001D) + 1024 & 0x7ff;
         anInt1596 = (int) (Math.atan2(aDouble1577, aDouble1576) * 325.94900000000001D) & 0x7ff;
         
-        if (spotAnim.anim != null) {
-            for (anInt1594 += i; anInt1594 > spotAnim.anim.method258(anInt1593);) {
-                anInt1594 -= spotAnim.anim.method258(anInt1593) + 1;
+        if (staticAnimation.anim != null) {
+            for (anInt1594 += i; anInt1594 > staticAnimation.anim.method258(anInt1593);) {
+                anInt1594 -= staticAnimation.anim.method258(anInt1593) + 1;
                 anInt1593++;
                 
-                if (anInt1593 >= spotAnim.anim.anInt352) {
+                if (anInt1593 >= staticAnimation.anim.anInt352) {
                     anInt1593 = 0;
                 }
             }

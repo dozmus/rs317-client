@@ -2,34 +2,34 @@ package com.runescape.client;
 
 import com.runescape.client.io.Stream;
 
-final class Sounds {
+final class Sound {
 
-    private static final Sounds[] cache = new Sounds[5000];
-    public static final int[] anIntArray326 = new int[5000];
-    private static byte[] dataBuffer;
+    private static final Sound[] cache = new Sound[5000];
+    public static final int[] durations = new int[5000];
+    private static byte[] soundData;
     private static Stream soundStream;
 
     public static void unpack(Stream stream) {
-        dataBuffer = new byte[0x6baa8];
-        soundStream = new Stream(dataBuffer);
+        soundData = new byte[0x6baa8];
+        soundStream = new Stream(soundData);
         Class6.method166();
 
         do {
-            int length = stream.readUShort();
+            int soundId = stream.readUShort();
 
-            if (length == 65535) {
+            if (soundId == 65535) {
                 return;
             }
-            cache[length] = new Sounds();
-            cache[length].method242(stream);
-            anIntArray326[length] = cache[length].method243();
+            cache[soundId] = new Sound();
+            cache[soundId].method242(stream);
+            durations[soundId] = cache[soundId].duration();
         } while (true);
     }
 
     public static Stream method241(int i, int id) {
         if (cache[id] != null) {
-            Sounds sounds = cache[id];
-            return sounds.method244(i);
+            Sound sound = cache[id];
+            return sound.method244(i);
         } else {
             return null;
         }
@@ -39,7 +39,7 @@ final class Sounds {
     private int anInt330;
     private int anInt331;
 
-    private Sounds() {
+    private Sound() {
         aClass6Array329 = new Class6[10];
     }
 
@@ -57,7 +57,7 @@ final class Sounds {
         anInt331 = stream.readUShort();
     }
 
-    private int method243() {
+    private int duration() {
         int j = 0x98967f;
         
         for (int k = 0; k < 10; k++) {
@@ -129,7 +129,7 @@ final class Sounds {
         int k1 = l + (j1 - i1) * (i - 1);
         
         for (int l1 = 44; l1 < k1 + 44; l1++) {
-            dataBuffer[l1] = -128;
+            soundData[l1] = -128;
         }
 
         for (int i2 = 0; i2 < 10; i2++) {
@@ -139,7 +139,7 @@ final class Sounds {
                 int ai[] = aClass6Array329[i2].method167(j2, aClass6Array329[i2].anInt113);
                 
                 for (int l3 = 0; l3 < j2; l3++) {
-                    dataBuffer[l3 + i3 + 44] += (byte) (ai[l3] >> 8);
+                    soundData[l3 + i3 + 44] += (byte) (ai[l3] >> 8);
                 }
             }
         }
@@ -151,12 +151,12 @@ final class Sounds {
             int k2 = (k1 += 44) - l;
             
             for (int j3 = l - 1; j3 >= j1; j3--) {
-                dataBuffer[j3 + k2] = dataBuffer[j3];
+                soundData[j3 + k2] = soundData[j3];
             }
 
             for (int k3 = 1; k3 < i; k3++) {
                 int l2 = (j1 - i1) * k3;
-                System.arraycopy(dataBuffer, i1, dataBuffer, i1 + l2, j1 - i1);
+                System.arraycopy(soundData, i1, soundData, i1 + l2, j1 - i1);
 
             }
             k1 -= 44;

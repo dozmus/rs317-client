@@ -12,20 +12,20 @@ public final class RSInterface {
     public static void unpack(StreamLoader streamLoader, TextDrawingArea areas[], StreamLoader streamLoader2) {
         aMRUNodes_238 = new MRUNodes(50000);
         Stream stream = new Stream(streamLoader.getDataForName("data"));
-        int i = -1;
+        int parentId = -1;
         int j = stream.readUShort();
         interfaceCache = new RSInterface[j];
 
         while (stream.currentOffset < stream.buffer.length) {
-            int k = stream.readUShort();
+            int id = stream.readUShort();
 
-            if (k == 65535) {
-                i = stream.readUShort();
-                k = stream.readUShort();
+            if (id == 65535) {
+                parentId = stream.readUShort();
+                id = stream.readUShort();
             }
-            RSInterface rsInterface = interfaceCache[k] = new RSInterface();
-            rsInterface.id = k;
-            rsInterface.parentID = i;
+            RSInterface rsInterface = interfaceCache[id] = new RSInterface();
+            rsInterface.id = id;
+            rsInterface.parentID = parentId;
             rsInterface.type = stream.readUByte();
             rsInterface.atActionType = stream.readUByte();
             rsInterface.anInt214 = stream.readUShort();
@@ -65,7 +65,7 @@ public final class RSInterface {
             }
 
             if (rsInterface.type == 0) {
-                rsInterface.scrollMax = stream.readUShort();
+                rsInterface.maximumScrollPosition = stream.readUShort();
                 rsInterface.aBoolean266 = stream.readUByte() == 1;
                 int i2 = stream.readUShort();
                 rsInterface.children = new int[i2];
@@ -99,6 +99,7 @@ public final class RSInterface {
 
                 for (int j2 = 0; j2 < 20; j2++) {
                     int k3 = stream.readUByte();
+
                     if (k3 == 1) {
                         rsInterface.spritesX[j2] = stream.readShort();
                         rsInterface.spritesY[j2] = stream.readShort();
@@ -337,7 +338,7 @@ public final class RSInterface {
     public int anInt258;
     public boolean aBoolean259;
     public Sprite sprite2;
-    public int scrollMax;
+    public int maximumScrollPosition;
     public int type;
     public int offsetX;
     public int offsetY;

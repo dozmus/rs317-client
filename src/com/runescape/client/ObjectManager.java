@@ -10,7 +10,6 @@ final class ObjectManager {
     private static final int[] anIntArray137 = {
         1, 0, -1, 0
     };
-    private static final int anInt138 = 323;
     private static final int[] orientations2 = {
         16, 32, 64, 128
     };

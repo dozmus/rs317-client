@@ -1,16 +1,16 @@
-package com.runescape.client;
+package com.runescape.client.io;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-final class Decompressor {
+public final class Decompression {
 
     private static final byte[] buffer = new byte[520];
     private final RandomAccessFile dataFile;
     private final RandomAccessFile indexFile;
     private final int anInt311;
 
-    public Decompressor(RandomAccessFile dataFile, RandomAccessFile indexFile, int j) {
+    public Decompression(RandomAccessFile dataFile, RandomAccessFile indexFile, int j) {
         anInt311 = j;
         this.dataFile = dataFile;
         this.indexFile = indexFile;
@@ -18,7 +18,7 @@ final class Decompressor {
 
     public synchronized byte[] decompress(int pos) {
         try {
-            seekTo(indexFile, pos * 6);
+            seek(indexFile, pos * 6);
             int l;
             
             for (int j = 0; j < 6; j += l) {
@@ -45,7 +45,7 @@ final class Decompressor {
                 if (pos1 == 0) {
                     return null;
                 }
-                seekTo(dataFile, pos1 * 520);
+                seek(dataFile, pos1 * 520);
                 int k = 0;
                 int i2 = i1 - k1;
                 
@@ -95,10 +95,10 @@ final class Decompressor {
 
     private synchronized boolean method235(boolean flag, int pos, int length, byte buf[]) {
         try {
-            int l;
+            int basePos;
             
             if (flag) {
-                seekTo(indexFile, pos * 6);
+                seek(indexFile, pos * 6);
                 int k1;
                 
                 for (int i1 = 0; i1 < 6; i1 += k1) {
@@ -108,33 +108,33 @@ final class Decompressor {
                         return false;
                     }
                 }
-                l = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
+                basePos = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
                 
-                if (l <= 0 || (long) l > dataFile.length() / 520L) {
+                if (basePos <= 0 || (long) basePos > dataFile.length() / 520L) {
                     return false;
                 }
             } else {
-                l = (int) ((dataFile.length() + 519L) / 520L);
+                basePos = (int) ((dataFile.length() + 519L) / 520L);
                 
-                if (l == 0) {
-                    l = 1;
+                if (basePos == 0) {
+                    basePos = 1;
                 }
             }
             buffer[0] = (byte) (length >> 16);
             buffer[1] = (byte) (length >> 8);
             buffer[2] = (byte) length;
-            buffer[3] = (byte) (l >> 16);
-            buffer[4] = (byte) (l >> 8);
-            buffer[5] = (byte) l;
-            seekTo(indexFile, pos * 6);
+            buffer[3] = (byte) (basePos >> 16);
+            buffer[4] = (byte) (basePos >> 8);
+            buffer[5] = (byte) basePos;
+            seek(indexFile, pos * 6);
             indexFile.write(buffer, 0, 6);
             int startPosition = 0;
             
             for (int l1 = 0; startPosition < length; l1++) {
-                int i2 = 0;
+                int nextPos = 0;
                 
                 if (flag) {
-                    seekTo(dataFile, l * 520);
+                    seek(dataFile, basePos * 520);
                     int j2;
                     int l2;
                     
@@ -149,44 +149,44 @@ final class Decompressor {
                     if (j2 == 8) {
                         int i3 = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
                         int j3 = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
-                        i2 = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
+                        nextPos = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
                         int k3 = buffer[7] & 0xff;
                         
                         if (i3 != pos || j3 != l1 || k3 != anInt311) {
                             return false;
                         }
                         
-                        if (i2 < 0 || (long) i2 > dataFile.length() / 520L) {
+                        if (nextPos < 0 || (long) nextPos > dataFile.length() / 520L) {
                             return false;
                         }
                     }
                 }
                 
-                if (i2 == 0) {
+                if (nextPos == 0) {
                     flag = false;
-                    i2 = (int) ((dataFile.length() + 519L) / 520L);
+                    nextPos = (int) ((dataFile.length() + 519L) / 520L);
                     
-                    if (i2 == 0) {
-                        i2++;
+                    if (nextPos == 0) {
+                        nextPos++;
                     }
                     
-                    if (i2 == l) {
-                        i2++;
+                    if (nextPos == basePos) {
+                        nextPos++;
                     }
                 }
                 
                 if (length - startPosition <= 512) {
-                    i2 = 0;
+                    nextPos = 0;
                 }
                 buffer[0] = (byte) (pos >> 8);
                 buffer[1] = (byte) pos;
                 buffer[2] = (byte) (l1 >> 8);
                 buffer[3] = (byte) l1;
-                buffer[4] = (byte) (i2 >> 16);
-                buffer[5] = (byte) (i2 >> 8);
-                buffer[6] = (byte) i2;
+                buffer[4] = (byte) (nextPos >> 16);
+                buffer[5] = (byte) (nextPos >> 8);
+                buffer[6] = (byte) nextPos;
                 buffer[7] = (byte) anInt311;
-                seekTo(dataFile, l * 520);
+                seek(dataFile, basePos * 520);
                 dataFile.write(buffer, 0, 8);
                 int writeLength = length - startPosition;
                 
@@ -195,7 +195,7 @@ final class Decompressor {
                 }
                 dataFile.write(buf, startPosition, writeLength);
                 startPosition += writeLength;
-                l = i2;
+                basePos = nextPos;
             }
             return true;
         } catch (IOException _ex) {
@@ -203,9 +203,9 @@ final class Decompressor {
         }
     }
 
-    private synchronized void seekTo(RandomAccessFile randomaccessfile, int pos) throws IOException {
+    private synchronized void seek(RandomAccessFile file, int pos) throws IOException {
         if (pos < 0 || pos > 0x3c00000) {
-            System.out.println("Badseek - pos:" + pos + " len:" + randomaccessfile.length());
+            System.out.println("Badseek - pos:" + pos + " len:" + file.length());
             pos = 0x3c00000;
             
             try {
@@ -213,7 +213,7 @@ final class Decompressor {
             } catch (Exception _ex) {
             }
         }
-        randomaccessfile.seek(pos);
+        file.seek(pos);
     }
 
 }

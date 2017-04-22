@@ -4,7 +4,7 @@ public class Entity extends Animable {
 
     public final int[] smallX;
     public final int[] smallY;
-    public int interactingEntity;
+    public int interactingEntityId;
     int anInt1503;
     int anInt1504;
     int anInt1505;
@@ -61,7 +61,7 @@ public class Entity extends Animable {
     Entity() {
         smallX = new int[10];
         smallY = new int[10];
-        interactingEntity = -1;
+        interactingEntityId = -1;
         anInt1504 = 32;
         anInt1505 = -1;
         height = 200;

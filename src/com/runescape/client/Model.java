@@ -356,7 +356,6 @@ public final class Model extends Animable {
                 anIntArray1633[l3] = j3;
             }
             if (i4 == 2) {
-                j2 = j2;
                 l2 = j3;
                 j3 = stream.readSmart() + k3;
                 k3 = j3;
@@ -366,7 +365,6 @@ public final class Model extends Animable {
             }
             if (i4 == 3) {
                 j2 = j3;
-                l2 = l2;
                 j3 = stream.readSmart() + k3;
                 k3 = j3;
                 anIntArray1631[l3] = j2;

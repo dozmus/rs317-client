@@ -6,7 +6,6 @@ import com.runescape.client.io.StreamLoader;
 public final class Animation {
 
     public static Animation anims[];
-    public static int anInt367;
 
     public static void unpackConfig(StreamLoader streamLoader) {
         Stream stream = new Stream(streamLoader.getDataForName("seq.dat"));

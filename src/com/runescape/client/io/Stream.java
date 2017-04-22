@@ -1,10 +1,11 @@
 package com.runescape.client.io;
 
 import com.runescape.client.ISAACCipher;
+import com.runescape.client.signlink.Signlink;
 import com.runescape.client.util.node.NodeList;
 import com.runescape.client.util.node.NodeSub;
+
 import java.math.BigInteger;
-import com.runescape.client.signlink.Signlink;
 
 /**
  * The Data Stream class. Each function is 'pre' and post-fixed according
@@ -344,7 +345,7 @@ public final class Stream extends NodeSub {
         int startPosition = currentOffset;
         while (buffer[currentOffset++] != 10) ;
         byte buf[] = new byte[currentOffset - startPosition - 1];
-        System.arraycopy(buffer, startPosition, buf, startPosition - startPosition, currentOffset - 1 - startPosition);
+        System.arraycopy(buffer, startPosition, buf, 0, currentOffset - 1 - startPosition);
         return buf;
     }
 

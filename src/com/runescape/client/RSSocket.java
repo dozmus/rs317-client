@@ -85,7 +85,7 @@ final class RSSocket implements Runnable {
         }
     }
 
-    public void queueBytes(int i, byte buf[]) throws IOException {
+    public void queueBytes(int count, byte buf[]) throws IOException {
         if (closed) {
             return;
         }
@@ -100,8 +100,8 @@ final class RSSocket implements Runnable {
         }
         
         synchronized (this) {
-            for (int l = 0; l < i; l++) {
-                buffer[buffIndex] = buf[l];
+            for (int i = 0; i < count; i++) {
+                buffer[buffIndex] = buf[i];
                 buffIndex = (buffIndex + 1) % 5000;
                 
                 if (buffIndex == (writeIndex + 4900) % 5000) {
@@ -161,7 +161,7 @@ final class RSSocket implements Runnable {
         }
     }
 
-    public void printDebug() {
+    void printDebug() {
         System.out.println("closed:" + closed);
         System.out.println("write-idx:" + writeIndex);
         System.out.println("buf-idx:" + buffIndex);
@@ -170,7 +170,7 @@ final class RSSocket implements Runnable {
         
         try {
             System.out.println("available:" + available());
-        } catch (IOException _ex) {
+        } catch (IOException ignored) {
         }
     }
 }

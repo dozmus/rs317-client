@@ -67,7 +67,7 @@ public final class ObjectDef {
     public int anInt746;
     private int[] originalModelColors;
     private int anInt748;
-    public int anInt749;
+    public int clientSettingId;
     private boolean aBoolean751;
     public int type;
     public boolean aBoolean757;
@@ -133,7 +133,7 @@ public final class ObjectDef {
         aBoolean766 = false;
         anInt760 = -1;
         varBitId = -1;
-        anInt749 = -1;
+        clientSettingId = -1;
         childrenIDs = null;
     }
 
@@ -221,8 +221,8 @@ public final class ObjectDef {
             int l = varBit.anInt650;
             int i1 = Client.anIntArray1232[l - k];
             i = instance.currentUserSetting[j] >> k & i1;
-        } else if (anInt749 != -1) {
-            i = instance.currentUserSetting[anInt749];
+        } else if (clientSettingId != -1) {
+            i = instance.currentUserSetting[clientSettingId];
         }
         
         if (i < 0 || i >= childrenIDs.length || childrenIDs[i] == -1) {
@@ -496,10 +496,10 @@ public final class ObjectDef {
             if (varBitId == 65535) {
                 varBitId = -1;
             }
-            anInt749 = stream.readUShort();
+            clientSettingId = stream.readUShort();
             
-            if (anInt749 == 65535) {
-                anInt749 = -1;
+            if (clientSettingId == 65535) {
+                clientSettingId = -1;
             }
             int j1 = stream.readUByte();
             childrenIDs = new int[j1 + 1];

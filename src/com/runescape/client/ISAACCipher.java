@@ -2,8 +2,6 @@ package com.runescape.client;
 
 /**
  * A generic ISAAC cipher implementation.
- * 
- * @author Jagex
  */
 public final class ISAACCipher {
 

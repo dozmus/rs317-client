@@ -38,10 +38,10 @@ public final class Animable_Sub5 extends Animable {
                 loopCycle -= (int) (Math.random() * (double) anim.method258(anInt1599));
             }
         }
-        ObjectDef objDef = ObjectDef.forID(objectId);
-        varBitId = objDef.varBitId;
-        clientSettingId = objDef.anInt749;
-        objectChildrenIds = objDef.childrenIDs;
+        ObjectDef def = ObjectDef.forID(objectId);
+        varBitId = def.varBitId;
+        clientSettingId = def.clientSettingId;
+        objectChildrenIds = def.childrenIDs;
     }
 
     public Model getRotatedModel() {
@@ -75,18 +75,18 @@ public final class Animable_Sub5 extends Animable {
                 j = anim.anIntArray353[anInt1599];
             }
         }
-        ObjectDef objDef;
+        ObjectDef def;
         
         if (objectChildrenIds != null) {
-            objDef = constructDefFromObjChildren();
+            def = constructDefFromObjChildren();
         } else {
-            objDef = ObjectDef.forID(objectId);
+            def = ObjectDef.forID(objectId);
         }
         
-        if (objDef == null) {
+        if (def == null) {
             return null;
         } else {
-            return objDef.method578(anInt1611, anInt1612, anInt1603, anInt1604, anInt1605, anInt1606, j);
+            return def.method578(anInt1611, anInt1612, anInt1603, anInt1604, anInt1605, anInt1606, j);
         }
     }
 
