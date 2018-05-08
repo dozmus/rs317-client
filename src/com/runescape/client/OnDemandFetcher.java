@@ -1,22 +1,24 @@
 package com.runescape.client;
 
-import com.runescape.client.util.node.NodeList;
-import com.runescape.client.util.node.NodeSubList;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
-import java.io.*;
+import com.runescape.client.signlink.Signlink;
+import com.runescape.client.util.node.NodeList;
+import com.runescape.client.util.node.NodeSubList;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
-import com.runescape.client.signlink.Signlink;
 
-public final class OnDemandFetcher extends OnDemandFetcherParent
-        implements Runnable {
-
+public final class OnDemandFetcher implements Runnable {
     private int totalFiles;
     private final NodeList requested;
     private int anInt1332;
-    public String statusString;
+    public String status;
     private int writeLoopCycle;
     private long openSocketTime;
     private int[] mapIndices3;
@@ -38,7 +40,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     private boolean waiting;
     private final NodeList completeOnDemandDataNodeList;
     private final byte[] gzipInputBuffer;
-    private int[] anIntArray1360;
+    private int[] animationIndex;
     private final NodeSubList nodeSubList;
     private InputStream inputStream;
     private Socket socket;
@@ -55,7 +57,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
     public OnDemandFetcher() {
         requested = new NodeList();
-        statusString = "";
+        status = "";
         crc32 = new CRC32();
         ioBuffer = new byte[500];
         fileStatus = new byte[4][];
@@ -171,40 +173,40 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     }
 
     public void start(StreamLoader streamLoader, Client instance) {
-        String as[] = {
+        String versions[] = {
             "model_version", "anim_version", "midi_version", "map_version"
         };
 
         for (int dataType = 0; dataType < 4; dataType++) {
-            byte abyte0[] = streamLoader.getDataForName(as[dataType]);
+            byte abyte0[] = streamLoader.getDataForName(versions[dataType]);
             int idCount = abyte0.length / 2;
             Stream stream = new Stream(abyte0);
-            versions[dataType] = new int[idCount];
+            this.versions[dataType] = new int[idCount];
             fileStatus[dataType] = new byte[idCount];
 
             for (int id = 0; id < idCount; id++) {
-                versions[dataType][id] = stream.readUShort();
+                this.versions[dataType][id] = stream.readUShort();
             }
         }
-        String as1[] = {
+        String crcs[] = {
             "model_crc", "anim_crc", "midi_crc", "map_crc"
         };
 
         for (int k = 0; k < 4; k++) {
-            byte abyte1[] = streamLoader.getDataForName(as1[k]);
+            byte abyte1[] = streamLoader.getDataForName(crcs[k]);
             int i1 = abyte1.length / 4;
             Stream stream_1 = new Stream(abyte1);
-            crcs[k] = new int[i1];
+            this.crcs[k] = new int[i1];
 
             for (int l1 = 0; l1 < i1; l1++) {
-                crcs[k][l1] = stream_1.readUInt();
+                this.crcs[k][l1] = stream_1.readUInt();
             }
         }
         byte buf[] = streamLoader.getDataForName("model_index");
-        int j1 = versions[0].length;
-        modelIndices = new byte[j1];
+        int length = this.versions[0].length;
+        modelIndices = new byte[length];
 
-        for (int k1 = 0; k1 < j1; k1++) {
+        for (int k1 = 0; k1 < length; k1++) {
             if (k1 < buf.length) {
                 modelIndices[k1] = buf[k1];
             } else {
@@ -212,34 +214,34 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             }
         }
         buf = streamLoader.getDataForName("map_index");
-        Stream stream2 = new Stream(buf);
-        j1 = buf.length / 7;
-        mapIndices1 = new int[j1];
-        mapIndices2 = new int[j1];
-        mapIndices3 = new int[j1];
-        mapIndices4 = new int[j1];
+        Stream index = new Stream(buf);
+        length = buf.length / 7;
+        mapIndices1 = new int[length];
+        mapIndices2 = new int[length];
+        mapIndices3 = new int[length];
+        mapIndices4 = new int[length];
 
-        for (int i2 = 0; i2 < j1; i2++) {
-            mapIndices1[i2] = stream2.readUShort();
-            mapIndices2[i2] = stream2.readUShort();
-            mapIndices3[i2] = stream2.readUShort();
-            mapIndices4[i2] = stream2.readUByte();
+        for (int i2 = 0; i2 < length; i2++) {
+            mapIndices1[i2] = index.readUShort();
+            mapIndices2[i2] = index.readUShort();
+            mapIndices3[i2] = index.readUShort();
+            mapIndices4[i2] = index.readUByte();
         }
         buf = streamLoader.getDataForName("anim_index");
-        stream2 = new Stream(buf);
-        j1 = buf.length / 2;
-        anIntArray1360 = new int[j1];
+        index = new Stream(buf);
+        length = buf.length / 2;
+        animationIndex = new int[length];
 
-        for (int j2 = 0; j2 < j1; j2++) {
-            anIntArray1360[j2] = stream2.readUShort();
+        for (int i = 0; i < length; i++) {
+            animationIndex[i] = index.readUShort();
         }
         buf = streamLoader.getDataForName("midi_index");
-        stream2 = new Stream(buf);
-        j1 = buf.length;
-        anIntArray1348 = new int[j1];
+        index = new Stream(buf);
+        length = buf.length;
+        anIntArray1348 = new int[length];
 
-        for (int k2 = 0; k2 < j1; k2++) {
-            anIntArray1348[k2] = stream2.readUByte();
+        for (int k2 = 0; k2 < length; k2++) {
+            anIntArray1348[k2] = index.readUByte();
         }
         clientInstance = instance;
         running = true;
@@ -319,8 +321,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         anInt1349++;
     }
 
-    public int getAnimCount() {
-        return anIntArray1360.length;
+    public int getAnimationCount() {
+        return animationIndex.length;
     }
 
     public void fetchItem(int dataType, int id) {
@@ -360,14 +362,14 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         try {
             while (running) {
                 onDemandCycle++;
-                int i = 20;
+                int sleepTime = 20;
 
                 if (anInt1332 == 0 && clientInstance.decompressors[0] != null) {
-                    i = 50;
+                    sleepTime = 50;
                 }
 
                 try {
-                    Thread.sleep(i);
+                    Thread.sleep(sleepTime);
                 } catch (Exception _ex) {
                 }
                 waiting = true;
@@ -431,7 +433,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     }
                 } else {
                     loopCycle = 0;
-                    statusString = "";
+                    status = "";
                 }
                 if (clientInstance.loggedIn && socket != null && outputStream != null
                         && (anInt1332 > 0 || clientInstance.decompressors[0] == null)) {
@@ -666,7 +668,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     if (filesLoaded < totalFiles) {
                         filesLoaded++;
                     }
-                    statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
+                    status = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
                     completedCount++;
 
                     if (completedCount == 10) {
@@ -696,7 +698,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                         if (filesLoaded < totalFiles) {
                             filesLoaded++;
                         }
-                        statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
+                        status = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
                         completedCount++;
 
                         if (completedCount == 10) {

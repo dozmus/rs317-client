@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.io;
 
 /**
  * A generic ISAAC cipher implementation.

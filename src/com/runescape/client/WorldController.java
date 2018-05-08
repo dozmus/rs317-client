@@ -37,8 +37,8 @@ final class WorldController {
     private static boolean aBoolean467;
     private static int anInt468;
     private static int anInt469;
-    public static int anInt470 = -1;
-    public static int anInt471 = -1;
+    public static int walkTargetX = -1;
+    public static int walkTargetY = -1;
     private static final int anInt472;
     private static int[] anIntArray473;
     private static Class47[][] aClass47ArrayArray474;
@@ -802,28 +802,28 @@ final class WorldController {
         }
     }
 
-    public int method304(int z, int x, int y, int l) {
+    public int method304(int z, int x, int y, int uid) {
         Ground ground = groundArray[z][x][y];
 
         if (ground == null) {
             return -1;
         }
 
-        if (ground.obj1 != null && ground.obj1.uid == l) {
+        if (ground.obj1 != null && ground.obj1.uid == uid) {
             return ground.obj1.aByte281 & 0xff;
         }
 
-        if (ground.obj2 != null && ground.obj2.uid == l) {
+        if (ground.obj2 != null && ground.obj2.uid == uid) {
             return ground.obj2.aByte506 & 0xff;
         }
 
-        if (ground.obj3 != null && ground.obj3.uid == l) {
+        if (ground.obj3 != null && ground.obj3.uid == uid) {
             return ground.obj3.aByte816 & 0xff;
         }
 
-        for (int i1 = 0; i1 < ground.anInt1317; i1++) {
-            if (ground.obj5Array[i1].uid == l) {
-                return ground.obj5Array[i1].aByte530 & 0xff;
+        for (int i = 0; i < ground.anInt1317; i++) {
+            if (ground.obj5Array[i].uid == uid) {
+                return ground.obj5Array[i].aByte530 & 0xff;
             }
         }
         return -1;
@@ -1081,8 +1081,8 @@ final class WorldController {
         aBoolean467 = true;
         anInt468 = j;
         anInt469 = i;
-        anInt470 = -1;
-        anInt471 = -1;
+        walkTargetX = -1;
+        walkTargetY = -1;
     }
 
     public void method313(int i, int j, int k, int l, int i1, int j1) {
@@ -1816,8 +1816,8 @@ final class WorldController {
         if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
             Texture.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX || k5 > DrawingArea.centerX;
             if (aBoolean467 && method318(anInt468, anInt469, j6, l6, l5, i6, k6, k5)) {
-                anInt470 = j1;
-                anInt471 = k1;
+                walkTargetX = j1;
+                walkTargetY = k1;
             }
             if (class43.anInt720 == -1) {
                 if (class43.anInt718 != 0xbc614e) {
@@ -1837,8 +1837,8 @@ final class WorldController {
         if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
             Texture.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX || k6 > DrawingArea.centerX;
             if (aBoolean467 && method318(anInt468, anInt469, j5, l5, l6, i5, k5, k6)) {
-                anInt470 = j1;
-                anInt471 = k1;
+                walkTargetX = j1;
+                walkTargetY = k1;
             }
             if (class43.anInt720 == -1) {
                 if (class43.anInt716 != 0xbc614e) {
@@ -1894,8 +1894,8 @@ final class WorldController {
             if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
                 Texture.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX || j4 > DrawingArea.centerX || k4 > DrawingArea.centerX;
                 if (aBoolean467 && method318(anInt468, anInt469, l4, i5, j5, i4, j4, k4)) {
-                    anInt470 = i;
-                    anInt471 = i1;
+                    walkTargetX = i;
+                    walkTargetY = i1;
                 }
                 if (class40.anIntArray682 == null || class40.anIntArray682[j2] == -1) {
                     if (class40.anIntArray676[j2] != 0xbc614e) {

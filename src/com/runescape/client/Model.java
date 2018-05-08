@@ -10,7 +10,7 @@ public final class Model extends Animable {
     private static int[] anIntArray1624 = new int[2000];
     private static int[] anIntArray1625 = new int[2000];
     private static Class21[] aClass21Array1661;
-    private static OnDemandFetcherParent aOnDemandFetcherParent_1662;
+    private static OnDemandFetcher onDemandFetcher;
     private static boolean[] aBooleanArray1663 = new boolean[4096];
     private static boolean[] aBooleanArray1664 = new boolean[4096];
     private static int[] anIntArray1665 = new int[4096];
@@ -72,9 +72,9 @@ public final class Model extends Animable {
         modelIntArray4 = null;
     }
 
-    public static void method459(int i, OnDemandFetcherParent onDemandFetcherParent) {
+    public static void method459(int i, OnDemandFetcher onDemandFetcher) {
         aClass21Array1661 = new Class21[i];
-        aOnDemandFetcherParent_1662 = onDemandFetcherParent;
+        Model.onDemandFetcher = onDemandFetcher;
     }
 
     public static void method460(byte buf[], int classId) {
@@ -166,7 +166,7 @@ public final class Model extends Animable {
         Class21 class21 = aClass21Array1661[i];
 
         if (class21 == null) {
-            aOnDemandFetcherParent_1662.method548(i);
+            onDemandFetcher.method548(i);
             return null;
         } else {
             return new Model(i);
@@ -179,7 +179,7 @@ public final class Model extends Animable {
         }
         Class21 class21 = aClass21Array1661[i];
         if (class21 == null) {
-            aOnDemandFetcherParent_1662.method548(i);
+            onDemandFetcher.method548(i);
             return false;
         } else {
             return true;
@@ -680,14 +680,13 @@ public final class Model extends Animable {
             anIntArray1639 = model.anIntArray1639;
         } else {
             anIntArray1639 = new int[anInt1630];
+
             if (model.anIntArray1639 == null) {
                 for (int l = 0; l < anInt1630; l++) {
                     anIntArray1639[l] = 0;
                 }
-
             } else {
                 System.arraycopy(model.anIntArray1639, 0, anIntArray1639, 0, anInt1630);
-
             }
         }
         anIntArray1655 = model.anIntArray1655;

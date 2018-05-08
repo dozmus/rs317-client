@@ -143,7 +143,7 @@ public class RSApplet extends Applet
                 saveClickY = clickY;
                 aLong29 = clickTime;
                 clickMode1 = 0;
-                processGameLoop();
+                tick();
                 readIndex = writeIndex;
             }
             i1 &= 0xff;
@@ -151,7 +151,7 @@ public class RSApplet extends Applet
             if (delayTime > 0) {
                 fps = (1000 * j) / (delayTime * 256);
             }
-            processDrawing();
+            draw();
             
             if (shouldDebug) {
                 System.out.println("ntime:" + l1);
@@ -174,7 +174,7 @@ public class RSApplet extends Applet
 
     private void exit() {
         anInt4 = -2;
-        cleanUpForQuit();
+        cleanUpForExit();
         
         if (gameFrame != null) {
             try {
@@ -274,22 +274,17 @@ public class RSApplet extends Applet
     }
 
     public final void mouseDragged(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-        
-        if (gameFrame != null) {
-            mouseX -= 4;
-            mouseY -= 22;
-        }
-        idleTime = 0;
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
+        updateMouseCoordinates(e);
     }
 
     public final void mouseMoved(MouseEvent e) {
+        updateMouseCoordinates(e);
+    }
+
+    private void updateMouseCoordinates(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
-        
+
         if (gameFrame != null) {
             mouseX -= 4;
             mouseY -= 22;
@@ -453,13 +448,19 @@ public class RSApplet extends Applet
     void startUp() {
     }
 
-    void processGameLoop() {
+    /**
+     * The game processing tick.
+     */
+    void tick() {
     }
 
-    void cleanUpForQuit() {
+    void cleanUpForExit() {
     }
 
-    void processDrawing() {
+    /**
+     * Draws the game.
+     */
+    void draw() {
     }
 
     void raiseWelcomeScreen() {

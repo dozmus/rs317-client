@@ -9,7 +9,7 @@ final class Class30_Sub1 extends Node {
     public int anInt1293;
     public int anInt1294;
     public int plane;
-    public int anInt1296;
+    public int objectType;
     public int x;
     public int y;
     public int anInt1299;

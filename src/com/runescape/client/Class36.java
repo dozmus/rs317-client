@@ -4,11 +4,11 @@ import com.runescape.client.io.Stream;
 
 public final class Class36 {
 
-    private static Class36[] aClass36Array635;
+    private static Class36[] cache;
     private static boolean[] aBooleanArray643;
 
     public static void method528(int length) {
-        aClass36Array635 = new Class36[length + 1];
+        cache = new Class36[length + 1];
         aBooleanArray643 = new boolean[length + 1];
 
         for (int j = 0; j < length + 1; j++) {
@@ -23,30 +23,31 @@ public final class Class36 {
         int j = stream.readUShort();
         int k = stream.readUShort();
         int l = stream.readUShort();
-        int i1 = 0;
+        int offset = 0;
         Stream stream_1 = new Stream(buf);
-        stream_1.currentOffset = i1;
-        i1 += i + 2;
+        stream_1.currentOffset = offset;
+        offset += i + 2;
         Stream stream_2 = new Stream(buf);
-        stream_2.currentOffset = i1;
-        i1 += j;
+        stream_2.currentOffset = offset;
+        offset += j;
         Stream stream_3 = new Stream(buf);
-        stream_3.currentOffset = i1;
-        i1 += k;
+        stream_3.currentOffset = offset;
+        offset += k;
         Stream stream_4 = new Stream(buf);
-        stream_4.currentOffset = i1;
-        i1 += l;
+        stream_4.currentOffset = offset;
+        offset += l;
         Stream stream_5 = new Stream(buf);
-        stream_5.currentOffset = i1;
+        stream_5.currentOffset = offset;
         Class18 class18 = new Class18(stream_5);
         int k1 = stream_1.readUShort();
         int ai[] = new int[500];
         int ai1[] = new int[500];
         int ai2[] = new int[500];
         int ai3[] = new int[500];
+
         for (int l1 = 0; l1 < k1; l1++) {
             int i2 = stream_1.readUShort();
-            Class36 class36 = aClass36Array635[i2] = new Class36();
+            Class36 class36 = cache[i2] = new Class36();
             class36.anInt636 = stream_4.readUByte();
             class36.aClass18_637 = class18;
             int j2 = stream_1.readUByte();
@@ -114,18 +115,18 @@ public final class Class36 {
     }
 
     public static void nullLoader() {
-        aClass36Array635 = null;
+        cache = null;
     }
 
-    public static Class36 method531(int j) {
-        if (aClass36Array635 == null) {
+    public static Class36 method531(int i) {
+        if (cache == null) {
             return null;
         } else {
-            return aClass36Array635[j];
+            return cache[i];
         }
     }
 
-    public static boolean method532(int i) {
+    public static boolean isNotMinus1(int i) {
         return i == -1;
     }
 

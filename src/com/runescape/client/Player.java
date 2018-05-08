@@ -1,6 +1,7 @@
 package com.runescape.client;
 
 import com.runescape.client.io.Stream;
+import com.runescape.client.util.StringHelper;
 
 public final class Player extends Entity {
 
@@ -63,7 +64,7 @@ public final class Player extends Entity {
             Model model_2 = staticAnimation.getModel();
 
             if (model_2 != null) {
-                Model model_3 = new Model(true, Class36.method532(super.anInt1521), false, model_2);
+                Model model_3 = new Model(true, Class36.isNotMinus1(super.anInt1521), false, model_2);
                 model_3.method475(0, -super.currentGraphicsDelaySegment, 0);
                 model_3.method469();
                 model_3.method470(staticAnimation.anim.anIntArray353[super.anInt1521]);
@@ -127,20 +128,25 @@ public final class Player extends Entity {
         headIcon = stream.readUByte();
         def = null;
         team = 0;
+
         for (int j = 0; j < 12; j++) {
             int k = stream.readUByte();
+
             if (k == 0) {
                 equipment[j] = 0;
                 continue;
             }
             int i1 = stream.readUByte();
             equipment[j] = (k << 8) + i1;
+
             if (j == 0 && equipment[0] == 65535) {
                 def = EntityDef.forID(stream.readUShort());
                 break;
             }
+
             if (equipment[j] >= 512 && equipment[j] - 512 < ItemDef.totalItems) {
                 int l1 = ItemDef.forID(equipment[j] - 512).team;
+
                 if (l1 != 0) {
                     team = l1;
                 }
@@ -149,6 +155,7 @@ public final class Player extends Entity {
 
         for (int l = 0; l < 5; l++) {
             int j1 = stream.readUByte();
+
             if (j1 < 0 || j1 >= Client.anIntArrayArray1003[l].length) {
                 j1 = 0;
             }
@@ -156,6 +163,7 @@ public final class Player extends Entity {
         }
 
         super.anInt1511 = stream.readUShort();
+
         if (super.anInt1511 == 65535) {
             super.anInt1511 = -1;
         }
@@ -188,8 +196,10 @@ public final class Player extends Entity {
         skill = stream.readUShort();
         visible = true;
         aLong1718 = 0L;
+
         for (int k1 = 0; k1 < 12; k1++) {
             aLong1718 <<= 4;
+
             if (equipment[k1] >= 256) {
                 aLong1718 += equipment[k1] - 256;
             }
@@ -198,9 +208,11 @@ public final class Player extends Entity {
         if (equipment[0] >= 256) {
             aLong1718 += equipment[0] - 256 >> 4;
         }
+
         if (equipment[1] >= 256) {
             aLong1718 += equipment[1] - 256 >> 8;
         }
+
         for (int i2 = 0; i2 < 5; i2++) {
             aLong1718 <<= 3;
             aLong1718 += anIntArray1700[i2];
@@ -314,7 +326,7 @@ public final class Player extends Entity {
             return model_1;
         }
         Model model_2 = Model.aModel_1621;
-        model_2.method464(model_1, Class36.method532(k) & Class36.method532(i1));
+        model_2.method464(model_1, Class36.isNotMinus1(k) & Class36.isNotMinus1(i1));
         if (k != -1 && i1 != -1) {
             model_2.method471(Animation.anims[super.currentAnimationId].anIntArray357, i1, k);
         } else if (k != -1) {

@@ -126,8 +126,8 @@ public final class ItemDef {
         int dAreaTopY = DrawingArea.topY;
         int dAreaBottomY = DrawingArea.bottomY;
         Texture.aBoolean1464 = false;
-        DrawingArea.initDrawingArea(32, 32, sprite2.spritePixels);
-        DrawingArea.method336(32, 0, 0, 0, 32);
+        DrawingArea.init(32, 32, sprite2.spritePixels);
+        DrawingArea.fillPixelsReverseOrder(32, 0, 0, 0, 32);
         Texture.method364();
         int modelZoom = itemDef.modelZoom;
         
@@ -196,7 +196,7 @@ public final class ItemDef {
         if (k == 0) {
             mruNodes1.removeFromCache(sprite2, id);
         }
-        DrawingArea.initDrawingArea(dAreaHeight, dAreaWidth, dAreaPixels);
+        DrawingArea.init(dAreaHeight, dAreaWidth, dAreaPixels);
         DrawingArea.setDrawingArea(dAreaBottomY, dAreatopX, dAreaBottomX, dAreaTopY);
         Texture.textureInt1 = k1;
         Texture.textureInt2 = l1;

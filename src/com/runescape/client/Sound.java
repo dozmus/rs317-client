@@ -26,10 +26,10 @@ final class Sound {
         } while (true);
     }
 
-    public static Stream method241(int i, int id) {
+    public static Stream method241(int volume, int id) {
         if (cache[id] != null) {
             Sound sound = cache[id];
-            return sound.method244(i);
+            return sound.method244(volume);
         } else {
             return null;
         }
@@ -87,11 +87,11 @@ final class Sound {
         return j;
     }
 
-    private Stream method244(int i) {
-        int k = method245(i);
+    private Stream method244(int volume) {
+        int offset = method245(volume);
         soundStream.currentOffset = 0;
         soundStream.writeInt(0x52494646);
-        soundStream.writeIntLE(36 + k);
+        soundStream.writeIntLE(36 + offset);
         soundStream.writeInt(0x57415645);
         soundStream.writeInt(0x666d7420);
         soundStream.writeIntLE(16);
@@ -102,12 +102,12 @@ final class Sound {
         soundStream.writeShortLE(1);
         soundStream.writeShortLE(8);
         soundStream.writeInt(0x64617461);
-        soundStream.writeIntLE(k);
-        soundStream.currentOffset += k;
+        soundStream.writeIntLE(offset);
+        soundStream.currentOffset += offset;
         return soundStream;
     }
 
-    private int method245(int i) {
+    private int method245(int volume) {
         int j = 0;
         
         for (int k = 0; k < 10; k++) {
@@ -124,11 +124,11 @@ final class Sound {
         int j1 = (22050 * anInt331) / 1000;
         
         if (i1 < 0 || i1 > l || j1 < 0 || j1 > l || i1 >= j1) {
-            i = 0;
+            volume = 0;
         }
-        int k1 = l + (j1 - i1) * (i - 1);
+        int offset = l + (j1 - i1) * (volume - 1);
         
-        for (int l1 = 44; l1 < k1 + 44; l1++) {
+        for (int l1 = 44; l1 < offset + 44; l1++) {
             soundData[l1] = -128;
         }
 
@@ -144,23 +144,23 @@ final class Sound {
             }
         }
 
-        if (i > 1) {
+        if (volume > 1) {
             i1 += 44;
             j1 += 44;
             l += 44;
-            int k2 = (k1 += 44) - l;
+            int k2 = (offset += 44) - l;
             
             for (int j3 = l - 1; j3 >= j1; j3--) {
                 soundData[j3 + k2] = soundData[j3];
             }
 
-            for (int k3 = 1; k3 < i; k3++) {
+            for (int k3 = 1; k3 < volume; k3++) {
                 int l2 = (j1 - i1) * k3;
                 System.arraycopy(soundData, i1, soundData, i1 + l2, j1 - i1);
 
             }
-            k1 -= 44;
+            offset -= 44;
         }
-        return k1;
+        return offset;
     }
 }

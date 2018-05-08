@@ -41,7 +41,7 @@ public final class NPC extends Entity {
             Model model_1 = staticAnimation.getModel();
             if (model_1 != null) {
                 int j = staticAnimation.anim.anIntArray353[super.anInt1521];
-                Model model_2 = new Model(true, Class36.method532(j), false, model_1);
+                Model model_2 = new Model(true, Class36.isNotMinus1(j), false, model_1);
                 model_2.method475(0, -super.currentGraphicsDelaySegment, 0);
                 model_2.method469();
                 model_2.method470(j);

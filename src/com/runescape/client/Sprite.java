@@ -88,7 +88,7 @@ public final class Sprite extends DrawingArea {
     }
 
     public void initDrawingAreaForSprite() {
-        DrawingArea.initDrawingArea(spriteHeight, spriteWidth, spritePixels);
+        DrawingArea.init(spriteHeight, spriteWidth, spritePixels);
     }
 
     public void method344(int i, int j, int k) {
@@ -364,7 +364,6 @@ public final class Sprite extends DrawingArea {
                 k3 += i3;
                 l3 += DrawingArea.width;
             }
-
         } catch (Exception _ex) {
         }
     }
@@ -446,7 +445,7 @@ public final class Sprite extends DrawingArea {
             k1 += k2;
         }
         if (!(j1 <= 0 || i1 <= 0)) {
-            method355(spritePixels, j1, background.aByteArray1450, i1, DrawingArea.pixels, 0, k1, k, l1, l);
+            method355(spritePixels, j1, background.bgPixels, i1, DrawingArea.pixels, 0, k1, k, l1, l);
         }
     }
 

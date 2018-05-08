@@ -31,7 +31,7 @@ public final class Animable_Sub3 extends Animable {
             return null;
         }
         int j = staticAnimation.anim.anIntArray353[anInt1569];
-        Model model_1 = new Model(true, Class36.method532(j), false, model);
+        Model model_1 = new Model(true, Class36.isNotMinus1(j), false, model);
         
         if (!aBoolean1567) {
             model_1.method469();

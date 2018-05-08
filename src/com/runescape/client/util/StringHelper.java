@@ -1,8 +1,8 @@
-package com.runescape.client;
+package com.runescape.client.util;
 
 import com.runescape.client.signlink.Signlink;
 
-final class StringHelper {
+public final class StringHelper {
 
     private static final char[] VALID_CHARACTERS = {
         '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',

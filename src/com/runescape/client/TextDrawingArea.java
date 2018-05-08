@@ -88,18 +88,21 @@ public final class TextDrawingArea extends DrawingArea {
     }
 
     public void method380(String s, int i, int j, int k) {
-        method385(j, s, k, i - getTextWidthXXX(s));
+        method385(j, s, k, i - getTextWidth(s));
     }
 
     public void drawText(int i, String s, int k, int l) {
-        method385(i, s, k, l - getTextWidthXXX(s) / 2);
+        method385(i, s, k, l - getTextWidth(s) / 2);
     }
 
-    public void method382(int i, int j, String s, int l, boolean flag) {
-        method389(flag, j - getTextWidth(s) / 2, i, s, l);
+    public void drawText(int i, int x, String s, int y, boolean flag) {
+        method389(flag, x - getTextWidthWithoutColourCodes(s) / 2, i, s, y);
     }
 
-    public int getTextWidth(String s) {
+    /**
+     * Returns text width, but ignores the length of colour codes (e.g. @yel@).
+     */
+    public int getTextWidthWithoutColourCodes(String s) {
         if (s == null) {
             return 0;
         }
@@ -116,7 +119,7 @@ public final class TextDrawingArea extends DrawingArea {
         return totalWidth;
     }
 
-    public int getTextWidthXXX(String s) {
+    public int getTextWidth(String s) {
         if (s == null) {
             return 0;
         }
@@ -148,7 +151,7 @@ public final class TextDrawingArea extends DrawingArea {
         if (s == null) {
             return;
         }
-        textWidth -= getTextWidthXXX(s) / 2;
+        textWidth -= getTextWidth(s) / 2;
         l -= anInt1497;
 
         for (int i1 = 0; i1 < s.length(); i1++) {
@@ -165,7 +168,7 @@ public final class TextDrawingArea extends DrawingArea {
         if (s == null) {
             return;
         }
-        textWidth -= getTextWidthXXX(s) / 2;
+        textWidth -= getTextWidth(s) / 2;
         k -= anInt1497;
 
         for (int i1 = 0; i1 < s.length(); i1++) {
@@ -186,7 +189,7 @@ public final class TextDrawingArea extends DrawingArea {
         if (d < 0.0D) {
             d = 0.0D;
         }
-        textWidth -= getTextWidthXXX(s) / 2;
+        textWidth -= getTextWidth(s) / 2;
         k -= anInt1497;
 
         for (int k1 = 0; k1 < s.length(); k1++) {

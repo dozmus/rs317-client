@@ -75,7 +75,7 @@ public final class Animable_Sub4 extends Animable {
         if (staticAnimation.anim != null) {
             j = staticAnimation.anim.anIntArray353[anInt1593];
         }
-        Model model_1 = new Model(true, Class36.method532(j), false, model);
+        Model model_1 = new Model(true, Class36.isNotMinus1(j), false, model);
         
         if (j != -1) {
             model_1.method469();

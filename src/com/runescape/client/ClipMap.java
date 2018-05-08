@@ -367,54 +367,54 @@ public final class ClipMap {
         }
     }
 
-    public boolean method219(int i, int x, int y, int i1, int j1, int k1) {
-        if (x == i && y == k1) {
+    public boolean method219(int targetX, int x, int y, int i1, int j1, int targetY) {
+        if (x == targetX && y == targetY) {
             return true;
         }
         x -= offsetX;
         y -= offsetY;
-        i -= offsetX;
-        k1 -= offsetY;
+        targetX -= offsetX;
+        targetY -= offsetY;
 
         if (j1 == 0) {
             if (i1 == 0) {
-                if (x == i - 1 && y == k1) {
+                if (x == targetX - 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
+                if (x == targetX && y == targetY + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
+                if (x == targetX && y == targetY - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
                     return true;
                 }
             } else if (i1 == 1) {
-                if (x == i && y == k1 + 1) {
+                if (x == targetX && y == targetY + 1) {
                     return true;
                 }
-                if (x == i - 1 && y == k1 && (mapFlags[x][y] & 0x1280108) == 0) {
+                if (x == targetX - 1 && y == targetY && (mapFlags[x][y] & 0x1280108) == 0) {
                     return true;
                 }
-                if (x == i + 1 && y == k1 && (mapFlags[x][y] & 0x1280180) == 0) {
+                if (x == targetX + 1 && y == targetY && (mapFlags[x][y] & 0x1280180) == 0) {
                     return true;
                 }
             } else if (i1 == 2) {
-                if (x == i + 1 && y == k1) {
+                if (x == targetX + 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
+                if (x == targetX && y == targetY + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
+                if (x == targetX && y == targetY - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
                     return true;
                 }
             } else if (i1 == 3) {
-                if (x == i && y == k1 - 1) {
+                if (x == targetX && y == targetY - 1) {
                     return true;
                 }
-                if (x == i - 1 && y == k1 && (mapFlags[x][y] & 0x1280108) == 0) {
+                if (x == targetX - 1 && y == targetY && (mapFlags[x][y] & 0x1280108) == 0) {
                     return true;
                 }
-                if (x == i + 1 && y == k1 && (mapFlags[x][y] & 0x1280180) == 0) {
+                if (x == targetX + 1 && y == targetY && (mapFlags[x][y] & 0x1280180) == 0) {
                     return true;
                 }
             }
@@ -422,71 +422,71 @@ public final class ClipMap {
 
         if (j1 == 2) {
             if (i1 == 0) {
-                if (x == i - 1 && y == k1) {
+                if (x == targetX - 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 + 1) {
+                if (x == targetX && y == targetY + 1) {
                     return true;
                 }
-                if (x == i + 1 && y == k1 && (mapFlags[x][y] & 0x1280180) == 0) {
+                if (x == targetX + 1 && y == targetY && (mapFlags[x][y] & 0x1280180) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
+                if (x == targetX && y == targetY - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
                     return true;
                 }
             } else if (i1 == 1) {
-                if (x == i - 1 && y == k1 && (mapFlags[x][y] & 0x1280108) == 0) {
+                if (x == targetX - 1 && y == targetY && (mapFlags[x][y] & 0x1280108) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 + 1) {
+                if (x == targetX && y == targetY + 1) {
                     return true;
                 }
-                if (x == i + 1 && y == k1) {
+                if (x == targetX + 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
+                if (x == targetX && y == targetY - 1 && (mapFlags[x][y] & 0x1280102) == 0) {
                     return true;
                 }
             } else if (i1 == 2) {
-                if (x == i - 1 && y == k1 && (mapFlags[x][y] & 0x1280108) == 0) {
+                if (x == targetX - 1 && y == targetY && (mapFlags[x][y] & 0x1280108) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
+                if (x == targetX && y == targetY + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
                     return true;
                 }
-                if (x == i + 1 && y == k1) {
+                if (x == targetX + 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 - 1) {
+                if (x == targetX && y == targetY - 1) {
                     return true;
                 }
             } else if (i1 == 3) {
-                if (x == i - 1 && y == k1) {
+                if (x == targetX - 1 && y == targetY) {
                     return true;
                 }
-                if (x == i && y == k1 + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
+                if (x == targetX && y == targetY + 1 && (mapFlags[x][y] & 0x1280120) == 0) {
                     return true;
                 }
-                if (x == i + 1 && y == k1 && (mapFlags[x][y] & 0x1280180) == 0) {
+                if (x == targetX + 1 && y == targetY && (mapFlags[x][y] & 0x1280180) == 0) {
                     return true;
                 }
-                if (x == i && y == k1 - 1) {
+                if (x == targetX && y == targetY - 1) {
                     return true;
                 }
             }
         }
 
         if (j1 == 9) {
-            if (x == i && y == k1 + 1 && (mapFlags[x][y] & 0x20) == 0) {
+            if (x == targetX && y == targetY + 1 && (mapFlags[x][y] & 0x20) == 0) {
                 return true;
             }
-            if (x == i && y == k1 - 1 && (mapFlags[x][y] & 2) == 0) {
+            if (x == targetX && y == targetY - 1 && (mapFlags[x][y] & 2) == 0) {
                 return true;
             }
-            if (x == i - 1 && y == k1 && (mapFlags[x][y] & 8) == 0) {
+            if (x == targetX - 1 && y == targetY && (mapFlags[x][y] & 8) == 0) {
                 return true;
             }
-            if (x == i + 1 && y == k1 && (mapFlags[x][y] & 0x80) == 0) {
+            if (x == targetX + 1 && y == targetY && (mapFlags[x][y] & 0x80) == 0) {
                 return true;
             }
         }

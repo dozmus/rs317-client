@@ -68,11 +68,10 @@ final class RSSocket implements Runnable {
     }
 
     public void flushInputStream(byte buffer[], int length) throws IOException {
-        int offset = 0;
-        
         if (closed) {
             return;
         }
+        int offset = 0;
         int value;
         
         for (; length > 0; length -= value) {
@@ -119,36 +118,36 @@ final class RSSocket implements Runnable {
 
     public void run() {
         while (isWriter) {
-            int i;
-            int j;
+            int length;
+            int offset;
             
             synchronized (this) {
                 if (buffIndex == writeIndex) {
                     try {
                         wait();
-                    } catch (InterruptedException _ex) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
                 
                 if (!isWriter) {
                     return;
                 }
-                j = writeIndex;
+                offset = writeIndex;
                 
                 if (buffIndex >= writeIndex) {
-                    i = buffIndex - writeIndex;
+                    length = buffIndex - writeIndex;
                 } else {
-                    i = 5000 - writeIndex;
+                    length = 5000 - writeIndex;
                 }
             }
             
-            if (i > 0) {
+            if (length > 0) {
                 try {
-                    outputStream.write(buffer, j, i);
+                    outputStream.write(buffer, offset, length);
                 } catch (IOException _ex) {
                     hasIOError = true;
                 }
-                writeIndex = (writeIndex + i) % 5000;
+                writeIndex = (writeIndex + length) % 5000;
                 
                 try {
                     if (buffIndex == writeIndex) {

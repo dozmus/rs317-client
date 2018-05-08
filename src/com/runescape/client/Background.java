@@ -5,52 +5,52 @@ import com.runescape.client.io.StreamLoader;
 
 public final class Background extends DrawingArea {
 
-    public byte aByteArray1450[];
+    public byte bgPixels[];
     public final int[] anIntArray1451;
-    public int anInt1452;
-    public int anInt1453;
-    public int anInt1454;
-    public int anInt1455;
+    public int bgWidth;
+    public int bgHeight;
+    public int offsetX;
+    public int offsetY;
     public int anInt1456;
     private int anInt1457;
 
     public Background(StreamLoader streamLoader, String fileName, int length) {
-        Stream stream = new Stream(streamLoader.getDataForName(fileName + ".dat"));
-        Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
-        stream_1.currentOffset = stream.readUShort();
-        anInt1456 = stream_1.readUShort();
-        anInt1457 = stream_1.readUShort();
-        int j = stream_1.readUByte();
+        Stream file = new Stream(streamLoader.getDataForName(fileName + ".dat"));
+        Stream index = new Stream(streamLoader.getDataForName("index.dat"));
+        index.currentOffset = file.readUShort();
+        anInt1456 = index.readUShort();
+        anInt1457 = index.readUShort();
+        int j = index.readUByte();
         anIntArray1451 = new int[j];
         
         for (int k = 0; k < j - 1; k++) {
-            anIntArray1451[k + 1] = stream_1.readUTriByte();
+            anIntArray1451[k + 1] = index.readUTriByte();
         }
 
         for (int l = 0; l < length; l++) {
-            stream_1.currentOffset += 2;
-            stream.currentOffset += stream_1.readUShort() * stream_1.readUShort();
-            stream_1.currentOffset++;
+            index.currentOffset += 2;
+            file.currentOffset += index.readUShort() * index.readUShort();
+            index.currentOffset++;
         }
-        anInt1454 = stream_1.readUByte();
-        anInt1455 = stream_1.readUByte();
-        anInt1452 = stream_1.readUShort();
-        anInt1453 = stream_1.readUShort();
-        int i1 = stream_1.readUByte();
-        int j1 = anInt1452 * anInt1453;
-        aByteArray1450 = new byte[j1];
+        offsetX = index.readUByte();
+        offsetY = index.readUByte();
+        bgWidth = index.readUShort();
+        bgHeight = index.readUShort();
+        int i1 = index.readUByte();
+        int pixelCount = bgWidth * bgHeight;
+        bgPixels = new byte[pixelCount];
         
         if (i1 == 0) {
-            for (int k1 = 0; k1 < j1; k1++) {
-                aByteArray1450[k1] = stream.readByte();
+            for (int i = 0; i < pixelCount; i++) {
+                bgPixels[i] = file.readByte();
             }
             return;
         }
         
         if (i1 == 1) {
-            for (int l1 = 0; l1 < anInt1452; l1++) {
-                for (int i2 = 0; i2 < anInt1453; i2++) {
-                    aByteArray1450[l1 + i2 * anInt1452] = stream.readByte();
+            for (int l1 = 0; l1 < bgWidth; l1++) {
+                for (int i2 = 0; i2 < bgHeight; i2++) {
+                    bgPixels[l1 + i2 * bgWidth] = file.readByte();
                 }
             }
         }
@@ -62,61 +62,61 @@ public final class Background extends DrawingArea {
         byte buf[] = new byte[anInt1456 * anInt1457];
         int i = 0;
         
-        for (int j = 0; j < anInt1453; j++) {
-            for (int k = 0; k < anInt1452; k++) {
-                buf[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * anInt1456] = aByteArray1450[i++];
+        for (int j = 0; j < bgHeight; j++) {
+            for (int k = 0; k < bgWidth; k++) {
+                buf[(k + offsetX >> 1) + (j + offsetY >> 1) * anInt1456] = bgPixels[i++];
             }
         }
-        aByteArray1450 = buf;
-        anInt1452 = anInt1456;
-        anInt1453 = anInt1457;
-        anInt1454 = 0;
-        anInt1455 = 0;
+        bgPixels = buf;
+        bgWidth = anInt1456;
+        bgHeight = anInt1457;
+        offsetX = 0;
+        offsetY = 0;
     }
 
     public void method357() {
-        if (anInt1452 == anInt1456 && anInt1453 == anInt1457) {
+        if (bgWidth == anInt1456 && bgHeight == anInt1457) {
             return;
         }
         byte buf[] = new byte[anInt1456 * anInt1457];
         int i = 0;
         
-        for (int j = 0; j < anInt1453; j++) {
-            for (int k = 0; k < anInt1452; k++) {
-                buf[k + anInt1454 + (j + anInt1455) * anInt1456] = aByteArray1450[i++];
+        for (int j = 0; j < bgHeight; j++) {
+            for (int k = 0; k < bgWidth; k++) {
+                buf[k + offsetX + (j + offsetY) * anInt1456] = bgPixels[i++];
             }
         }
-        aByteArray1450 = buf;
-        anInt1452 = anInt1456;
-        anInt1453 = anInt1457;
-        anInt1454 = 0;
-        anInt1455 = 0;
+        bgPixels = buf;
+        bgWidth = anInt1456;
+        bgHeight = anInt1457;
+        offsetX = 0;
+        offsetY = 0;
     }
 
     public void method358() {
-        byte buf[] = new byte[anInt1452 * anInt1453];
+        byte buf[] = new byte[bgWidth * bgHeight];
         int j = 0;
         
-        for (int k = 0; k < anInt1453; k++) {
-            for (int l = anInt1452 - 1; l >= 0; l--) {
-                buf[j++] = aByteArray1450[l + k * anInt1452];
+        for (int k = 0; k < bgHeight; k++) {
+            for (int l = bgWidth - 1; l >= 0; l--) {
+                buf[j++] = bgPixels[l + k * bgWidth];
             }
         }
-        aByteArray1450 = buf;
-        anInt1454 = anInt1456 - anInt1452 - anInt1454;
+        bgPixels = buf;
+        offsetX = anInt1456 - bgWidth - offsetX;
     }
 
     public void method359() {
-        byte buf[] = new byte[anInt1452 * anInt1453];
+        byte buf[] = new byte[bgWidth * bgHeight];
         int i = 0;
         
-        for (int j = anInt1453 - 1; j >= 0; j--) {
-            for (int k = 0; k < anInt1452; k++) {
-                buf[i++] = aByteArray1450[k + j * anInt1452];
+        for (int j = bgHeight - 1; j >= 0; j--) {
+            for (int k = 0; k < bgWidth; k++) {
+                buf[i++] = bgPixels[k + j * bgWidth];
             }
         }
-        aByteArray1450 = buf;
-        anInt1455 = anInt1457 - anInt1453 - anInt1455;
+        bgPixels = buf;
+        offsetY = anInt1457 - bgHeight - offsetY;
     }
 
     public void method360(int i, int j, int k) {
@@ -149,91 +149,91 @@ public final class Background extends DrawingArea {
         }
     }
 
-    public void method361(int i, int k) {
-        i += anInt1454;
-        k += anInt1455;
-        int l = i + k * DrawingArea.width;
+    public void draw(int x, int y) {
+        x += offsetX;
+        y += offsetY;
+        int l = x + y * DrawingArea.width;
         int i1 = 0;
-        int j1 = anInt1453;
-        int k1 = anInt1452;
+        int j1 = bgHeight;
+        int k1 = bgWidth;
         int l1 = DrawingArea.width - k1;
         int i2 = 0;
         
-        if (k < DrawingArea.topY) {
-            int j2 = DrawingArea.topY - k;
+        if (y < DrawingArea.topY) {
+            int j2 = DrawingArea.topY - y;
             j1 -= j2;
-            k = DrawingArea.topY;
+            y = DrawingArea.topY;
             i1 += j2 * k1;
             l += j2 * DrawingArea.width;
         }
         
-        if (k + j1 > DrawingArea.bottomY) {
-            j1 -= (k + j1) - DrawingArea.bottomY;
+        if (y + j1 > DrawingArea.bottomY) {
+            j1 -= (y + j1) - DrawingArea.bottomY;
         }
         
-        if (i < DrawingArea.topX) {
-            int k2 = DrawingArea.topX - i;
+        if (x < DrawingArea.topX) {
+            int k2 = DrawingArea.topX - x;
             k1 -= k2;
-            i = DrawingArea.topX;
+            x = DrawingArea.topX;
             i1 += k2;
             l += k2;
             i2 += k2;
             l1 += k2;
         }
         
-        if (i + k1 > DrawingArea.bottomX) {
-            int l2 = (i + k1) - DrawingArea.bottomX;
+        if (x + k1 > DrawingArea.bottomX) {
+            int l2 = (x + k1) - DrawingArea.bottomX;
             k1 -= l2;
             i2 += l2;
             l1 += l2;
         }
         
         if (!(k1 <= 0 || j1 <= 0)) {
-            method362(j1, DrawingArea.pixels, aByteArray1450, l1, l, k1, i1, anIntArray1451, i2);
+            copyPixels(j1, DrawingArea.pixels, bgPixels, l1, l, k1, i1, anIntArray1451, i2);
         }
     }
 
-    private void method362(int i, int ai[], byte abyte0[], int j, int k, int l, int i1, int ai1[], int j1) {
+    private void copyPixels(int i, int dest[], byte copiedIndices[], int j, int k, int l, int i1, int src[], int j1) {
         int k1 = -(l >> 2);
         l = -(l & 3);
         
         for (int l1 = -i; l1 < 0; l1++) {
             for (int i2 = k1; i2 < 0; i2++) {
-                byte byte1 = abyte0[i1++];
+                byte idx = copiedIndices[i1++];
                 
-                if (byte1 != 0) {
-                    ai[k++] = ai1[byte1 & 0xff];
+                if (idx != 0) {
+                    dest[k++] = src[idx & 0xff];
                 } else {
                     k++;
                 }
-                byte1 = abyte0[i1++];
+                idx = copiedIndices[i1++];
                 
-                if (byte1 != 0) {
-                    ai[k++] = ai1[byte1 & 0xff];
+                if (idx != 0) {
+                    dest[k++] = src[idx & 0xff];
                 } else {
                     k++;
                 }
-                byte1 = abyte0[i1++];
+                idx = copiedIndices[i1++];
                 
-                if (byte1 != 0) {
-                    ai[k++] = ai1[byte1 & 0xff];
+                if (idx != 0) {
+                    dest[k++] = src[idx & 0xff];
                 } else {
                     k++;
                 }
-                byte1 = abyte0[i1++];
+                idx = copiedIndices[i1++];
                 
-                if (byte1 != 0) {
-                    ai[k++] = ai1[byte1 & 0xff];
+                if (idx != 0) {
+                    dest[k++] = src[idx & 0xff];
                 } else {
                     k++;
                 }
             }
 
             for (int j2 = l; j2 < 0; j2++) {
-                byte byte2 = abyte0[i1++];
+                byte byte2 = copiedIndices[i1++];
                 
                 if (byte2 != 0) {
-                    ai[k++] = ai1[byte2 & 0xff];
+                    dest[k++] = src[byte2 & 0xff];
                 } else {
                     k++;
                 }

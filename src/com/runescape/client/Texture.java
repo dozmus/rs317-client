@@ -190,7 +190,7 @@ final class Texture extends DrawingArea {
             aBooleanArray1475[i] = false;
 
             for (int i1 = 0; i1 < 4096; i1++) {
-                int i2 = ai[i1] = ai1[background.aByteArray1450[i1]] & 0xf8f8ff;
+                int i2 = ai[i1] = ai1[background.bgPixels[i1]] & 0xf8f8ff;
 
                 if (i2 == 0) {
                     aBooleanArray1475[i] = true;
@@ -201,15 +201,15 @@ final class Texture extends DrawingArea {
             }
 
         } else {
-            if (background.anInt1452 == 64) {
+            if (background.bgWidth == 64) {
                 for (int j1 = 0; j1 < 128; j1++) {
                     for (int j2 = 0; j2 < 128; j2++) {
-                        ai[j2 + (j1 << 7)] = ai1[background.aByteArray1450[(j2 >> 1) + ((j1 >> 1) << 6)]];
+                        ai[j2 + (j1 << 7)] = ai1[background.bgPixels[(j2 >> 1) + ((j1 >> 1) << 6)]];
                     }
                 }
             } else {
                 for (int k1 = 0; k1 < 16384; k1++) {
-                    ai[k1] = ai1[background.aByteArray1450[k1]];
+                    ai[k1] = ai1[background.bgPixels[k1]];
                 }
             }
             aBooleanArray1475[i] = false;

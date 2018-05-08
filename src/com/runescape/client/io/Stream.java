@@ -1,6 +1,5 @@
 package com.runescape.client.io;
 
-import com.runescape.client.ISAACCipher;
 import com.runescape.client.signlink.Signlink;
 import com.runescape.client.util.node.NodeList;
 import com.runescape.client.util.node.NodeSub;

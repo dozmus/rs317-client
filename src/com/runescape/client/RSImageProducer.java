@@ -5,34 +5,33 @@ import java.awt.image.*;
 
 final class RSImageProducer implements ImageProducer, ImageObserver {
 
+    private static final ColorModel COLOR_MODEL = new DirectColorModel(32, 0xff0000, 65280, 255);
     public final int[] pixels;
     private final int width;
     private final int height;
-    private final ColorModel colorModel;
-    private ImageConsumer imageConsumer;
     private final Image image;
+    private ImageConsumer imageConsumer;
 
     public RSImageProducer(int width, int height, Component component) {
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
-        colorModel = new DirectColorModel(32, 0xff0000, 65280, 255);
         image = component.createImage(this);
-        method239();
+        updateImagePixels();
         component.prepareImage(image, this);
-        method239();
+        updateImagePixels();
         component.prepareImage(image, this);
-        method239();
+        updateImagePixels();
         component.prepareImage(image, this);
         initDrawingArea();
     }
 
     public void initDrawingArea() {
-        DrawingArea.initDrawingArea(height, width, pixels);
+        DrawingArea.init(height, width, pixels);
     }
 
-    public void drawGraphics(int y, Graphics g, int x) {
-        method239();
+    public void drawGraphics(Graphics g, int x, int y) {
+        updateImagePixels();
         g.drawImage(image, x, y, this);
     }
 
@@ -40,7 +39,7 @@ final class RSImageProducer implements ImageProducer, ImageObserver {
         imageConsumer = imageconsumer;
         imageconsumer.setDimensions(width, height);
         imageconsumer.setProperties(null);
-        imageconsumer.setColorModel(colorModel);
+        imageconsumer.setColorModel(COLOR_MODEL);
         imageconsumer.setHints(14);
     }
 
@@ -62,9 +61,9 @@ final class RSImageProducer implements ImageProducer, ImageObserver {
         System.out.println("TDLR");
     }
 
-    private synchronized void method239() {
+    private synchronized void updateImagePixels() {
         if (imageConsumer != null) {
-            imageConsumer.setPixels(0, 0, width, height, colorModel, pixels, 0, width);
+            imageConsumer.setPixels(0, 0, width, height, COLOR_MODEL, pixels, 0, width);
             imageConsumer.imageComplete(2);
         }
     }
