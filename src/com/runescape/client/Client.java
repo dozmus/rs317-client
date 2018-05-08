@@ -20,6 +20,8 @@ import java.net.*;
 
 public final class Client extends RSApplet {
 
+    private static final int DEFAULT_WIDTH = 503;
+    private static final int DEFAULT_HEIGHT = 765;
     private static int anInt849;
     private static int anInt854;
     private static int anInt924;
@@ -117,8 +119,8 @@ public final class Client extends RSApplet {
             
             Signlink.storeid = Integer.parseInt(args[5]);
             Signlink.startSignlink(InetAddress.getByName(args[0]));
-            Client client1 = new Client();
-            client1.createClientFrame(503, 765);
+            Client c = new Client();
+            c.createClientFrame(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         } catch (NumberFormatException | UnknownHostException ex) {
         }
     }
@@ -1016,7 +1018,7 @@ public final class Client extends RSApplet {
         }
         String s1 = getParameter("free");
         isMembers = !(s1 != null && s1.equals("1"));
-        initClientFrame(503, 765);
+        initClientFrame(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public void startRunnable(Runnable runnable, int i) {
