@@ -93,8 +93,8 @@ public final class Client extends RSApplet {
 
     public static void main(String args[]) {
         try {
-            System.out.println("RuneScape 2 Client, revision #" + 317);
-            System.out.println("This project can be found over on GitHub - https://github.com/PureCS/rs317-client");
+            System.out.println("RuneScape 2 Client (revision #317)");
+            System.out.println("This project is on GitHub - https://github.com/PureCS/rs317-client");
 
             if (args.length != 6) {
                 printUsage();
@@ -135,6 +135,7 @@ public final class Client extends RSApplet {
         for (int k = s.length() - 3; k > 0; k -= 3) {
             s = s.substring(0, k) + "," + s.substring(k);
         }
+
         if (s.length() > 8) {
             s = "@gre@" + s.substring(0, s.length() - 8) + " million @whi@(" + s + ")";
         } else if (s.length() > 4) {
@@ -2514,7 +2515,7 @@ public final class Client extends RSApplet {
             if (j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3) {
                 j2 = 0xffff00;
             }
-            chatTextDrawingArea.method389(true, i + 3, j2, menuActionName[l1], i2);
+            chatTextDrawingArea.drawText(true, i + 3, j2, menuActionName[l1], i2);
         }
     }
 
@@ -7975,19 +7976,24 @@ public final class Client extends RSApplet {
             inputTaken = true;
             tabAreaAltered = true;
             aBoolean1233 = true;
+
             if (loadingStage != 2) {
                 aRSImageProducer_1165.drawGraphics(super.graphics, 4, 4);
                 aRSImageProducer_1164.drawGraphics(super.graphics, 550, 4);
             }
         }
+
         if (loadingStage == 2) {
             method146();
         }
+
         if (menuOpen && menuScreenArea == 1) {
             needDrawTabArea = true;
         }
+
         if (invOverlayInterfaceID != -1) {
             boolean flag1 = method119(anInt945, invOverlayInterfaceID);
+
             if (flag1) {
                 needDrawTabArea = true;
             }
@@ -7995,13 +8001,16 @@ public final class Client extends RSApplet {
         if (atInventoryInterfaceType == 2) {
             needDrawTabArea = true;
         }
+
         if (activeInterfaceType == 2) {
             needDrawTabArea = true;
         }
+
         if (needDrawTabArea) {
             drawTabArea();
             needDrawTabArea = false;
         }
+
         if (backDialogID == -1) {
             aClass9_1059.scrollPosition = anInt1211 - anInt1089 - 77;
             if (super.mouseX > 448 && super.mouseX < 560 && super.mouseY > 332) {
@@ -8019,35 +8028,44 @@ public final class Client extends RSApplet {
                 inputTaken = true;
             }
         }
+
         if (backDialogID != -1) {
             boolean flag2 = method119(anInt945, backDialogID);
             if (flag2) {
                 inputTaken = true;
             }
         }
+
         if (atInventoryInterfaceType == 3) {
             inputTaken = true;
         }
+
         if (activeInterfaceType == 3) {
             inputTaken = true;
         }
+
         if (aString844 != null) {
             inputTaken = true;
         }
+
         if (menuOpen && menuScreenArea == 2) {
             inputTaken = true;
         }
+
         if (inputTaken) {
             drawChatArea();
             inputTaken = false;
         }
+
         if (loadingStage == 2) {
             drawMinimap();
             aRSImageProducer_1164.drawGraphics(super.graphics, 550, 4);
         }
+
         if (flashSidebarId != -1) {
             tabAreaAltered = true;
         }
+
         if (tabAreaAltered) {
             if (flashSidebarId != -1 && flashSidebarId == tabID) {
                 flashSidebarId = -1;
@@ -8057,6 +8075,7 @@ public final class Client extends RSApplet {
             tabAreaAltered = false;
             aRSImageProducer_1125.initDrawingArea();
             backHmid1.draw(0, 0);
+
             if (invOverlayInterfaceID == -1) {
                 if (tabInterfaceIDs[tabID] != -1) {
                     if (tabID == 0) {
@@ -8106,6 +8125,7 @@ public final class Client extends RSApplet {
             aRSImageProducer_1125.drawGraphics(super.graphics, 516, 160);
             aRSImageProducer_1124.initDrawingArea();
             backBase2.draw(0, 0);
+
             if (invOverlayInterfaceID == -1) {
                 if (tabInterfaceIDs[tabID] != -1) {
                     if (tabID == 7) {
@@ -8152,6 +8172,7 @@ public final class Client extends RSApplet {
             aRSImageProducer_1124.drawGraphics(super.graphics, 496, 466);
             aRSImageProducer_1165.initDrawingArea();
         }
+
         if (aBoolean1233) {
             aBoolean1233 = false;
             aRSImageProducer_1123.initDrawingArea();
@@ -8468,7 +8489,7 @@ public final class Client extends RSApplet {
                         if (class9_1.aBoolean223) {
                             textDrawingArea.drawText(i4, k2 + class9_1.width / 2, s1, l6, class9_1.aBoolean268);
                         } else {
-                            textDrawingArea.method389(class9_1.aBoolean268, k2, i4, s1, l6);
+                            textDrawingArea.drawText(class9_1.aBoolean268, k2, i4, s1, l6);
                         }
                     }
 
@@ -8524,7 +8545,7 @@ public final class Client extends RSApplet {
                                 if (class9_1.aBoolean223) {
                                     textDrawingArea_1.drawText(class9_1.textColor, i9 + class9_1.width / 2, s2, k9, class9_1.aBoolean268);
                                 } else {
-                                    textDrawingArea_1.method389(class9_1.aBoolean268, i9, class9_1.textColor, s2, k9);
+                                    textDrawingArea_1.drawText(class9_1.aBoolean268, i9, class9_1.textColor, s2, k9);
                                 }
                             }
                             k4++;
@@ -9956,7 +9977,7 @@ public final class Client extends RSApplet {
         }
     }
 
-    private void drawLoginScreen(boolean showLoginCancelButtons) {
+    private void drawLoginScreen(boolean hideLoginCancelButtons) {
         resetImageProducers();
         aRSImageProducer_1109.initDrawingArea();
         titleBoxBackground.draw(0, 0);
@@ -9988,13 +10009,13 @@ public final class Client extends RSApplet {
                 chatTextDrawingArea.drawText(0xffff00, c, loginMessage2, offsetY - 7, true);
                 offsetY += 30;
             }
-            chatTextDrawingArea.method389(true, c - 90, 0xffffff,
+            chatTextDrawingArea.drawText(true, c - 90, 0xffffff,
                     "Username: " + myUsername + ((loginScreenCursorPos == 0) & (loopCycle % 40 < 20) ? "@yel@|" : ""), offsetY);
             offsetY += 15;
-            chatTextDrawingArea.method389(true, c - 88, 0xffffff,
+            chatTextDrawingArea.drawText(true, c - 88, 0xffffff,
                     "Password: " + StringHelper.hidePassword(myPassword) + ((loginScreenCursorPos == 1) & (loopCycle % 40 < 20) ? "@yel@|" : ""), offsetY);
 
-            if (!showLoginCancelButtons) {
+            if (!hideLoginCancelButtons) {
                 int buttonOffsetX = c - 80;
                 int buttonOffsetY = c1 + 50;
                 buttonBackground.draw(buttonOffsetX - 73, buttonOffsetY - 20);

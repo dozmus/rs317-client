@@ -96,7 +96,7 @@ public final class TextDrawingArea extends DrawingArea {
     }
 
     public void drawText(int i, int x, String s, int y, boolean flag) {
-        method389(flag, x - getTextWidthWithoutColourCodes(s) / 2, i, s, y);
+        drawText(flag, x - getTextWidthWithoutColourCodes(s) / 2, i, s, y);
     }
 
     /**
@@ -201,7 +201,7 @@ public final class TextDrawingArea extends DrawingArea {
         }
     }
 
-    public void method389(boolean flag1, int i, int j, String s, int k) {
+    public void drawText(boolean flag1, int i, int j, String s, int k) {
         aBoolean1499 = false;
         int l = i;
 
@@ -212,10 +212,10 @@ public final class TextDrawingArea extends DrawingArea {
 
         for (int i1 = 0; i1 < s.length(); i1++) {
             if (s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
-                int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
+                int color = getColorByName(s.substring(i1 + 1, i1 + 4));
 
-                if (j1 != -1) {
-                    j = j1;
+                if (color != -1) {
+                    j = color;
                 }
                 i1 += 4;
             } else {
@@ -243,11 +243,13 @@ public final class TextDrawingArea extends DrawingArea {
         random.setSeed(k);
         int j1 = 192 + (random.nextInt() & 0x1f);
         i1 -= anInt1497;
+
         for (int k1 = 0; k1 < s.length(); k1++) {
             if (s.charAt(k1) == '@' && k1 + 4 < s.length() && s.charAt(k1 + 4) == '@') {
-                int l1 = getColorByName(s.substring(k1 + 1, k1 + 4));
-                if (l1 != -1) {
-                    j = l1;
+                int color = getColorByName(s.substring(k1 + 1, k1 + 4));
+
+                if (color != -1) {
+                    j = color;
                 }
                 k1 += 4;
             } else {
