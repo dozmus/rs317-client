@@ -1,5 +1,6 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.Class36;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 

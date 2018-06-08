@@ -1,6 +1,6 @@
 package com.runescape.client;
 
-final class Class21 {
+public final class Class21 {
 
     public byte aByteArray368[];
     public int anInt369;

@@ -1,11 +1,12 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.*;
 import com.runescape.client.io.Stream;
 
-final class ObjectManager {
+public final class ObjectManager {
 
     private static int anInt123 = (int) (Math.random() * 17D) - 8;
-    static int anInt131;
+    public static int anInt131;
     private static int anInt133 = (int) (Math.random() * 33D) - 16;
     private static final int[] anIntArray137 = {
         1, 0, -1, 0
@@ -16,8 +17,8 @@ final class ObjectManager {
     private static final int[] anIntArray144 = {
         0, -1, 0, 1
     };
-    static int anInt145 = 99;
-    static boolean lowMem = true;
+    public static int anInt145 = 99;
+    public static boolean lowMem = true;
     private static final int[] orientations = {
         1, 2, 4, 8
     };

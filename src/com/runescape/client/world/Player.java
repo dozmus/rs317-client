@@ -1,41 +1,41 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.*;
 import com.runescape.client.io.Stream;
 import com.runescape.client.util.StringHelper;
 
 public final class Player extends Entity {
 
-    static MRUNodes mruNodes = new MRUNodes(260);
+    public static MRUNodes mruNodes = new MRUNodes(260);
 
     public int privilege;
-
     private long aLong1697;
     public EntityDef def;
-    boolean aBoolean1699;
-    final int[] anIntArray1700;
+    public boolean aBoolean1699;
+    public final int[] anIntArray1700;
     public int team;
     private int anInt1702;
     public String name;
     public int combatLevel;
     public int headIcon;
     public int anInt1707;
-    int anInt1708;
-    int anInt1709;
-    boolean visible;
-    int anInt1711;
-    int anInt1712;
-    int anInt1713;
-    Model aModel_1714;
+    public int anInt1708;
+    public int anInt1709;
+    public boolean visible;
+    public int anInt1711;
+    public int anInt1712;
+    public int anInt1713;
+    public Model aModel_1714;
     private int anInt1715;
     public final int[] equipment;
     private long aLong1718;
-    int anInt1719;
-    int anInt1720;
-    int anInt1721;
-    int anInt1722;
-    int skill;
+    public int anInt1719;
+    public int anInt1720;
+    public int anInt1721;
+    public int anInt1722;
+    public int skill;
 
-    Player() {
+    public Player() {
         aLong1697 = -1L;
         aBoolean1699 = false;
         anIntArray1700 = new int[5];

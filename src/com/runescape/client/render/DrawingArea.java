@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.render;
 
 import com.runescape.client.util.node.NodeSub;
 
@@ -15,19 +15,16 @@ public class DrawingArea extends NodeSub {
     public static int centerY;
     public static int anInt1387;
 
-    DrawingArea() {
+    public DrawingArea() {
     }
 
     public static void init(int height, int width, int pixels[]) {
         DrawingArea.pixels = pixels;
         DrawingArea.width = width;
         DrawingArea.height = height;
-        setDrawingArea(height, 0, width, 0);
+        setSize(height, 0, width, 0);
     }
 
-    /**
-     * Resets the size of the drawing area.
-     */
     public static void resetSize() {
         topX = 0;
         topY = 0;
@@ -37,7 +34,7 @@ public class DrawingArea extends NodeSub {
         centerY = bottomX / 2;
     }
 
-    public static void setDrawingArea(int bottomY, int topX, int bottomX, int topY) {
+    public static void setSize(int bottomY, int topX, int bottomX, int topY) {
         if (topX < 0) {
             topX = 0;
         }
@@ -235,5 +232,4 @@ public class DrawingArea extends NodeSub {
             i3 += width;
         }
     }
-
 }

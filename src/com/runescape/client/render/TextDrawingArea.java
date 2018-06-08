@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.render;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
@@ -91,12 +91,12 @@ public final class TextDrawingArea extends DrawingArea {
         method385(j, s, k, i - getTextWidth(s));
     }
 
-    public void drawText(int i, String s, int k, int l) {
-        method385(i, s, k, l - getTextWidth(s) / 2);
+    public void drawText(int colour, String text, int k, int l) {
+        method385(colour, text, k, l - getTextWidth(text) / 2);
     }
 
-    public void drawText(int i, int x, String s, int y, boolean flag) {
-        drawText(flag, x - getTextWidthWithoutColourCodes(s) / 2, i, s, y);
+    public void drawText(int i, int x, String text, int y, boolean flag) {
+        drawText(flag, x - getTextWidthWithoutColourCodes(text) / 2, i, text, y);
     }
 
     /**
@@ -201,25 +201,25 @@ public final class TextDrawingArea extends DrawingArea {
         }
     }
 
-    public void drawText(boolean flag1, int i, int j, String s, int k) {
+    public void drawText(boolean flag1, int i, int j, String text, int k) {
         aBoolean1499 = false;
         int l = i;
 
-        if (s == null) {
+        if (text == null) {
             return;
         }
         k -= anInt1497;
 
-        for (int i1 = 0; i1 < s.length(); i1++) {
-            if (s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
-                int color = getColorByName(s.substring(i1 + 1, i1 + 4));
+        for (int i1 = 0; i1 < text.length(); i1++) {
+            if (text.charAt(i1) == '@' && i1 + 4 < text.length() && text.charAt(i1 + 4) == '@') {
+                int color = getColorByName(text.substring(i1 + 1, i1 + 4));
 
                 if (color != -1) {
                     j = color;
                 }
                 i1 += 4;
             } else {
-                char c = s.charAt(i1);
+                char c = text.charAt(i1);
 
                 if (c != ' ') {
                     if (flag1) {

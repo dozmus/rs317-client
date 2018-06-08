@@ -2,6 +2,9 @@ package com.runescape.client;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
+import com.runescape.client.render.DrawingArea;
+import com.runescape.client.world.Model;
+import com.runescape.client.world.Texture;
 
 public final class ItemDef {
 
@@ -197,7 +200,7 @@ public final class ItemDef {
             mruNodes1.removeFromCache(sprite2, id);
         }
         DrawingArea.init(dAreaHeight, dAreaWidth, dAreaPixels);
-        DrawingArea.setDrawingArea(dAreaBottomY, dAreatopX, dAreaBottomX, dAreaTopY);
+        DrawingArea.setSize(dAreaBottomY, dAreatopX, dAreaBottomX, dAreaTopY);
         Texture.textureInt1 = k1;
         Texture.textureInt2 = l1;
         Texture.anIntArray1472 = ai;

@@ -1,6 +1,6 @@
 package com.runescape.client;
 
-final class Class43 {
+public final class Class43 {
 
     final int anInt716;
     final int anInt717;

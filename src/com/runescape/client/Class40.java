@@ -1,6 +1,6 @@
 package com.runescape.client;
 
-final class Class40 {
+public final class Class40 {
 
     static final int[] anIntArray688 = new int[6];
     static final int[] anIntArray689 = new int[6];

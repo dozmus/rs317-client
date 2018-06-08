@@ -1,4 +1,6 @@
-package com.runescape.client;
+package com.runescape.client.world;
+
+import com.runescape.client.Class36;
 
 public final class Animable_Sub4 extends Animable {
 

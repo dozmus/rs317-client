@@ -2,7 +2,9 @@ package com.runescape.client;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
+import com.runescape.client.render.TextDrawingArea;
 import com.runescape.client.util.StringHelper;
+import com.runescape.client.world.Model;
 
 public final class RSInterface {
 

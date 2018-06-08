@@ -1,9 +1,9 @@
-package com.runescape.client;
+package com.runescape.client.render;
 
 import java.awt.*;
 import java.awt.image.*;
 
-final class RSImageProducer implements ImageProducer, ImageObserver {
+public final class RSImageProducer implements ImageProducer, ImageObserver {
 
     private static final ColorModel COLOR_MODEL = new DirectColorModel(32, 0xff0000, 65280, 255);
     public final int[] pixels;

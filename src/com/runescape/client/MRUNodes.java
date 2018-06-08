@@ -7,17 +7,23 @@ import com.runescape.client.signlink.Signlink;
 
 public final class MRUNodes {
 
-    public MRUNodes(int i) {
+    private final NodeSub emptyNodeSub;
+    private final int capacity;
+    private final NodeCache nodeCache;
+    private final NodeSubList nodeSubList;
+    private int spaceLeft;
+
+    public MRUNodes(int capacity) {
         emptyNodeSub = new NodeSub();
         nodeSubList = new NodeSubList();
-        initialCount = i;
-        spaceLeft = i;
+        this.capacity = capacity;
+        spaceLeft = capacity;
         nodeCache = new NodeCache();
     }
 
     public NodeSub insertFromCache(long id) {
         NodeSub nodeSub = (NodeSub) nodeCache.findNodeByID(id);
-        
+
         if (nodeSub != null) {
             nodeSubList.insertHead(nodeSub);
         }
@@ -30,7 +36,7 @@ public final class MRUNodes {
                 NodeSub nodeSub_1 = nodeSubList.popTail();
                 nodeSub_1.unlink();
                 nodeSub_1.unlinkSub();
-                
+
                 if (nodeSub_1 == emptyNodeSub) {
                     NodeSub nodeSub_2 = nodeSubList.popTail();
                     nodeSub_2.unlink();
@@ -51,20 +57,14 @@ public final class MRUNodes {
     public void unlinkAll() {
         do {
             NodeSub nodeSub = nodeSubList.popTail();
-            
+
             if (nodeSub != null) {
                 nodeSub.unlink();
                 nodeSub.unlinkSub();
             } else {
-                spaceLeft = initialCount;
+                spaceLeft = capacity;
                 return;
             }
         } while (true);
     }
-
-    private final NodeSub emptyNodeSub;
-    private final int initialCount;
-    private int spaceLeft;
-    private final NodeCache nodeCache;
-    private final NodeSubList nodeSubList;
 }

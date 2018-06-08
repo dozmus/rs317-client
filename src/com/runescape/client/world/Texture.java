@@ -1,12 +1,14 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.render.Background;
+import com.runescape.client.render.DrawingArea;
 import com.runescape.client.io.StreamLoader;
 
-final class Texture extends DrawingArea {
+public final class Texture extends DrawingArea {
 
     public static final int anInt1459 = -477;
     public static boolean lowMem = true;
-    static boolean aBoolean1462;
+    public static boolean aBoolean1462;
     private static boolean aBoolean1463;
     public static boolean aBoolean1464 = true;
     public static int anInt1465;

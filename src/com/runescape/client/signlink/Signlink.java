@@ -4,8 +4,7 @@ import java.applet.Applet;
 import java.io.*;
 import java.net.*;
 
-public final class Signlink
-        implements Runnable {
+public final class Signlink implements Runnable {
 
     public static final int CLIENT_VERSION = 317;
     public static int uid;
@@ -94,9 +93,9 @@ public final class Signlink
                         continue;
                     }
                 }
-                File file1 = new File(s1 + s);
+                File f = new File(s1 + s);
                 
-                if (file1.exists() || file1.mkdir()) {
+                if (f.exists() || f.mkdir()) {
                     return s1 + s + "/";
                 }
             } catch (Exception _ex) {

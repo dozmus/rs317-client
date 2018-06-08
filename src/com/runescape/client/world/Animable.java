@@ -1,10 +1,11 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.Class33;
 import com.runescape.client.util.node.NodeSub;
 
 public class Animable extends NodeSub {
 
-    Class33 aClass33Array1425[];
+    public Class33 aClass33Array1425[];
     public int modelHeight;
 
     Animable() {

@@ -1,6 +1,8 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
+import com.runescape.client.*;
 import com.runescape.client.io.Stream;
+import com.runescape.client.render.DrawingArea;
 
 public final class Model extends Animable {
 
@@ -238,7 +240,7 @@ public final class Model extends Animable {
     public int anIntArrayArray1657[][];
     public int anIntArrayArray1658[][];
     public boolean aBoolean1659;
-    Class33 aClass33Array1660[];
+    public Class33 aClass33Array1660[];
 
     private Model() {
         aBoolean1659 = false;

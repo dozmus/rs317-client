@@ -1,8 +1,10 @@
 package com.runescape.client;
 
+import com.runescape.client.render.DrawingArea;
 import com.runescape.client.util.node.NodeList;
+import com.runescape.client.world.*;
 
-final class World {
+public final class World {
 
     public static boolean lowMem = true;
     private static int anInt446;

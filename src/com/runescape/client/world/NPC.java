@@ -1,11 +1,11 @@
-package com.runescape.client;
+package com.runescape.client.world;
+
+import com.runescape.client.Class36;
+import com.runescape.client.EntityDef;
 
 public final class NPC extends Entity {
 
     public EntityDef desc;
-
-    NPC() {
-    }
 
     private Model method450() {
         if (super.currentAnimationId >= 0 && super.anInt1529 == 0) {

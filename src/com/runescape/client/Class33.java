@@ -1,11 +1,11 @@
 package com.runescape.client;
 
-final class Class33 {
+public final class Class33 {
 
-    int anInt602;
-    int anInt603;
-    int anInt604;
-    int anInt605;
+    public int anInt602;
+    public int anInt603;
+    public int anInt604;
+    public int anInt605;
 
     public Class33() {
     }

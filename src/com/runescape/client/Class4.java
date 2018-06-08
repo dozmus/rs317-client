@@ -1,6 +1,6 @@
 package com.runescape.client;
 
-final class Class4 {
+public final class Class4 {
 
     public static int method155(int i, int j, int k) {
         i &= 3;

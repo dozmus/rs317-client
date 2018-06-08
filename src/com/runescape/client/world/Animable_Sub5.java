@@ -1,4 +1,8 @@
-package com.runescape.client;
+package com.runescape.client.world;
+
+import com.runescape.client.Client;
+import com.runescape.client.ObjectDef;
+import com.runescape.client.VarBit;
 
 public final class Animable_Sub5 extends Animable {
 
