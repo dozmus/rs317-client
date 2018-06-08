@@ -116,7 +116,7 @@ final class ObjectManager {
         return (i & 0xff80) + j;
     }
 
-    public static void method188(WorldController controller, int primaryOrientationId, int y, int k, int l, ClipMap clipMap, int ai[][][], int x, int objectId, int z) {
+    public static void method188(World controller, int primaryOrientationId, int y, int k, int l, ClipMap clipMap, int ai[][][], int x, int objectId, int z) {
         int l1 = ai[l][x][y];
         int i2 = ai[l][x + 1][y];
         int j2 = ai[l][x + 1][y + 1];
@@ -139,7 +139,7 @@ final class ObjectManager {
             } else {
                 obj = new Animable_Sub5(objectId, primaryOrientationId, 22, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method280(z, l2, y, ((Animable) (obj)), byte1, uid, x);
+            controller.createGroundDecoration(z, l2, y, ((Animable) (obj)), byte1, uid, x);
 
             if (objDef.aBoolean767 && objDef.hasActions) {
                 clipMap.setValue3(y, x);
@@ -205,7 +205,7 @@ final class ObjectManager {
             } else {
                 obj3 = new Animable_Sub5(objectId, primaryOrientationId, 0, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method282(orientations[primaryOrientationId], ((Animable) (obj3)), uid, y, byte1, x, null, l2, 0, z);
+            controller.createWall(orientations[primaryOrientationId], ((Animable) (obj3)), uid, y, byte1, x, null, l2, 0, z);
 
             if (objDef.aBoolean767) {
                 clipMap.method211(y, primaryOrientationId, x, k, objDef.aBoolean757);
@@ -221,7 +221,7 @@ final class ObjectManager {
             } else {
                 obj4 = new Animable_Sub5(objectId, primaryOrientationId, 1, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method282(orientations2[primaryOrientationId], ((Animable) (obj4)), uid, y, byte1, x, null, l2, 0, z);
+            controller.createWall(orientations2[primaryOrientationId], ((Animable) (obj4)), uid, y, byte1, x, null, l2, 0, z);
 
             if (objDef.aBoolean767) {
                 clipMap.method211(y, primaryOrientationId, x, k, objDef.aBoolean757);
@@ -241,7 +241,7 @@ final class ObjectManager {
                 obj11 = new Animable_Sub5(objectId, 4 + primaryOrientationId, 2, i2, j2, l1, k2, objDef.anInt781, true);
                 obj12 = new Animable_Sub5(objectId, secondaryOrientationId, 2, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method282(orientations[primaryOrientationId], ((Animable) (obj11)), uid, y, byte1, x, ((Animable) (obj12)), l2, orientations[secondaryOrientationId], z);
+            controller.createWall(orientations[primaryOrientationId], ((Animable) (obj11)), uid, y, byte1, x, ((Animable) (obj12)), l2, orientations[secondaryOrientationId], z);
 
             if (objDef.aBoolean767) {
                 clipMap.method211(y, primaryOrientationId, x, k, objDef.aBoolean757);
@@ -257,7 +257,7 @@ final class ObjectManager {
             } else {
                 obj5 = new Animable_Sub5(objectId, primaryOrientationId, 3, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method282(orientations2[primaryOrientationId], ((Animable) (obj5)), uid, y, byte1, x, null, l2, 0, z);
+            controller.createWall(orientations2[primaryOrientationId], ((Animable) (obj5)), uid, y, byte1, x, null, l2, 0, z);
 
             if (objDef.aBoolean767) {
                 clipMap.method211(y, primaryOrientationId, x, k, objDef.aBoolean757);
@@ -309,7 +309,7 @@ final class ObjectManager {
             } else {
                 obj7 = new Animable_Sub5(objectId, 0, 4, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, primaryOrientationId * 512, z, 0, l2, ((Animable) (obj7)), x, byte1, 0, orientations[primaryOrientationId]);
+            controller.createWallDecoration(uid, y, primaryOrientationId * 512, z, 0, l2, ((Animable) (obj7)), x, byte1, 0, orientations[primaryOrientationId]);
             return;
         }
         if (k == 5) {
@@ -324,7 +324,7 @@ final class ObjectManager {
             } else {
                 obj13 = new Animable_Sub5(objectId, 0, 4, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, primaryOrientationId * 512, z, anIntArray137[primaryOrientationId] * j4, l2, ((Animable) (obj13)), x, byte1, anIntArray144[primaryOrientationId] * j4, orientations[primaryOrientationId]);
+            controller.createWallDecoration(uid, y, primaryOrientationId * 512, z, anIntArray137[primaryOrientationId] * j4, l2, ((Animable) (obj13)), x, byte1, anIntArray144[primaryOrientationId] * j4, orientations[primaryOrientationId]);
             return;
         }
         if (k == 6) {
@@ -334,7 +334,7 @@ final class ObjectManager {
             } else {
                 obj8 = new Animable_Sub5(objectId, 0, 4, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj8)), x, byte1, 0, 256);
+            controller.createWallDecoration(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj8)), x, byte1, 0, 256);
             return;
         }
         if (k == 7) {
@@ -344,7 +344,7 @@ final class ObjectManager {
             } else {
                 obj9 = new Animable_Sub5(objectId, 0, 4, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj9)), x, byte1, 0, 512);
+            controller.createWallDecoration(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj9)), x, byte1, 0, 512);
             return;
         }
         if (k == 8) {
@@ -354,7 +354,7 @@ final class ObjectManager {
             } else {
                 obj10 = new Animable_Sub5(objectId, 0, 4, i2, j2, l1, k2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj10)), x, byte1, 0, 768);
+            controller.createWallDecoration(uid, y, primaryOrientationId, z, 0, l2, ((Animable) (obj10)), x, byte1, 0, 768);
         }
     }
 
@@ -440,7 +440,7 @@ final class ObjectManager {
         anIntArray128 = new int[regionsY];
     }
 
-    public final void method171(ClipMap clipMap[], WorldController controller) {
+    public final void method171(ClipMap clipMap[], World controller) {
         for (int z1 = 0; z1 < 4; z1++) {
             for (int x1 = 0; x1 < 104; x1++) {
                 for (int y1 = 0; y1 < 104; y1++) {
@@ -714,7 +714,7 @@ final class ObjectManager {
                                 char c1 = '\360';
                                 int k14 = anIntArrayArrayArray129[k8][i4][k4] - c1;
                                 int l15 = anIntArrayArrayArray129[i7][i4][k4];
-                                WorldController.method277(l2, i4 * 128, l15, i4 * 128, l5 * 128 + 128, k14, k4 * 128, 1);
+                                World.method277(l2, i4 * 128, l15, i4 * 128, l5 * 128 + 128, k14, k4 * 128, 1);
                                 for (int l16 = i7; l16 <= k8; l16++) {
                                     for (int l17 = k4; l17 <= l5; l17++) {
                                         anIntArrayArrayArray135[l16][i4][l17] &= ~i2;
@@ -756,7 +756,7 @@ final class ObjectManager {
                                 char c2 = '\360';
                                 int l14 = anIntArrayArrayArray129[l8][l4][k3] - c2;
                                 int i16 = anIntArrayArrayArray129[j7][l4][k3];
-                                WorldController.method277(l2, l4 * 128, i16, i6 * 128 + 128, k3 * 128, l14, k3 * 128, 2);
+                                World.method277(l2, l4 * 128, i16, i6 * 128 + 128, k3 * 128, l14, k3 * 128, 2);
                                 for (int i17 = j7; i17 <= l8; i17++) {
                                     for (int i18 = l4; i18 <= i6; i18++) {
                                         anIntArrayArrayArray135[i17][i18][k3] &= ~j2;
@@ -795,7 +795,7 @@ final class ObjectManager {
 
                             if (((j6 - i5) + 1) * ((i9 - k7) + 1) >= 4) {
                                 int j12 = anIntArrayArrayArray129[i3][i5][k7];
-                                WorldController.method277(l2, i5 * 128, j12, j6 * 128 + 128, i9 * 128 + 128, j12, k7 * 128, 4);
+                                World.method277(l2, i5 * 128, j12, j6 * 128 + 128, i9 * 128 + 128, j12, k7 * 128, 4);
                                 for (int k13 = i5; k13 <= j6; k13++) {
                                     for (int i15 = k7; i15 <= i9; i15++) {
                                         anIntArrayArrayArray135[i3][k13][i15] &= ~k2;
@@ -837,7 +837,7 @@ final class ObjectManager {
         }
     }
 
-    private void method175(int y, WorldController controller, ClipMap clipMap, int j, int z, int x, int objectId, int j1) {
+    private void method175(int y, World controller, ClipMap clipMap, int j, int z, int x, int objectId, int j1) {
         if (lowMem && (aByteArrayArrayArray149[0][x][y] & 2) == 0) {
             if ((aByteArrayArrayArray149[z][x][y] & 0x10) != 0) {
                 return;
@@ -874,7 +874,7 @@ final class ObjectManager {
             } else {
                 obj = new Animable_Sub5(objectId, j1, 22, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method280(z, k2, y, ((Animable) (obj)), byte0, uid, x);
+            controller.createGroundDecoration(z, k2, y, ((Animable) (obj)), byte0, uid, x);
 
             if (objDef.aBoolean767 && objDef.hasActions && clipMap != null) {
                 clipMap.setValue3(y, x);
@@ -963,7 +963,7 @@ final class ObjectManager {
             } else {
                 obj3 = new Animable_Sub5(objectId, j1, 0, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method282(orientations[j1], ((Animable) (obj3)), uid, y, byte0, x, null, k2, 0, z);
+            controller.createWall(orientations[j1], ((Animable) (obj3)), uid, y, byte0, x, null, k2, 0, z);
             if (j1 == 0) {
                 if (objDef.aBoolean779) {
                     aByteArrayArrayArray134[z][x][y] = 50;
@@ -1012,7 +1012,7 @@ final class ObjectManager {
             } else {
                 obj4 = new Animable_Sub5(objectId, j1, 1, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method282(orientations2[j1], ((Animable) (obj4)), uid, y, byte0, x, null, k2, 0, z);
+            controller.createWall(orientations2[j1], ((Animable) (obj4)), uid, y, byte0, x, null, k2, 0, z);
             if (objDef.aBoolean779) {
                 if (j1 == 0) {
                     aByteArrayArrayArray134[z][x][y + 1] = 50;
@@ -1040,7 +1040,7 @@ final class ObjectManager {
                 obj11 = new Animable_Sub5(objectId, 4 + j1, 2, l1, i2, k1, j2, objDef.anInt781, true);
                 obj12 = new Animable_Sub5(objectId, i3, 2, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method282(orientations[j1], ((Animable) (obj11)), uid, y, byte0, x, ((Animable) (obj12)), k2, orientations[i3], z);
+            controller.createWall(orientations[j1], ((Animable) (obj11)), uid, y, byte0, x, ((Animable) (obj12)), k2, orientations[i3], z);
             if (objDef.aBoolean764) {
                 if (j1 == 0) {
                     anIntArrayArrayArray135[z][x][y] |= 0x249;
@@ -1071,7 +1071,7 @@ final class ObjectManager {
             } else {
                 obj5 = new Animable_Sub5(objectId, j1, 3, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method282(orientations2[j1], ((Animable) (obj5)), uid, y, byte0, x, null, k2, 0, z);
+            controller.createWall(orientations2[j1], ((Animable) (obj5)), uid, y, byte0, x, null, k2, 0, z);
             if (objDef.aBoolean779) {
                 if (j1 == 0) {
                     aByteArrayArrayArray134[z][x][y + 1] = 50;
@@ -1130,7 +1130,7 @@ final class ObjectManager {
             } else {
                 obj7 = new Animable_Sub5(objectId, 0, 4, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, j1 * 512, z, 0, k2, ((Animable) (obj7)), x, byte0, 0, orientations[j1]);
+            controller.createWallDecoration(uid, y, j1 * 512, z, 0, k2, ((Animable) (obj7)), x, byte0, 0, orientations[j1]);
             return;
         }
         if (j == 5) {
@@ -1145,7 +1145,7 @@ final class ObjectManager {
             } else {
                 obj13 = new Animable_Sub5(objectId, 0, 4, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, j1 * 512, z, anIntArray137[j1] * i4, k2, ((Animable) (obj13)), x, byte0, anIntArray144[j1] * i4, orientations[j1]);
+            controller.createWallDecoration(uid, y, j1 * 512, z, anIntArray137[j1] * i4, k2, ((Animable) (obj13)), x, byte0, anIntArray144[j1] * i4, orientations[j1]);
             return;
         }
         if (j == 6) {
@@ -1155,7 +1155,7 @@ final class ObjectManager {
             } else {
                 obj8 = new Animable_Sub5(objectId, 0, 4, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, j1, z, 0, k2, ((Animable) (obj8)), x, byte0, 0, 256);
+            controller.createWallDecoration(uid, y, j1, z, 0, k2, ((Animable) (obj8)), x, byte0, 0, 256);
             return;
         }
         if (j == 7) {
@@ -1165,7 +1165,7 @@ final class ObjectManager {
             } else {
                 obj9 = new Animable_Sub5(objectId, 0, 4, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, j1, z, 0, k2, ((Animable) (obj9)), x, byte0, 0, 512);
+            controller.createWallDecoration(uid, y, j1, z, 0, k2, ((Animable) (obj9)), x, byte0, 0, 512);
             return;
         }
         if (j == 8) {
@@ -1175,7 +1175,7 @@ final class ObjectManager {
             } else {
                 obj10 = new Animable_Sub5(objectId, 0, 4, l1, i2, k1, j2, objDef.anInt781, true);
             }
-            controller.method283(uid, y, j1, z, 0, k2, ((Animable) (obj10)), x, byte0, 0, 768);
+            controller.createWallDecoration(uid, y, j1, z, 0, k2, ((Animable) (obj10)), x, byte0, 0, 768);
         }
     }
 
@@ -1313,7 +1313,7 @@ final class ObjectManager {
         }
     }
 
-    public final void method183(ClipMap clipMap[], WorldController controller, int i, int j, int k, int l, byte buf[], int i1, int j1, int k1) {
+    public final void method183(ClipMap clipMap[], World controller, int i, int j, int k, int l, byte buf[], int i1, int j1, int k1) {
         label0:
         {
             Stream stream = new Stream(buf);
@@ -1391,7 +1391,7 @@ final class ObjectManager {
     }
 
     public final void method190(int i, ClipMap clipMap[], int j,
-            WorldController controller, byte buf[]) {
+            World controller, byte buf[]) {
         label0:
         {
             Stream stream = new Stream(buf);

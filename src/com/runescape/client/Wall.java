@@ -1,6 +1,6 @@
 package com.runescape.client;
 
-public final class Object1 {
+public final class Wall {
 
     int anInt273;
     int anInt274;
@@ -12,6 +12,6 @@ public final class Object1 {
     public int uid;
     byte aByte281;
 
-    public Object1() {
+    public Wall() {
     }
 }

@@ -1,8 +1,8 @@
 package com.runescape.client;
 
-public final class Object2 {
+public final class WallDecoration {
 
-    int anInt499;
+    int elevation;
     int x;
     int y;
     int anInt502;
@@ -11,6 +11,6 @@ public final class Object2 {
     public int uid;
     byte aByte506;
 
-    public Object2() {
+    public WallDecoration() {
     }
 }

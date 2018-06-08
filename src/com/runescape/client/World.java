@@ -2,7 +2,7 @@ package com.runescape.client;
 
 import com.runescape.client.util.node.NodeList;
 
-final class WorldController {
+final class World {
 
     public static boolean lowMem = true;
     private static int anInt446;
@@ -199,7 +199,7 @@ final class WorldController {
     private final int regionsX;
     private final int regionsY;
     private final int[][][] anIntArrayArrayArray440;
-    private final Ground[][][] groundArray;
+    private final Tile[][][] tiles;
     private int anInt442;
     private int obj5CacheCurrPos;
     private final Object5[] obj5Cache;
@@ -263,7 +263,7 @@ final class WorldController {
         }
     };
 
-    public WorldController(int ai[][][]) {
+    public World(int ai[][][]) {
         int regionsY = 104;//was parameter
         int regionsX = 104;//was parameter
         int regionsZ = 4;//was parameter
@@ -274,7 +274,7 @@ final class WorldController {
         this.regionsZ = regionsZ;
         this.regionsX = regionsX;
         this.regionsY = regionsY;
-        groundArray = new Ground[regionsZ][regionsX][regionsY];
+        tiles = new Tile[regionsZ][regionsX][regionsY];
         anIntArrayArrayArray445 = new int[regionsZ][regionsX + 1][regionsY + 1];
         anIntArrayArrayArray440 = ai;
         initToNull();
@@ -284,7 +284,7 @@ final class WorldController {
         for (int z = 0; z < regionsZ; z++) {
             for (int x = 0; x < regionsX; x++) {
                 for (int y = 0; y < regionsY; y++) {
-                    groundArray[z][x][y] = null;
+                    tiles[z][x][y] = null;
                 }
             }
         }
@@ -311,18 +311,18 @@ final class WorldController {
 
         for (int x = 0; x < regionsX; x++) {
             for (int y = 0; y < regionsY; y++) {
-                if (groundArray[z][x][y] == null) {
-                    groundArray[z][x][y] = new Ground(z, x, y);
+                if (tiles[z][x][y] == null) {
+                    tiles[z][x][y] = new Tile(z, x, y);
                 }
             }
         }
     }
 
     public void method276(int y, int x) {
-        Ground ground = groundArray[0][x][y];
+        Tile tile = tiles[0][x][y];
 
         for (int z = 0; z < 3; z++) {
-            Ground tmp = groundArray[z][x][y] = groundArray[z + 1][x][y];
+            Tile tmp = tiles[z][x][y] = tiles[z + 1][x][y];
 
             if (tmp != null) {
                 tmp.anInt1307--;
@@ -337,18 +337,18 @@ final class WorldController {
             }
         }
 
-        if (groundArray[0][x][y] == null) {
-            groundArray[0][x][y] = new Ground(0, x, y);
+        if (tiles[0][x][y] == null) {
+            tiles[0][x][y] = new Tile(0, x, y);
         }
-        groundArray[0][x][y].ground = ground;
-        groundArray[3][x][y] = null;
+        tiles[0][x][y].tile = tile;
+        tiles[3][x][y] = null;
     }
 
     public void method278(int z, int x, int y, int l) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground != null) {
-            groundArray[z][x][y].anInt1321 = l;
+        if (tile != null) {
+            tiles[z][x][y].anInt1321 = l;
         }
     }
 
@@ -359,11 +359,11 @@ final class WorldController {
             Class43 class43 = new Class43(k2, l2, i3, j3, -1, k4, false);
 
             for (int z1 = z; z1 >= 0; z1--) {
-                if (groundArray[z1][x][y] == null) {
-                    groundArray[z1][x][y] = new Ground(z1, x, y);
+                if (tiles[z1][x][y] == null) {
+                    tiles[z1][x][y] = new Tile(z1, x, y);
                 }
             }
-            groundArray[z][x][y].aClass43_1311 = class43;
+            tiles[z][x][y].aClass43_1311 = class43;
             return;
         }
 
@@ -371,57 +371,57 @@ final class WorldController {
             Class43 class43_1 = new Class43(k3, l3, i4, j4, j1, l4, k1 == l1 && k1 == i2 && k1 == j2);
 
             for (int z1 = z; z1 >= 0; z1--) {
-                if (groundArray[z1][x][y] == null) {
-                    groundArray[z1][x][y] = new Ground(z1, x, y);
+                if (tiles[z1][x][y] == null) {
+                    tiles[z1][x][y] = new Tile(z1, x, y);
                 }
             }
-            groundArray[z][x][y].aClass43_1311 = class43_1;
+            tiles[z][x][y].aClass43_1311 = class43_1;
             return;
         }
         Class40 class40 = new Class40(y, k3, j3, i2, j1, i4, i1, k2, k4, i3, j2, l1, k1, l, j4, l3, l2, x, l4);
 
         for (int z1 = z; z1 >= 0; z1--) {
-            if (groundArray[z1][x][y] == null) {
-                groundArray[z1][x][y] = new Ground(z1, x, y);
+            if (tiles[z1][x][y] == null) {
+                tiles[z1][x][y] = new Tile(z1, x, y);
             }
         }
-        groundArray[z][x][y].aClass40_1312 = class40;
+        tiles[z][x][y].aClass40_1312 = class40;
     }
 
-    public void method280(int z, int j, int y, Animable anim, byte byte0, int uid, int x) {
+    public void createGroundDecoration(int z, int elevation, int y, Animable anim, byte byte0, int uid, int x) {
         if (anim == null) {
             return;
         }
-        Object3 obj3 = new Object3();
-        obj3.anim = anim;
-        obj3.x = x * 128 + 64;
-        obj3.y = y * 128 + 64;
-        obj3.anInt811 = j;
-        obj3.uid = uid;
-        obj3.aByte816 = byte0;
+        TileDecoration decoration = new TileDecoration();
+        decoration.model = anim;
+        decoration.x = x * 128 + 64;
+        decoration.y = y * 128 + 64;
+        decoration.elevation = elevation;
+        decoration.uid = uid;
+        decoration.aByte816 = byte0;
 
-        if (groundArray[z][x][y] == null) {
-            groundArray[z][x][y] = new Ground(z, x, y);
+        if (tiles[z][x][y] == null) {
+            tiles[z][x][y] = new Tile(z, x, y);
         }
-        groundArray[z][x][y].obj3 = obj3;
+        tiles[z][x][y].decoration = decoration;
     }
 
-    public void method281(int x, int j, Animable anim2, int k, Animable anim3, Animable anim1, int z, int y) {
+    public void method281(int x, int uid, Animable anim2, int k, Animable anim3, Animable anim1, int z, int y) {
         Object4 obj4 = new Object4();
         obj4.anim1 = anim1;
         obj4.x = x * 128 + 64;
         obj4.y = y * 128 + 64;
         obj4.anInt45 = k;
-        obj4.uid = j;
+        obj4.uid = uid;
         obj4.anim2 = anim2;
         obj4.anim3 = anim3;
         int j1 = 0;
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground != null) {
-            for (int k1 = 0; k1 < ground.anInt1317; k1++) {
-                if (ground.obj5Array[k1].anim instanceof Model) {
-                    int l1 = ((Model) ground.obj5Array[k1].anim).anInt1654;
+        if (tile != null) {
+            for (int k1 = 0; k1 < tile.anInt1317; k1++) {
+                if (tile.obj5Array[k1].anim instanceof Model) {
+                    int l1 = ((Model) tile.obj5Array[k1].anim).anInt1654;
 
                     if (l1 > j1) {
                         j1 = l1;
@@ -431,57 +431,57 @@ final class WorldController {
         }
         obj4.anInt52 = j1;
 
-        if (groundArray[z][x][y] == null) {
-            groundArray[z][x][y] = new Ground(z, x, y);
+        if (tiles[z][x][y] == null) {
+            tiles[z][x][y] = new Tile(z, x, y);
         }
-        groundArray[z][x][y].obj4 = obj4;
+        tiles[z][x][y].obj4 = obj4;
     }
 
-    public void method282(int orientation, Animable anim1, int uid, int y,
+    public void createWall(int orientation, Animable anim1, int uid, int y,
             byte byte0, int x, Animable anim2, int i1, int orientation1, int z) {
         if (anim1 == null && anim2 == null) {
             return;
         }
-        Object1 obj1 = new Object1();
-        obj1.uid = uid;
-        obj1.aByte281 = byte0;
-        obj1.anInt274 = x * 128 + 64;
-        obj1.anInt275 = y * 128 + 64;
-        obj1.anInt273 = i1;
-        obj1.anim1 = anim1;
-        obj1.anim2 = anim2;
-        obj1.orientation = orientation;
-        obj1.orientation1 = orientation1;
+        Wall wall = new Wall();
+        wall.uid = uid;
+        wall.aByte281 = byte0;
+        wall.anInt274 = x * 128 + 64;
+        wall.anInt275 = y * 128 + 64;
+        wall.anInt273 = i1;
+        wall.anim1 = anim1;
+        wall.anim2 = anim2;
+        wall.orientation = orientation;
+        wall.orientation1 = orientation1;
 
         for (int z1 = z; z1 >= 0; z1--) {
-            if (groundArray[z1][x][y] == null) {
-                groundArray[z1][x][y] = new Ground(z1, x, y);
+            if (tiles[z1][x][y] == null) {
+                tiles[z1][x][y] = new Tile(z1, x, y);
             }
         }
-        groundArray[z][x][y].obj1 = obj1;
+        tiles[z][x][y].wall = wall;
     }
 
-    public void method283(int uid, int y, int k, int z, int offsetX, int k1,
+    public void createWallDecoration(int uid, int y, int k, int z, int offsetX, int k1,
             Animable anim, int x, byte byte0, int offsetY, int j2) {
         if (anim == null) {
             return;
         }
-        Object2 obj2 = new Object2();
-        obj2.uid = uid;
-        obj2.aByte506 = byte0;
-        obj2.x = x * 128 + 64 + offsetX;
-        obj2.y = y * 128 + 64 + offsetY;
-        obj2.anInt499 = k1;
-        obj2.anim = anim;
-        obj2.anInt502 = j2;
-        obj2.anInt503 = k;
+        WallDecoration wallDecoration = new WallDecoration();
+        wallDecoration.uid = uid;
+        wallDecoration.aByte506 = byte0;
+        wallDecoration.x = x * 128 + 64 + offsetX;
+        wallDecoration.y = y * 128 + 64 + offsetY;
+        wallDecoration.elevation = k1;
+        wallDecoration.anim = anim;
+        wallDecoration.anInt502 = j2;
+        wallDecoration.anInt503 = k;
 
         for (int z1 = z; z1 >= 0; z1--) {
-            if (groundArray[z1][x][y] == null) {
-                groundArray[z1][x][y] = new Ground(z1, x, y);
+            if (tiles[z1][x][y] == null) {
+                tiles[z1][x][y] = new Tile(z1, x, y);
             }
         }
-        groundArray[z][x][y].obj2 = obj2;
+        tiles[z][x][y].wallDecoration = wallDecoration;
     }
 
     public boolean method284(int uid, byte byte0, int j, int lengthY, Animable anim,
@@ -541,9 +541,9 @@ final class WorldController {
                 if (x1 < 0 || y1 < 0 || x1 >= regionsX || y1 >= regionsY) {
                     return false;
                 }
-                Ground ground = groundArray[z][x1][y1];
+                Tile tile = tiles[z][x1][y1];
 
-                if (ground != null && ground.anInt1317 >= 5) {
+                if (tile != null && tile.anInt1317 >= 5) {
                     return false;
                 }
             }
@@ -583,15 +583,15 @@ final class WorldController {
                 }
 
                 for (int z1 = z; z1 >= 0; z1--) {
-                    if (groundArray[z1][x1][y1] == null) {
-                        groundArray[z1][x1][y1] = new Ground(z1, x1, y1);
+                    if (tiles[z1][x1][y1] == null) {
+                        tiles[z1][x1][y1] = new Tile(z1, x1, y1);
                     }
                 }
-                Ground ground = groundArray[z][x1][y1];
-                ground.obj5Array[ground.anInt1317] = obj5;
-                ground.anIntArray1319[ground.anInt1317] = k3;
-                ground.anInt1320 |= k3;
-                ground.anInt1317++;
+                Tile tile = tiles[z][x1][y1];
+                tile.obj5Array[tile.anInt1317] = obj5;
+                tile.anIntArray1319[tile.anInt1317] = k3;
+                tile.anInt1320 |= k3;
+                tile.anInt1317++;
             }
         }
 
@@ -613,26 +613,26 @@ final class WorldController {
     private void method289(Object5 obj5) {
         for (int x = obj5.x; x <= obj5.anInt524; x++) {
             for (int y = obj5.y; y <= obj5.anInt526; y++) {
-                Ground ground = groundArray[obj5.z][x][y];
+                Tile tile = tiles[obj5.z][x][y];
 
-                if (ground != null) {
-                    for (int l = 0; l < ground.anInt1317; l++) {
-                        if (ground.obj5Array[l] != obj5) {
+                if (tile != null) {
+                    for (int l = 0; l < tile.anInt1317; l++) {
+                        if (tile.obj5Array[l] != obj5) {
                             continue;
                         }
-                        ground.anInt1317--;
+                        tile.anInt1317--;
 
-                        for (int i1 = l; i1 < ground.anInt1317; i1++) {
-                            ground.obj5Array[i1] = ground.obj5Array[i1 + 1];
-                            ground.anIntArray1319[i1] = ground.anIntArray1319[i1 + 1];
+                        for (int i1 = l; i1 < tile.anInt1317; i1++) {
+                            tile.obj5Array[i1] = tile.obj5Array[i1 + 1];
+                            tile.anIntArray1319[i1] = tile.anIntArray1319[i1 + 1];
                         }
-                        ground.obj5Array[ground.anInt1317] = null;
+                        tile.obj5Array[tile.anInt1317] = null;
                         break;
                     }
-                    ground.anInt1320 = 0;
+                    tile.anInt1320 = 0;
 
-                    for (int j1 = 0; j1 < ground.anInt1317; j1++) {
-                        ground.anInt1320 |= ground.anIntArray1319[j1];
+                    for (int j1 = 0; j1 < tile.anInt1317; j1++) {
+                        tile.anInt1320 |= tile.anIntArray1319[j1];
                     }
                 }
             }
@@ -640,50 +640,50 @@ final class WorldController {
     }
 
     public void method290(int y, int multiplier, int x, int z) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return;
         }
-        Object2 obj2 = ground.obj2;
+        WallDecoration wallDecoration = tile.wallDecoration;
 
-        if (obj2 != null) {
+        if (wallDecoration != null) {
             int x1 = x * 128 + 64;
             int y1 = y * 128 + 64;
-            obj2.x = x1 + ((obj2.x - x1) * multiplier) / 16;
-            obj2.y = y1 + ((obj2.y - y1) * multiplier) / 16;
+            wallDecoration.x = x1 + ((wallDecoration.x - x1) * multiplier) / 16;
+            wallDecoration.y = y1 + ((wallDecoration.y - y1) * multiplier) / 16;
         }
     }
 
-    public void method291(int x, int z, int y, byte byte0) {
-        Ground ground = groundArray[z][x][y];
+    public void deleteWall(int x, int z, int y, byte byte0) {
+        Tile tile = tiles[z][x][y];
 
         if (byte0 != -119) {
             aBoolean434 = !aBoolean434;
         }
 
-        if (ground != null) {
-            ground.obj1 = null;
+        if (tile != null) {
+            tile.wall = null;
         }
     }
 
-    public void deleteObject2(int y, int z, int x) {
-        Ground ground = groundArray[z][x][y];
+    public void deleteWallDecoration(int y, int z, int x) {
+        Tile tile = tiles[z][x][y];
 
-        if (ground != null) {
-            ground.obj2 = null;
+        if (tile != null) {
+            tile.wallDecoration = null;
         }
     }
 
     public void method293(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return;
         }
 
-        for (int j1 = 0; j1 < ground.anInt1317; j1++) {
-            Object5 obj5 = ground.obj5Array[j1];
+        for (int j1 = 0; j1 < tile.anInt1317; j1++) {
+            Object5 obj5 = tile.obj5Array[j1];
 
             if ((obj5.uid >> 29 & 3) == 2 && obj5.x == x && obj5.y == y) {
                 method289(obj5);
@@ -692,51 +692,51 @@ final class WorldController {
         }
     }
 
-    public void deleteObject3(int z, int y, int x) {
-        Ground ground = groundArray[z][x][y];
+    public void deleteTileDecoration(int z, int y, int x) {
+        Tile tile = tiles[z][x][y];
 
-        if (ground != null) {
-            ground.obj3 = null;
+        if (tile != null) {
+            tile.decoration = null;
         }
     }
 
     public void deleteObject4(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground != null) {
-            ground.obj4 = null;
+        if (tile != null) {
+            tile.obj4 = null;
         }
     }
 
-    public Object1 getObject1(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+    public Wall getWall(int z, int x, int y) {
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return null;
         } else {
-            return ground.obj1;
+            return tile.wall;
         }
     }
 
-    public Object2 getObject2(int x, int y, int z) {
-        Ground ground = groundArray[z][x][y];
+    public WallDecoration getWallDecoration(int x, int y, int z) {
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return null;
         } else {
-            return ground.obj2;
+            return tile.wallDecoration;
         }
     }
 
     public Object5 getObject5(int x, int y, int z) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return null;
         }
 
-        for (int l = 0; l < ground.anInt1317; l++) {
-            Object5 obj5 = ground.obj5Array[l];
+        for (int l = 0; l < tile.anInt1317; l++) {
+            Object5 obj5 = tile.obj5Array[l];
 
             if ((obj5.uid >> 29 & 3) == 2 && obj5.x == x && obj5.y == y) {
                 return obj5;
@@ -745,45 +745,45 @@ final class WorldController {
         return null;
     }
 
-    public Object3 getObject3(int y, int x, int z) {
-        Ground ground = groundArray[z][x][y];
+    public TileDecoration getTileDecoration(int y, int x, int z) {
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null || ground.obj3 == null) {
+        if (tile == null || tile.decoration == null) {
             return null;
         } else {
-            return ground.obj3;
+            return tile.decoration;
         }
     }
 
     public int getObject1Uid(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null || ground.obj1 == null) {
+        if (tile == null || tile.wall == null) {
             return 0;
         } else {
-            return ground.obj1.uid;
+            return tile.wall.uid;
         }
     }
 
     public int getObject2Uid(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null || ground.obj2 == null) {
+        if (tile == null || tile.wallDecoration == null) {
             return 0;
         } else {
-            return ground.obj2.uid;
+            return tile.wallDecoration.uid;
         }
     }
 
     public int getObject5Uid(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return 0;
         }
 
-        for (int l = 0; l < ground.anInt1317; l++) {
-            Object5 obj5 = ground.obj5Array[l];
+        for (int l = 0; l < tile.anInt1317; l++) {
+            Object5 obj5 = tile.obj5Array[l];
 
             if ((obj5.uid >> 29 & 3) == 2 && obj5.x == x && obj5.y == y) {
                 return obj5.uid;
@@ -793,37 +793,37 @@ final class WorldController {
     }
 
     public int getObject3Uid(int z, int x, int y) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null || ground.obj3 == null) {
+        if (tile == null || tile.decoration == null) {
             return 0;
         } else {
-            return ground.obj3.uid;
+            return tile.decoration.uid;
         }
     }
 
     public int method304(int z, int x, int y, int uid) {
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return -1;
         }
 
-        if (ground.obj1 != null && ground.obj1.uid == uid) {
-            return ground.obj1.aByte281 & 0xff;
+        if (tile.wall != null && tile.wall.uid == uid) {
+            return tile.wall.aByte281 & 0xff;
         }
 
-        if (ground.obj2 != null && ground.obj2.uid == uid) {
-            return ground.obj2.aByte506 & 0xff;
+        if (tile.wallDecoration != null && tile.wallDecoration.uid == uid) {
+            return tile.wallDecoration.aByte506 & 0xff;
         }
 
-        if (ground.obj3 != null && ground.obj3.uid == uid) {
-            return ground.obj3.aByte816 & 0xff;
+        if (tile.decoration != null && tile.decoration.uid == uid) {
+            return tile.decoration.aByte816 & 0xff;
         }
 
-        for (int i = 0; i < ground.anInt1317; i++) {
-            if (ground.obj5Array[i].uid == uid) {
-                return ground.obj5Array[i].aByte530 & 0xff;
+        for (int i = 0; i < tile.anInt1317; i++) {
+            if (tile.obj5Array[i].uid == uid) {
+                return tile.obj5Array[i].aByte530 & 0xff;
             }
         }
         return -1;
@@ -838,35 +838,35 @@ final class WorldController {
         for (int z = 0; z < regionsZ; z++) {
             for (int x = 0; x < regionsX; x++) {
                 for (int y = 0; y < regionsY; y++) {
-                    Ground ground = groundArray[z][x][y];
+                    Tile tile = tiles[z][x][y];
 
-                    if (ground != null) {
-                        Object1 obj1 = ground.obj1;
+                    if (tile != null) {
+                        Wall wall = tile.wall;
 
-                        if (obj1 != null && obj1.anim1 != null && obj1.anim1.aClass33Array1425 != null) {
-                            method307(z, 1, 1, x, y, (Model) obj1.anim1);
+                        if (wall != null && wall.anim1 != null && wall.anim1.aClass33Array1425 != null) {
+                            method307(z, 1, 1, x, y, (Model) wall.anim1);
 
-                            if (obj1.anim2 != null && obj1.anim2.aClass33Array1425 != null) {
-                                method307(z, 1, 1, x, y, (Model) obj1.anim2);
-                                method308((Model) obj1.anim1, (Model) obj1.anim2, 0, 0, 0, false);
-                                ((Model) obj1.anim2).method480(j, k1, k, i, i1);
+                            if (wall.anim2 != null && wall.anim2.aClass33Array1425 != null) {
+                                method307(z, 1, 1, x, y, (Model) wall.anim2);
+                                method308((Model) wall.anim1, (Model) wall.anim2, 0, 0, 0, false);
+                                ((Model) wall.anim2).method480(j, k1, k, i, i1);
                             }
-                            ((Model) obj1.anim1).method480(j, k1, k, i, i1);
+                            ((Model) wall.anim1).method480(j, k1, k, i, i1);
                         }
 
-                        for (int k2 = 0; k2 < ground.anInt1317; k2++) {
-                            Object5 obj5 = ground.obj5Array[k2];
+                        for (int k2 = 0; k2 < tile.anInt1317; k2++) {
+                            Object5 obj5 = tile.obj5Array[k2];
 
                             if (obj5 != null && obj5.anim != null && obj5.anim.aClass33Array1425 != null) {
                                 method307(z, (obj5.anInt524 - obj5.x) + 1, (obj5.anInt526 - obj5.y) + 1, x, y, (Model) obj5.anim);
                                 ((Model) obj5.anim).method480(j, k1, k, i, i1);
                             }
                         }
-                        Object3 obj3 = ground.obj3;
+                        TileDecoration decoration = tile.decoration;
 
-                        if (obj3 != null && obj3.anim.aClass33Array1425 != null) {
-                            method306(x, z, (Model) obj3.anim, y);
-                            ((Model) obj3.anim).method480(j, k1, k, i, i1);
+                        if (decoration != null && decoration.model.aClass33Array1425 != null) {
+                            method306(x, z, (Model) decoration.model, y);
+                            ((Model) decoration.model).method480(j, k1, k, i, i1);
                         }
                     }
                 }
@@ -876,27 +876,27 @@ final class WorldController {
 
     private void method306(int i, int j, Model model, int k) {
         if (i < regionsX) {
-            Ground class30_sub3 = groundArray[j][i + 1][k];
-            if (class30_sub3 != null && class30_sub3.obj3 != null && class30_sub3.obj3.anim.aClass33Array1425 != null) {
-                method308(model, (Model) class30_sub3.obj3.anim, 128, 0, 0, true);
+            Tile class30_sub3 = tiles[j][i + 1][k];
+            if (class30_sub3 != null && class30_sub3.decoration != null && class30_sub3.decoration.model.aClass33Array1425 != null) {
+                method308(model, (Model) class30_sub3.decoration.model, 128, 0, 0, true);
             }
         }
         if (k < regionsX) {
-            Ground class30_sub3_1 = groundArray[j][i][k + 1];
-            if (class30_sub3_1 != null && class30_sub3_1.obj3 != null && class30_sub3_1.obj3.anim.aClass33Array1425 != null) {
-                method308(model, (Model) class30_sub3_1.obj3.anim, 0, 0, 128, true);
+            Tile class30_sub3_1 = tiles[j][i][k + 1];
+            if (class30_sub3_1 != null && class30_sub3_1.decoration != null && class30_sub3_1.decoration.model.aClass33Array1425 != null) {
+                method308(model, (Model) class30_sub3_1.decoration.model, 0, 0, 128, true);
             }
         }
         if (i < regionsX && k < regionsY) {
-            Ground class30_sub3_2 = groundArray[j][i + 1][k + 1];
-            if (class30_sub3_2 != null && class30_sub3_2.obj3 != null && class30_sub3_2.obj3.anim.aClass33Array1425 != null) {
-                method308(model, (Model) class30_sub3_2.obj3.anim, 128, 0, 128, true);
+            Tile class30_sub3_2 = tiles[j][i + 1][k + 1];
+            if (class30_sub3_2 != null && class30_sub3_2.decoration != null && class30_sub3_2.decoration.model.aClass33Array1425 != null) {
+                method308(model, (Model) class30_sub3_2.decoration.model, 128, 0, 128, true);
             }
         }
         if (i < regionsX && k > 0) {
-            Ground class30_sub3_3 = groundArray[j][i + 1][k - 1];
-            if (class30_sub3_3 != null && class30_sub3_3.obj3 != null && class30_sub3_3.obj3.anim.aClass33Array1425 != null) {
-                method308(model, (Model) class30_sub3_3.obj3.anim, 128, 0, -128, true);
+            Tile class30_sub3_3 = tiles[j][i + 1][k - 1];
+            if (class30_sub3_3 != null && class30_sub3_3.decoration != null && class30_sub3_3.decoration.model.aClass33Array1425 != null) {
+                method308(model, (Model) class30_sub3_3.decoration.model, 128, 0, -128, true);
             }
         }
     }
@@ -914,22 +914,22 @@ final class WorldController {
                     if (x1 >= 0 && x1 < regionsX) {
                         for (int y1 = minY; y1 <= maxY; y1++) {
                             if (y1 >= 0 && y1 < regionsY && (!flag || x1 >= maxX || y1 >= maxY || y1 < y && x1 != x)) {
-                                Ground ground = groundArray[z1][x1][y1];
+                                Tile tile = tiles[z1][x1][y1];
 
-                                if (ground != null) {
+                                if (tile != null) {
                                     int i3 = (anIntArrayArrayArray440[z1][x1][y1] + anIntArrayArrayArray440[z1][x1 + 1][y1] + anIntArrayArrayArray440[z1][x1][y1 + 1] + anIntArrayArrayArray440[z1][x1 + 1][y1 + 1]) / 4 - (anIntArrayArrayArray440[z][x][y] + anIntArrayArrayArray440[z][x + 1][y] + anIntArrayArrayArray440[z][x][y + 1] + anIntArrayArrayArray440[z][x + 1][y + 1]) / 4;
-                                    Object1 obj1 = ground.obj1;
+                                    Wall wall = tile.wall;
 
-                                    if (obj1 != null && obj1.anim1 != null && obj1.anim1.aClass33Array1425 != null) {
-                                        method308(model, (Model) obj1.anim1, (x1 - x) * 128 + (1 - lengthX) * 64, i3, (y1 - y) * 128 + (1 - lengthY) * 64, flag);
+                                    if (wall != null && wall.anim1 != null && wall.anim1.aClass33Array1425 != null) {
+                                        method308(model, (Model) wall.anim1, (x1 - x) * 128 + (1 - lengthX) * 64, i3, (y1 - y) * 128 + (1 - lengthY) * 64, flag);
                                     }
 
-                                    if (obj1 != null && obj1.anim2 != null && obj1.anim2.aClass33Array1425 != null) {
-                                        method308(model, (Model) obj1.anim2, (x1 - x) * 128 + (1 - lengthX) * 64, i3, (y1 - y) * 128 + (1 - lengthY) * 64, flag);
+                                    if (wall != null && wall.anim2 != null && wall.anim2.aClass33Array1425 != null) {
+                                        method308(model, (Model) wall.anim2, (x1 - x) * 128 + (1 - lengthX) * 64, i3, (y1 - y) * 128 + (1 - lengthY) * 64, flag);
                                     }
 
-                                    for (int j3 = 0; j3 < ground.anInt1317; j3++) {
-                                        Object5 obj5 = ground.obj5Array[j3];
+                                    for (int j3 = 0; j3 < tile.anInt1317; j3++) {
+                                        Object5 obj5 = tile.obj5Array[j3];
                                         if (obj5 != null && obj5.anim != null && obj5.anim.aClass33Array1425 != null) {
                                             int k3 = (obj5.anInt524 - obj5.x) + 1;
                                             int l3 = (obj5.anInt526 - obj5.y) + 1;
@@ -1010,12 +1010,12 @@ final class WorldController {
 
     public void method309(int ai[], int i, int z, int x, int y) {
         int j = 512;//was parameter
-        Ground ground = groundArray[z][x][y];
+        Tile tile = tiles[z][x][y];
 
-        if (ground == null) {
+        if (tile == null) {
             return;
         }
-        Class43 class43 = ground.aClass43_1311;
+        Class43 class43 = tile.aClass43_1311;
 
         if (class43 != null) {
             int j1 = class43.anInt722;
@@ -1033,7 +1033,7 @@ final class WorldController {
             }
             return;
         }
-        Class40 class40 = ground.aClass40_1312;
+        Class40 class40 = tile.aClass40_1312;
 
         if (class40 == null) {
             return;
@@ -1134,21 +1134,21 @@ final class WorldController {
         anInt446 = 0;
 
         for (int z = anInt442; z < regionsZ; z++) {
-            Ground tiles[][] = groundArray[z];
+            Tile tiles[][] = this.tiles[z];
 
             for (int x = anInt449; x < anInt450; x++) {
                 for (int y = anInt451; y < anInt452; y++) {
-                    Ground ground = tiles[x][y];
+                    Tile tile = tiles[x][y];
 
-                    if (ground != null) {
-                        if (ground.anInt1321 > i1 || !aBooleanArrayArray492[(x - anInt453) + 25][(y - anInt454) + 25] && anIntArrayArrayArray440[z][x][y] - l < 2000) {
-                            ground.aBoolean1322 = false;
-                            ground.aBoolean1323 = false;
-                            ground.anInt1325 = 0;
+                    if (tile != null) {
+                        if (tile.anInt1321 > i1 || !aBooleanArrayArray492[(x - anInt453) + 25][(y - anInt454) + 25] && anIntArrayArrayArray440[z][x][y] - l < 2000) {
+                            tile.aBoolean1322 = false;
+                            tile.aBoolean1323 = false;
+                            tile.anInt1325 = 0;
                         } else {
-                            ground.aBoolean1322 = true;
-                            ground.aBoolean1323 = true;
-                            ground.aBoolean1324 = ground.anInt1317 > 0;
+                            tile.aBoolean1322 = true;
+                            tile.aBoolean1323 = true;
+                            tile.aBoolean1324 = tile.anInt1317 > 0;
                             anInt446++;
                         }
                     }
@@ -1157,7 +1157,7 @@ final class WorldController {
         }
 
         for (int z = anInt442; z < regionsZ; z++) {
-            Ground tiles[][] = groundArray[z];
+            Tile tiles[][] = this.tiles[z];
 
             for (int l2 = -25; l2 <= 0; l2++) {
                 int i3 = anInt453 + l2;
@@ -1170,36 +1170,36 @@ final class WorldController {
 
                         if (i3 >= anInt449) {
                             if (y >= anInt451) {
-                                Ground ground = tiles[i3][y];
+                                Tile tile = tiles[i3][y];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, true);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, true);
                                 }
                             }
 
                             if (i5 < anInt452) {
-                                Ground ground = tiles[i3][i5];
+                                Tile tile = tiles[i3][i5];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, true);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, true);
                                 }
                             }
                         }
 
                         if (x < anInt450) {
                             if (y >= anInt451) {
-                                Ground ground = tiles[x][y];
+                                Tile tile = tiles[x][y];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, true);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, true);
                                 }
                             }
 
                             if (i5 < anInt452) {
-                                Ground ground = tiles[x][i5];
+                                Tile tile = tiles[x][i5];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, true);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, true);
                                 }
                             }
                         }
@@ -1214,7 +1214,7 @@ final class WorldController {
         }
 
         for (int z = anInt442; z < regionsZ; z++) {
-            Ground tiles[][] = groundArray[z];
+            Tile tiles[][] = this.tiles[z];
 
             for (int j3 = -25; j3 <= 0; j3++) {
                 int posX = anInt453 + j3;
@@ -1227,36 +1227,36 @@ final class WorldController {
 
                         if (posX >= anInt449) {
                             if (posY >= anInt451) {
-                                Ground ground = tiles[posX][posY];
+                                Tile tile = tiles[posX][posY];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, false);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, false);
                                 }
                             }
 
                             if (negY < anInt452) {
-                                Ground ground = tiles[posX][negY];
+                                Tile tile = tiles[posX][negY];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, false);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, false);
                                 }
                             }
                         }
 
                         if (negX < anInt450) {
                             if (posY >= anInt451) {
-                                Ground ground = tiles[negX][posY];
+                                Tile tile = tiles[negX][posY];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, false);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, false);
                                 }
                             }
 
                             if (negY < anInt452) {
-                                Ground ground = tiles[negX][negY];
+                                Tile tile = tiles[negX][negY];
 
-                                if (ground != null && ground.aBoolean1322) {
-                                    method314(ground, false);
+                                if (tile != null && tile.aBoolean1322) {
+                                    method314(tile, false);
                                 }
                             }
                         }
@@ -1272,90 +1272,90 @@ final class WorldController {
         aBoolean467 = false;
     }
 
-    private void method314(Ground ground, boolean flag) {
-        groundList.insertHead(ground);
+    private void method314(Tile tile, boolean flag) {
+        groundList.insertHead(tile);
 
         do {
-            Ground ground1;
+            Tile tile1;
 
             do {
-                ground1 = (Ground) groundList.popHead();
+                tile1 = (Tile) groundList.popHead();
 
-                if (ground1 == null) {
+                if (tile1 == null) {
                     return;
                 }
-            } while (!ground1.aBoolean1323);
+            } while (!tile1.aBoolean1323);
 
-            int x = ground1.x;
-            int y = ground1.y;
-            int z1 = ground1.anInt1307;
-            int z = ground1.z;
-            Ground tiles[][] = groundArray[z1];
+            int x = tile1.x;
+            int y = tile1.y;
+            int z1 = tile1.anInt1307;
+            int z = tile1.z;
+            Tile tiles[][] = this.tiles[z1];
 
-            if (ground1.aBoolean1322) {
+            if (tile1.aBoolean1322) {
                 if (flag) {
                     if (z1 > 0) {
-                        Ground ground2 = groundArray[z1 - 1][x][y];
+                        Tile tile2 = this.tiles[z1 - 1][x][y];
 
-                        if (ground2 != null && ground2.aBoolean1323) {
+                        if (tile2 != null && tile2.aBoolean1323) {
                             continue;
                         }
                     }
 
                     if (x <= anInt453 && x > anInt449) {
-                        Ground ground2 = tiles[x - 1][y];
+                        Tile tile2 = tiles[x - 1][y];
 
-                        if (ground2 != null && ground2.aBoolean1323 && (ground2.aBoolean1322 || (ground1.anInt1320 & 1) == 0)) {
+                        if (tile2 != null && tile2.aBoolean1323 && (tile2.aBoolean1322 || (tile1.anInt1320 & 1) == 0)) {
                             continue;
                         }
                     }
 
                     if (x >= anInt453 && x < anInt450 - 1) {
-                        Ground ground3 = tiles[x + 1][y];
+                        Tile tile3 = tiles[x + 1][y];
 
-                        if (ground3 != null && ground3.aBoolean1323 && (ground3.aBoolean1322 || (ground1.anInt1320 & 4) == 0)) {
+                        if (tile3 != null && tile3.aBoolean1323 && (tile3.aBoolean1322 || (tile1.anInt1320 & 4) == 0)) {
                             continue;
                         }
                     }
 
                     if (y <= anInt454 && y > anInt451) {
-                        Ground ground4 = tiles[x][y - 1];
+                        Tile tile4 = tiles[x][y - 1];
 
-                        if (ground4 != null && ground4.aBoolean1323 && (ground4.aBoolean1322 || (ground1.anInt1320 & 8) == 0)) {
+                        if (tile4 != null && tile4.aBoolean1323 && (tile4.aBoolean1322 || (tile1.anInt1320 & 8) == 0)) {
                             continue;
                         }
                     }
 
                     if (y >= anInt454 && y < anInt452 - 1) {
-                        Ground ground5 = tiles[x][y + 1];
+                        Tile tile5 = tiles[x][y + 1];
 
-                        if (ground5 != null && ground5.aBoolean1323 && (ground5.aBoolean1322 || (ground1.anInt1320 & 2) == 0)) {
+                        if (tile5 != null && tile5.aBoolean1323 && (tile5.aBoolean1322 || (tile1.anInt1320 & 2) == 0)) {
                             continue;
                         }
                     }
                 } else {
                     flag = true;
                 }
-                ground1.aBoolean1322 = false;
+                tile1.aBoolean1322 = false;
 
-                if (ground1.ground != null) {
-                    Ground ground2 = ground1.ground;
+                if (tile1.tile != null) {
+                    Tile tile2 = tile1.tile;
 
-                    if (ground2.aClass43_1311 != null) {
+                    if (tile2.aClass43_1311 != null) {
                         if (!method320(0, x, y)) {
-                            method315(ground2.aClass43_1311, 0, anInt458, anInt459, anInt460, anInt461, x, y);
+                            method315(tile2.aClass43_1311, 0, anInt458, anInt459, anInt460, anInt461, x, y);
                         }
-                    } else if (ground2.aClass40_1312 != null && !method320(0, x, y)) {
-                        method316(x, anInt458, anInt460, ground2.aClass40_1312, anInt459, y, anInt461);
+                    } else if (tile2.aClass40_1312 != null && !method320(0, x, y)) {
+                        method316(x, anInt458, anInt460, tile2.aClass40_1312, anInt459, y, anInt461);
                     }
-                    Object1 obj1 = ground2.obj1;
+                    Wall wall = tile2.wall;
 
-                    if (obj1 != null) {
-                        obj1.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, obj1.anInt274 - anInt455, obj1.anInt273 - anInt456, obj1.anInt275 - anInt457, obj1.uid);
+                    if (wall != null) {
+                        wall.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
 
-                    for (int i2 = 0; i2 < ground2.anInt1317; i2++) {
-                        Object5 obj5 = ground2.obj5Array[i2];
+                    for (int i2 = 0; i2 < tile2.anInt1317; i2++) {
+                        Object5 obj5 = tile2.obj5Array[i2];
 
                         if (obj5 != null) {
                             obj5.anim.method443(obj5.anInt522, anInt458, anInt459, anInt460, anInt461, obj5.anInt519 - anInt455, obj5.anInt518 - anInt456, obj5.anInt520 - anInt457, obj5.uid);
@@ -1364,21 +1364,21 @@ final class WorldController {
                 }
                 boolean flag1 = false;
 
-                if (ground1.aClass43_1311 != null) {
+                if (tile1.aClass43_1311 != null) {
                     if (!method320(z, x, y)) {
                         flag1 = true;
-                        method315(ground1.aClass43_1311, z, anInt458, anInt459, anInt460, anInt461, x, y);
+                        method315(tile1.aClass43_1311, z, anInt458, anInt459, anInt460, anInt461, x, y);
                     }
-                } else if (ground1.aClass40_1312 != null && !method320(z, x, y)) {
+                } else if (tile1.aClass40_1312 != null && !method320(z, x, y)) {
                     flag1 = true;
-                    method316(x, anInt458, anInt460, ground1.aClass40_1312, anInt459, y, anInt461);
+                    method316(x, anInt458, anInt460, tile1.aClass40_1312, anInt459, y, anInt461);
                 }
                 int j1 = 0;
                 int j2 = 0;
-                Object1 obj1 = ground1.obj1;
-                Object2 obj2 = ground1.obj2;
+                Wall wall = tile1.wall;
+                WallDecoration wallDecoration = tile1.wallDecoration;
 
-                if (obj1 != null || obj2 != null) {
+                if (wall != null || wallDecoration != null) {
                     if (anInt453 == x) {
                         j1++;
                     } else if (anInt453 < x) {
@@ -1391,49 +1391,49 @@ final class WorldController {
                         j1 += 6;
                     }
                     j2 = anIntArray478[j1];
-                    ground1.anInt1328 = anIntArray480[j1];
+                    tile1.anInt1328 = anIntArray480[j1];
                 }
 
-                if (obj1 != null) {
-                    if ((obj1.orientation & anIntArray479[j1]) != 0) {
-                        if (obj1.orientation == 16) {
-                            ground1.anInt1325 = 3;
-                            ground1.anInt1326 = anIntArray481[j1];
-                            ground1.anInt1327 = 3 - ground1.anInt1326;
-                        } else if (obj1.orientation == 32) {
-                            ground1.anInt1325 = 6;
-                            ground1.anInt1326 = anIntArray482[j1];
-                            ground1.anInt1327 = 6 - ground1.anInt1326;
-                        } else if (obj1.orientation == 64) {
-                            ground1.anInt1325 = 12;
-                            ground1.anInt1326 = anIntArray483[j1];
-                            ground1.anInt1327 = 12 - ground1.anInt1326;
+                if (wall != null) {
+                    if ((wall.orientation & anIntArray479[j1]) != 0) {
+                        if (wall.orientation == 16) {
+                            tile1.anInt1325 = 3;
+                            tile1.anInt1326 = anIntArray481[j1];
+                            tile1.anInt1327 = 3 - tile1.anInt1326;
+                        } else if (wall.orientation == 32) {
+                            tile1.anInt1325 = 6;
+                            tile1.anInt1326 = anIntArray482[j1];
+                            tile1.anInt1327 = 6 - tile1.anInt1326;
+                        } else if (wall.orientation == 64) {
+                            tile1.anInt1325 = 12;
+                            tile1.anInt1326 = anIntArray483[j1];
+                            tile1.anInt1327 = 12 - tile1.anInt1326;
                         } else {
-                            ground1.anInt1325 = 9;
-                            ground1.anInt1326 = anIntArray484[j1];
-                            ground1.anInt1327 = 9 - ground1.anInt1326;
+                            tile1.anInt1325 = 9;
+                            tile1.anInt1326 = anIntArray484[j1];
+                            tile1.anInt1327 = 9 - tile1.anInt1326;
                         }
                     } else {
-                        ground1.anInt1325 = 0;
+                        tile1.anInt1325 = 0;
                     }
 
-                    if ((obj1.orientation & j2) != 0 && !method321(z, x, y, obj1.orientation)) {
-                        obj1.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, obj1.anInt274 - anInt455, obj1.anInt273 - anInt456, obj1.anInt275 - anInt457, obj1.uid);
+                    if ((wall.orientation & j2) != 0 && !method321(z, x, y, wall.orientation)) {
+                        wall.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
 
-                    if ((obj1.orientation1 & j2) != 0 && !method321(z, x, y, obj1.orientation1)) {
-                        obj1.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, obj1.anInt274 - anInt455, obj1.anInt273 - anInt456, obj1.anInt275 - anInt457, obj1.uid);
+                    if ((wall.orientation1 & j2) != 0 && !method321(z, x, y, wall.orientation1)) {
+                        wall.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
                 }
 
-                if (obj2 != null && !method322(z, x, y, obj2.anim.modelHeight)) {
-                    if ((obj2.anInt502 & j2) != 0) {
-                        obj2.anim.method443(obj2.anInt503, anInt458, anInt459, anInt460, anInt461, obj2.x - anInt455, obj2.anInt499 - anInt456, obj2.y - anInt457, obj2.uid);
-                    } else if ((obj2.anInt502 & 0x300) != 0) {
-                        int j4 = obj2.x - anInt455;
-                        int l5 = obj2.anInt499 - anInt456;
-                        int k6 = obj2.y - anInt457;
-                        int i8 = obj2.anInt503;
+                if (wallDecoration != null && !method322(z, x, y, wallDecoration.anim.modelHeight)) {
+                    if ((wallDecoration.anInt502 & j2) != 0) {
+                        wallDecoration.anim.method443(wallDecoration.anInt503, anInt458, anInt459, anInt460, anInt461, wallDecoration.x - anInt455, wallDecoration.elevation - anInt456, wallDecoration.y - anInt457, wallDecoration.uid);
+                    } else if ((wallDecoration.anInt502 & 0x300) != 0) {
+                        int j4 = wallDecoration.x - anInt455;
+                        int l5 = wallDecoration.elevation - anInt456;
+                        int k6 = wallDecoration.y - anInt457;
+                        int i8 = wallDecoration.anInt503;
                         int k9;
 
                         if (i8 == 1 || i8 == 2) {
@@ -1449,27 +1449,27 @@ final class WorldController {
                             k10 = k6;
                         }
 
-                        if ((obj2.anInt502 & 0x100) != 0 && k10 < k9) {
+                        if ((wallDecoration.anInt502 & 0x100) != 0 && k10 < k9) {
                             int i11 = j4 + anIntArray463[i8];
                             int k11 = k6 + anIntArray464[i8];
-                            obj2.anim.method443(i8 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i11, l5, k11, obj2.uid);
+                            wallDecoration.anim.method443(i8 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i11, l5, k11, wallDecoration.uid);
                         }
 
-                        if ((obj2.anInt502 & 0x200) != 0 && k10 > k9) {
+                        if ((wallDecoration.anInt502 & 0x200) != 0 && k10 > k9) {
                             int j11 = j4 + anIntArray465[i8];
                             int l11 = k6 + anIntArray466[i8];
-                            obj2.anim.method443(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j11, l5, l11, obj2.uid);
+                            wallDecoration.anim.method443(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j11, l5, l11, wallDecoration.uid);
                         }
                     }
                 }
 
                 if (flag1) {
-                    Object3 obj3 = ground1.obj3;
-                    if (obj3 != null) {
-                        obj3.anim.method443(0, anInt458, anInt459, anInt460, anInt461, obj3.x - anInt455, obj3.anInt811 - anInt456, obj3.y - anInt457, obj3.uid);
+                    TileDecoration decoration = tile1.decoration;
+                    if (decoration != null) {
+                        decoration.model.method443(0, anInt458, anInt459, anInt460, anInt461, decoration.x - anInt455, decoration.elevation - anInt456, decoration.y - anInt457, decoration.uid);
                     }
 
-                    Object4 obj4 = ground1.obj4;
+                    Object4 obj4 = tile1.obj4;
                     if (obj4 != null && obj4.anInt52 == 0) {
                         if (obj4.anim2 != null) {
                             obj4.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, obj4.x - anInt455, obj4.anInt45 - anInt456, obj4.y - anInt457, obj4.uid);
@@ -1484,38 +1484,38 @@ final class WorldController {
                         }
                     }
                 }
-                int k4 = ground1.anInt1320;
+                int k4 = tile1.anInt1320;
                 if (k4 != 0) {
                     if (x < anInt453 && (k4 & 4) != 0) {
-                        Ground class30_sub3_17 = tiles[x + 1][y];
+                        Tile class30_sub3_17 = tiles[x + 1][y];
                         if (class30_sub3_17 != null && class30_sub3_17.aBoolean1323) {
                             groundList.insertHead(class30_sub3_17);
                         }
                     }
                     if (y < anInt454 && (k4 & 2) != 0) {
-                        Ground class30_sub3_18 = tiles[x][y + 1];
+                        Tile class30_sub3_18 = tiles[x][y + 1];
                         if (class30_sub3_18 != null && class30_sub3_18.aBoolean1323) {
                             groundList.insertHead(class30_sub3_18);
                         }
                     }
                     if (x > anInt453 && (k4 & 1) != 0) {
-                        Ground class30_sub3_19 = tiles[x - 1][y];
+                        Tile class30_sub3_19 = tiles[x - 1][y];
                         if (class30_sub3_19 != null && class30_sub3_19.aBoolean1323) {
                             groundList.insertHead(class30_sub3_19);
                         }
                     }
                     if (y > anInt454 && (k4 & 8) != 0) {
-                        Ground class30_sub3_20 = tiles[x][y - 1];
+                        Tile class30_sub3_20 = tiles[x][y - 1];
                         if (class30_sub3_20 != null && class30_sub3_20.aBoolean1323) {
                             groundList.insertHead(class30_sub3_20);
                         }
                     }
                 }
             }
-            if (ground1.anInt1325 != 0) {
+            if (tile1.anInt1325 != 0) {
                 boolean flag2 = true;
-                for (int k1 = 0; k1 < ground1.anInt1317; k1++) {
-                    if (ground1.obj5Array[k1].anInt528 == anInt448 || (ground1.anIntArray1319[k1] & ground1.anInt1325) != ground1.anInt1326) {
+                for (int k1 = 0; k1 < tile1.anInt1317; k1++) {
+                    if (tile1.obj5Array[k1].anInt528 == anInt448 || (tile1.anIntArray1319[k1] & tile1.anInt1325) != tile1.anInt1326) {
                         continue;
                     }
                     flag2 = false;
@@ -1523,29 +1523,29 @@ final class WorldController {
                 }
 
                 if (flag2) {
-                    Object1 class10_1 = ground1.obj1;
-                    if (!method321(z, x, y, class10_1.orientation)) {
-                        class10_1.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, class10_1.anInt274 - anInt455, class10_1.anInt273 - anInt456, class10_1.anInt275 - anInt457, class10_1.uid);
+                    Wall wall = tile1.wall;
+                    if (!method321(z, x, y, wall.orientation)) {
+                        wall.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
-                    ground1.anInt1325 = 0;
+                    tile1.anInt1325 = 0;
                 }
             }
-            if (ground1.aBoolean1324) {
+            if (tile1.aBoolean1324) {
                 try {
-                    int i1 = ground1.anInt1317;
-                    ground1.aBoolean1324 = false;
+                    int i1 = tile1.anInt1317;
+                    tile1.aBoolean1324 = false;
                     int l1 = 0;
                     label0:
                     for (int k2 = 0; k2 < i1; k2++) {
-                        Object5 class28_1 = ground1.obj5Array[k2];
+                        Object5 class28_1 = tile1.obj5Array[k2];
                         if (class28_1.anInt528 == anInt448) {
                             continue;
                         }
                         for (int k3 = class28_1.x; k3 <= class28_1.anInt524; k3++) {
                             for (int l4 = class28_1.y; l4 <= class28_1.anInt526; l4++) {
-                                Ground class30_sub3_21 = tiles[k3][l4];
+                                Tile class30_sub3_21 = tiles[k3][l4];
                                 if (class30_sub3_21.aBoolean1322) {
-                                    ground1.aBoolean1324 = true;
+                                    tile1.aBoolean1324 = true;
                                 } else {
                                     if (class30_sub3_21.anInt1325 == 0) {
                                         continue;
@@ -1563,10 +1563,10 @@ final class WorldController {
                                     if (l4 < class28_1.anInt526) {
                                         l6 += 2;
                                     }
-                                    if ((l6 & class30_sub3_21.anInt1325) != ground1.anInt1327) {
+                                    if ((l6 & class30_sub3_21.anInt1325) != tile1.anInt1327) {
                                         continue;
                                     }
-                                    ground1.aBoolean1324 = true;
+                                    tile1.aBoolean1324 = true;
                                 }
                                 continue label0;
                             }
@@ -1619,7 +1619,7 @@ final class WorldController {
                         }
                         for (int k7 = class28_3.x; k7 <= class28_3.anInt524; k7++) {
                             for (int l8 = class28_3.y; l8 <= class28_3.anInt526; l8++) {
-                                Ground class30_sub3_22 = tiles[k7][l8];
+                                Tile class30_sub3_22 = tiles[k7][l8];
                                 if (class30_sub3_22.anInt1325 != 0) {
                                     groundList.insertHead(class30_sub3_22);
                                 } else if ((k7 != x || l8 != y) && class30_sub3_22.aBoolean1323) {
@@ -1630,43 +1630,43 @@ final class WorldController {
                         }
 
                     }
-                    if (ground1.aBoolean1324) {
+                    if (tile1.aBoolean1324) {
                         continue;
                     }
                 } catch (Exception _ex) {
-                    ground1.aBoolean1324 = false;
+                    tile1.aBoolean1324 = false;
                 }
             }
-            if (!ground1.aBoolean1323 || ground1.anInt1325 != 0) {
+            if (!tile1.aBoolean1323 || tile1.anInt1325 != 0) {
                 continue;
             }
             if (x <= anInt453 && x > anInt449) {
-                Ground class30_sub3_8 = tiles[x - 1][y];
+                Tile class30_sub3_8 = tiles[x - 1][y];
                 if (class30_sub3_8 != null && class30_sub3_8.aBoolean1323) {
                     continue;
                 }
             }
             if (x >= anInt453 && x < anInt450 - 1) {
-                Ground class30_sub3_9 = tiles[x + 1][y];
+                Tile class30_sub3_9 = tiles[x + 1][y];
                 if (class30_sub3_9 != null && class30_sub3_9.aBoolean1323) {
                     continue;
                 }
             }
             if (y <= anInt454 && y > anInt451) {
-                Ground class30_sub3_10 = tiles[x][y - 1];
+                Tile class30_sub3_10 = tiles[x][y - 1];
                 if (class30_sub3_10 != null && class30_sub3_10.aBoolean1323) {
                     continue;
                 }
             }
             if (y >= anInt454 && y < anInt452 - 1) {
-                Ground class30_sub3_11 = tiles[x][y + 1];
+                Tile class30_sub3_11 = tiles[x][y + 1];
                 if (class30_sub3_11 != null && class30_sub3_11.aBoolean1323) {
                     continue;
                 }
             }
-            ground1.aBoolean1323 = false;
+            tile1.aBoolean1323 = false;
             anInt446--;
-            Object4 object4 = ground1.obj4;
+            Object4 object4 = tile1.obj4;
             if (object4 != null && object4.anInt52 != 0) {
                 if (object4.anim2 != null) {
                     object4.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, object4.x - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.y - anInt457, object4.uid);
@@ -1678,16 +1678,16 @@ final class WorldController {
                     object4.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, object4.x - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.y - anInt457, object4.uid);
                 }
             }
-            if (ground1.anInt1328 != 0) {
-                Object2 class26 = ground1.obj2;
-                if (class26 != null && !method322(z, x, y, class26.anim.modelHeight)) {
-                    if ((class26.anInt502 & ground1.anInt1328) != 0) {
-                        class26.anim.method443(class26.anInt503, anInt458, anInt459, anInt460, anInt461, class26.x - anInt455, class26.anInt499 - anInt456, class26.y - anInt457, class26.uid);
-                    } else if ((class26.anInt502 & 0x300) != 0) {
-                        int l2 = class26.x - anInt455;
-                        int j3 = class26.anInt499 - anInt456;
-                        int i4 = class26.y - anInt457;
-                        int k5 = class26.anInt503;
+            if (tile1.anInt1328 != 0) {
+                WallDecoration wallDecoration = tile1.wallDecoration;
+                if (wallDecoration != null && !method322(z, x, y, wallDecoration.anim.modelHeight)) {
+                    if ((wallDecoration.anInt502 & tile1.anInt1328) != 0) {
+                        wallDecoration.anim.method443(wallDecoration.anInt503, anInt458, anInt459, anInt460, anInt461, wallDecoration.x - anInt455, wallDecoration.elevation - anInt456, wallDecoration.y - anInt457, wallDecoration.uid);
+                    } else if ((wallDecoration.anInt502 & 0x300) != 0) {
+                        int l2 = wallDecoration.x - anInt455;
+                        int j3 = wallDecoration.elevation - anInt456;
+                        int i4 = wallDecoration.y - anInt457;
+                        int k5 = wallDecoration.anInt503;
                         int j6;
                         if (k5 == 1 || k5 == 2) {
                             j6 = -l2;
@@ -1700,54 +1700,54 @@ final class WorldController {
                         } else {
                             l7 = i4;
                         }
-                        if ((class26.anInt502 & 0x100) != 0 && l7 >= j6) {
+                        if ((wallDecoration.anInt502 & 0x100) != 0 && l7 >= j6) {
                             int i9 = l2 + anIntArray463[k5];
                             int i10 = i4 + anIntArray464[k5];
-                            class26.anim.method443(k5 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i9, j3, i10, class26.uid);
+                            wallDecoration.anim.method443(k5 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i9, j3, i10, wallDecoration.uid);
                         }
-                        if ((class26.anInt502 & 0x200) != 0 && l7 <= j6) {
+                        if ((wallDecoration.anInt502 & 0x200) != 0 && l7 <= j6) {
                             int j9 = l2 + anIntArray465[k5];
                             int j10 = i4 + anIntArray466[k5];
-                            class26.anim.method443(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j9, j3, j10, class26.uid);
+                            wallDecoration.anim.method443(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j9, j3, j10, wallDecoration.uid);
                         }
                     }
                 }
-                Object1 class10_2 = ground1.obj1;
-                if (class10_2 != null) {
-                    if ((class10_2.orientation1 & ground1.anInt1328) != 0 && !method321(z, x, y, class10_2.orientation1)) {
-                        class10_2.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
+                Wall wall = tile1.wall;
+                if (wall != null) {
+                    if ((wall.orientation1 & tile1.anInt1328) != 0 && !method321(z, x, y, wall.orientation1)) {
+                        wall.anim2.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
-                    if ((class10_2.orientation & ground1.anInt1328) != 0 && !method321(z, x, y, class10_2.orientation)) {
-                        class10_2.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
+                    if ((wall.orientation & tile1.anInt1328) != 0 && !method321(z, x, y, wall.orientation)) {
+                        wall.anim1.method443(0, anInt458, anInt459, anInt460, anInt461, wall.anInt274 - anInt455, wall.anInt273 - anInt456, wall.anInt275 - anInt457, wall.uid);
                     }
                 }
             }
             if (z1 < regionsZ - 1) {
-                Ground class30_sub3_12 = groundArray[z1 + 1][x][y];
+                Tile class30_sub3_12 = this.tiles[z1 + 1][x][y];
                 if (class30_sub3_12 != null && class30_sub3_12.aBoolean1323) {
                     groundList.insertHead(class30_sub3_12);
                 }
             }
             if (x < anInt453) {
-                Ground class30_sub3_13 = tiles[x + 1][y];
+                Tile class30_sub3_13 = tiles[x + 1][y];
                 if (class30_sub3_13 != null && class30_sub3_13.aBoolean1323) {
                     groundList.insertHead(class30_sub3_13);
                 }
             }
             if (y < anInt454) {
-                Ground class30_sub3_14 = tiles[x][y + 1];
+                Tile class30_sub3_14 = tiles[x][y + 1];
                 if (class30_sub3_14 != null && class30_sub3_14.aBoolean1323) {
                     groundList.insertHead(class30_sub3_14);
                 }
             }
             if (x > anInt453) {
-                Ground class30_sub3_15 = tiles[x - 1][y];
+                Tile class30_sub3_15 = tiles[x - 1][y];
                 if (class30_sub3_15 != null && class30_sub3_15.aBoolean1323) {
                     groundList.insertHead(class30_sub3_15);
                 }
             }
             if (y > anInt454) {
-                Ground class30_sub3_16 = tiles[x][y - 1];
+                Tile class30_sub3_16 = tiles[x][y - 1];
                 if (class30_sub3_16 != null && class30_sub3_16.aBoolean1323) {
                     groundList.insertHead(class30_sub3_16);
                 }

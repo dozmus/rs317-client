@@ -1,12 +1,8 @@
 package com.runescape.client;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 public final class VarBit {
 
     public static void unpackConfig(StreamLoader streamLoader) {

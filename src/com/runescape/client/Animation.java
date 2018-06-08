@@ -15,11 +15,11 @@ public final class Animation {
             anims = new Animation[length];
         }
         
-        for (int j = 0; j < length; j++) {
-            if (anims[j] == null) {
-                anims[j] = new Animation();
+        for (int i = 0; i < length; i++) {
+            if (anims[i] == null) {
+                anims[i] = new Animation();
             }
-            anims[j].readValues(stream);
+            anims[i].readValues(stream);
         }
     }
     
