@@ -1,5 +1,7 @@
-package com.runescape.client;
+package com.runescape.client.world.data;
 
+import com.runescape.client.MRUNodes;
+import com.runescape.client.render.Sprite;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 import com.runescape.client.render.DrawingArea;
@@ -8,7 +10,7 @@ import com.runescape.client.world.Texture;
 
 public final class ItemDef {
 
-    static MRUNodes mruNodes1 = new MRUNodes(100);
+    public static MRUNodes mruNodes1 = new MRUNodes(100);
     public static MRUNodes mruNodes2 = new MRUNodes(50);
     private static ItemDef[] cache;
     private static int cacheIndex;

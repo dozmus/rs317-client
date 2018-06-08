@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.sound;
 
 import com.runescape.client.io.Stream;
 

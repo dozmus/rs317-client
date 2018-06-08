@@ -1,19 +1,19 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
 public final class Class40 {
 
-    static final int[] anIntArray688 = new int[6];
-    static final int[] anIntArray689 = new int[6];
-    static final int[] anIntArray690 = new int[6];
-    static final int[] anIntArray691 = new int[6];
-    static final int[] anIntArray692 = new int[6];
-    static final int[] anIntArray693 = {
+    public static final int[] anIntArray688 = new int[6];
+    public static final int[] anIntArray689 = new int[6];
+    public static final int[] anIntArray690 = new int[6];
+    public static final int[] anIntArray691 = new int[6];
+    public static final int[] anIntArray692 = new int[6];
+    public static final int[] anIntArray693 = {
         1, 0
     };
-    static final int[] anIntArray694 = {
+    public static final int[] anIntArray694 = {
         2, 1
     };
-    static final int[] anIntArray695 = {
+    public static final int[] anIntArray695 = {
         3, 3
     };
     private static final int[][] anIntArrayArray696 = {
@@ -88,21 +88,21 @@ public final class Class40 {
         }
     };
 
-    final int[] anIntArray673;
-    final int[] anIntArray674;
-    final int[] anIntArray675;
-    final int[] anIntArray676;
-    final int[] anIntArray677;
-    final int[] anIntArray678;
-    final int[] anIntArray679;
-    final int[] anIntArray680;
-    final int[] anIntArray681;
-    int anIntArray682[];
-    final boolean aBoolean683;
-    final int anInt684;
-    final int anInt685;
-    final int anInt686;
-    final int anInt687;
+    public final int[] anIntArray673;
+    public final int[] anIntArray674;
+    public final int[] anIntArray675;
+    public final int[] anIntArray676;
+    public final int[] anIntArray677;
+    public final int[] anIntArray678;
+    public final int[] anIntArray679;
+    public final int[] anIntArray680;
+    public final int[] anIntArray681;
+    public int anIntArray682[];
+    public final boolean aBoolean683;
+    public final int anInt684;
+    public final int anInt685;
+    public final int anInt686;
+    public final int anInt687;
 
     public Class40(int i, int j, int k, int l, int i1, int j1, int k1, int l1,
             int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3,

@@ -1,5 +1,9 @@
-package com.runescape.client;
+package com.runescape.client.world.data;
 
+import com.runescape.client.world.Class36;
+import com.runescape.client.Client;
+import com.runescape.client.MRUNodes;
+import com.runescape.client.VarBit;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
 import com.runescape.client.world.Model;
@@ -10,7 +14,7 @@ public final class EntityDef {
     private static Stream stream;
     private static int[] streamIndices;
     private static EntityDef[] cache;
-    public static Client clientInstance;
+    public static Client instance;
     public static MRUNodes mruNodes = new MRUNodes(30);
 
     public static EntityDef forID(int id) {
@@ -156,9 +160,9 @@ public final class EntityDef {
             int l = varBit.anInt649;
             int i1 = varBit.anInt650;
             int j1 = Client.anIntArray1232[i1 - l];
-            j = clientInstance.currentUserSetting[k] >> l & j1;
+            j = instance.currentUserSetting[k] >> l & j1;
         } else if (anInt59 != -1) {
-            j = clientInstance.currentUserSetting[anInt59];
+            j = instance.currentUserSetting[anInt59];
         }
 
         if (j < 0 || j >= childrenIDs.length || childrenIDs[j] == -1) {

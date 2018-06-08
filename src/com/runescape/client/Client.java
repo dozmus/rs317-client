@@ -1,13 +1,14 @@
 package com.runescape.client;
 
+import com.runescape.client.render.*;
+import com.runescape.client.sound.Sound;
+import com.runescape.client.world.data.EntityDef;
+import com.runescape.client.world.data.ItemDef;
+import com.runescape.client.world.data.ObjectDef;
 import com.runescape.client.io.Decompression;
 import com.runescape.client.io.ISAACCipher;
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
-import com.runescape.client.render.Background;
-import com.runescape.client.render.DrawingArea;
-import com.runescape.client.render.RSImageProducer;
-import com.runescape.client.render.TextDrawingArea;
 import com.runescape.client.signlink.Signlink;
 import com.runescape.client.util.*;
 import com.runescape.client.util.node.Node;
@@ -1387,7 +1388,6 @@ public final class Client extends RSApplet {
                     }
                 }
             }
-
         }
     }
 
@@ -7463,7 +7463,7 @@ public final class Client extends RSApplet {
             startRunnable(mouseCoordinatesTracker, 10);
             Animable_Sub5.clientInstance = this;
             ObjectDef.instance = this;
-            EntityDef.clientInstance = this;
+            EntityDef.instance = this;
             return;
         } catch (Exception ex) {
             Signlink.printError("loaderror " + loadingText + " " + loadingPercentage);

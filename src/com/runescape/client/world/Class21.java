@@ -1,4 +1,4 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
 public final class Class21 {
 

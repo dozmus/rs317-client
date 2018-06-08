@@ -1,9 +1,7 @@
-package com.runescape.client;
+package com.runescape.client.render;
 
 import com.runescape.client.io.Stream;
 import com.runescape.client.io.StreamLoader;
-import com.runescape.client.render.Background;
-import com.runescape.client.render.DrawingArea;
 
 import java.awt.*;
 import java.awt.image.PixelGrabber;

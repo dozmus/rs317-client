@@ -1,8 +1,8 @@
-package com.runescape.client;
+package com.runescape.client.sound;
 
 import com.runescape.client.io.Stream;
 
-final class Sound {
+public final class Sound {
 
     private static final Sound[] cache = new Sound[5000];
     public static final int[] durations = new int[5000];

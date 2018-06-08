@@ -1,6 +1,5 @@
 package com.runescape.client.world;
 
-import com.runescape.client.Class33;
 import com.runescape.client.util.node.NodeSub;
 
 public class Animable extends NodeSub {

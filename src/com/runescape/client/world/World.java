@@ -1,8 +1,7 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
 import com.runescape.client.render.DrawingArea;
 import com.runescape.client.util.node.NodeList;
-import com.runescape.client.world.*;
 
 public final class World {
 

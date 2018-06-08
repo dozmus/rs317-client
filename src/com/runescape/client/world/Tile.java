@@ -1,7 +1,5 @@
 package com.runescape.client.world;
 
-import com.runescape.client.Class40;
-import com.runescape.client.Class43;
 import com.runescape.client.util.node.Node;
 
 public final class Tile extends Node {

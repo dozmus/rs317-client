@@ -1,6 +1,6 @@
 package com.runescape.client.world;
 
-import com.runescape.client.ItemDef;
+import com.runescape.client.world.data.ItemDef;
 
 public final class Item extends Animable {
 

@@ -1,6 +1,8 @@
 package com.runescape.client.world;
 
 import com.runescape.client.*;
+import com.runescape.client.world.data.EntityDef;
+import com.runescape.client.world.data.ItemDef;
 import com.runescape.client.io.Stream;
 import com.runescape.client.util.StringHelper;
 

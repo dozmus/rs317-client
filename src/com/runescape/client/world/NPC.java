@@ -1,7 +1,6 @@
 package com.runescape.client.world;
 
-import com.runescape.client.Class36;
-import com.runescape.client.EntityDef;
+import com.runescape.client.world.data.EntityDef;
 
 public final class NPC extends Entity {
 

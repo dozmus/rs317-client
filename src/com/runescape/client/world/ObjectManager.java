@@ -1,6 +1,7 @@
 package com.runescape.client.world;
 
 import com.runescape.client.*;
+import com.runescape.client.world.data.ObjectDef;
 import com.runescape.client.io.Stream;
 
 public final class ObjectManager {

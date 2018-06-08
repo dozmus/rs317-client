@@ -1,14 +1,14 @@
-package com.runescape.client;
+package com.runescape.client.world;
 
 public final class Class43 {
 
-    final int anInt716;
-    final int anInt717;
-    final int anInt718;
-    final int anInt719;
-    final int anInt720;
-    boolean aBoolean721;
-    final int anInt722;
+    public final int anInt716;
+    public final int anInt717;
+    public final int anInt718;
+    public final int anInt719;
+    public final int anInt720;
+    public boolean aBoolean721;
+    public final int anInt722;
 
     public Class43(int i, int j, int k, int l, int i1, int j1, boolean flag) {
         aBoolean721 = true;
