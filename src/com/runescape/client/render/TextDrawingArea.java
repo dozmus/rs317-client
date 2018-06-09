@@ -131,7 +131,7 @@ public final class TextDrawingArea extends DrawingArea {
         return totalWidth;
     }
 
-    public void method385(int i, String message, int j, int l) {
+    public void method385(int i, String message, int j, int x) {
         if (message == null) {
             return;
         }
@@ -141,9 +141,9 @@ public final class TextDrawingArea extends DrawingArea {
             char c = message.charAt(i1);
 
             if (c != ' ') {
-                method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
+                method392(aByteArrayArray1491[c], x + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
             }
-            l += characterWidths[c];
+            x += characterWidths[c];
         }
     }
 
@@ -327,38 +327,38 @@ public final class TextDrawingArea extends DrawingArea {
         return -1;
     }
 
-    private void method392(byte abyte0[], int i, int j, int k, int l, int i1) {
-        int j1 = i + j * DrawingArea.width;
+    private void method392(byte pixels[], int x, int y, int k, int l, int i1) {
+        int j1 = x + y * DrawingArea.width;
         int k1 = DrawingArea.width - k;
         int l1 = 0;
         int i2 = 0;
-        if (j < DrawingArea.topY) {
-            int j2 = DrawingArea.topY - j;
+        if (y < DrawingArea.topY) {
+            int j2 = DrawingArea.topY - y;
             l -= j2;
-            j = DrawingArea.topY;
+            y = DrawingArea.topY;
             i2 += j2 * k;
             j1 += j2 * DrawingArea.width;
         }
-        if (j + l >= DrawingArea.bottomY) {
-            l -= ((j + l) - DrawingArea.bottomY) + 1;
+        if (y + l >= DrawingArea.bottomY) {
+            l -= ((y + l) - DrawingArea.bottomY) + 1;
         }
-        if (i < DrawingArea.topX) {
-            int k2 = DrawingArea.topX - i;
+        if (x < DrawingArea.topX) {
+            int k2 = DrawingArea.topX - x;
             k -= k2;
-            i = DrawingArea.topX;
+            x = DrawingArea.topX;
             i2 += k2;
             j1 += k2;
             l1 += k2;
             k1 += k2;
         }
-        if (i + k >= DrawingArea.bottomX) {
-            int l2 = ((i + k) - DrawingArea.bottomX) + 1;
+        if (x + k >= DrawingArea.bottomX) {
+            int l2 = ((x + k) - DrawingArea.bottomX) + 1;
             k -= l2;
             l1 += l2;
             k1 += l2;
         }
         if (!(k <= 0 || l <= 0)) {
-            method393(DrawingArea.pixels, abyte0, i1, i2, j1, k, l, k1, l1);
+            method393(DrawingArea.pixels, pixels, i1, i2, j1, k, l, k1, l1);
         }
     }
 

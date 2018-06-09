@@ -25,8 +25,8 @@ import java.net.*;
 
 public final class Client extends RSApplet {
 
-    private static final int DEFAULT_WIDTH = 503;
-    private static final int DEFAULT_HEIGHT = 765;
+    private static final int DEFAULT_HEIGHT = 503;
+    private static final int DEFAULT_WIDTH = 765;
     private static int anInt849;
     private static int anInt854;
     private static int anInt924;
@@ -125,7 +125,7 @@ public final class Client extends RSApplet {
             Signlink.storeid = Integer.parseInt(args[5]);
             Signlink.startSignlink(InetAddress.getByName(args[0]));
             Client c = new Client();
-            c.createClientFrame(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            c.createClientFrame(DEFAULT_HEIGHT, DEFAULT_WIDTH);
         } catch (NumberFormatException | UnknownHostException ex) {
         }
     }
@@ -151,14 +151,14 @@ public final class Client extends RSApplet {
     }
 
     private static String getValuePostfix(int value) {
-        if (value < 0x186a0) {
+        if (value < 100_000) {
             return String.valueOf(value);
         }
 
-        if (value < 0x989680) {
+        if (value < 10_000_000) {
             return value / 1000 + "K";
         } else {
-            return value / 0xf4240 + "M";
+            return value / 1_000_000 + "M";
         }
     }
 
@@ -1030,7 +1030,7 @@ public final class Client extends RSApplet {
         }
         String s1 = getParameter("free");
         isMembers = !(s1 != null && s1.equals("1"));
-        initClientFrame(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        initClientFrame(DEFAULT_HEIGHT, DEFAULT_WIDTH);
     }
 
     public void startRunnable(Runnable runnable, int i) {
@@ -1348,7 +1348,7 @@ public final class Client extends RSApplet {
 
         if (super.gameFrame != null) {
             stream.writePacketHeaderEnc(210);
-            stream.writeInt(0x3f008edd);
+            stream.writeInt(1057001181);
         }
 
         if (lowMem && Signlink.cache_dat != null) {
@@ -3901,7 +3901,7 @@ public final class Client extends RSApplet {
         }
         int j1 = 0;
         while (buf == null) {
-            String s2 = "Unknown error";
+            String error = "Unknown error";
             drawLoadingText(k, "Requesting " + s);
             try {
                 int k1 = 0;
@@ -3922,7 +3922,7 @@ public final class Client extends RSApplet {
                     }
                     int j3 = jagGrab.read(buf, j2, l2);
                     if (j3 < 0) {
-                        s2 = "Length error: " + j2 + "/" + i2;
+                        error = "Length error: " + j2 + "/" + i2;
                         throw new IOException("EOF");
                     }
                     j2 += j3;
@@ -3956,26 +3956,26 @@ public final class Client extends RSApplet {
                  }
                  */
             } catch (IOException e) {
-                if (s2.equals("Unknown error")) {
-                    s2 = "Connection error";
+                if (error.equals("Unknown error")) {
+                    error = "Connection error";
                 }
                 buf = null;
             } catch (NullPointerException e) {
-                s2 = "Null error";
+                error = "Null error";
                 buf = null;
                 
                 if (!Signlink.reporterror) {
                     return null;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                s2 = "Bounds error";
+                error = "Bounds error";
                 buf = null;
                 
                 if (!Signlink.reporterror) {
                     return null;
                 }
             } catch (Exception _ex) {
-                s2 = "Unexpected error";
+                error = "Unexpected error";
                 buf = null;
                 
                 if (!Signlink.reporterror) {
@@ -3989,7 +3989,7 @@ public final class Client extends RSApplet {
                         drawLoadingText(k, "Game updated - please reload page");
                         time = 10;
                     } else {
-                        drawLoadingText(k, s2 + " - Retrying in " + time);
+                        drawLoadingText(k, error + " - Retrying in " + time);
                     }
                     
                     try {
@@ -7574,17 +7574,13 @@ public final class Client extends RSApplet {
     }
 
     private String interfaceIntToString(int j) {
-        if (j < 0x3b9ac9ff) {
-            return String.valueOf(j);
-        } else {
-            return "*";
-        }
+        return j < 0x3b9ac9ff ? String.valueOf(j) : "*";
     }
 
     private void drawErrorScreen() {
         Graphics g = getGameComponent().getGraphics();
         g.setColor(Color.black);
-        g.fillRect(0, 0, 765, 503);
+        g.fillRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setDelayTime(1);
         
         if (loadingError) {
@@ -7990,7 +7986,7 @@ public final class Client extends RSApplet {
         }
 
         if (loadingStage == 2) {
-            method146();
+            drawGame();
         }
 
         if (menuOpen && menuScreenArea == 1) {
@@ -8920,7 +8916,7 @@ public final class Client extends RSApplet {
         Signlink.wavevol = i;
     }
 
-    private void draw3dScreen() {
+    private void drawGameOverlays() {
         drawSplitPrivateChat();
 
         if (crossType == 1) {
@@ -9266,14 +9262,15 @@ public final class Client extends RSApplet {
     }
 
     private int method120() {
-        int j = 3;
+        int plane = 3;
+
         if (yCameraCurve < 310) {
             int k = xCameraPos >> 7;
             int l = yCameraPos >> 7;
             int i1 = myPlayer.x >> 7;
             int j1 = myPlayer.y >> 7;
-            if ((byteGroundArray[plane][k][l] & 4) != 0) {
-                j = plane;
+            if ((byteGroundArray[this.plane][k][l] & 4) != 0) {
+                plane = this.plane;
             }
             int k1;
             if (i1 > k) {
@@ -9296,8 +9293,8 @@ public final class Client extends RSApplet {
                     } else if (k > i1) {
                         k--;
                     }
-                    if ((byteGroundArray[plane][k][l] & 4) != 0) {
-                        j = plane;
+                    if ((byteGroundArray[this.plane][k][l] & 4) != 0) {
+                        plane = this.plane;
                     }
                     k2 += i2;
                     if (k2 >= 0x10000) {
@@ -9307,8 +9304,8 @@ public final class Client extends RSApplet {
                         } else if (l > j1) {
                             l--;
                         }
-                        if ((byteGroundArray[plane][k][l] & 4) != 0) {
-                            j = plane;
+                        if ((byteGroundArray[this.plane][k][l] & 4) != 0) {
+                            plane = this.plane;
                         }
                     }
                 }
@@ -9321,8 +9318,8 @@ public final class Client extends RSApplet {
                     } else if (l > j1) {
                         l--;
                     }
-                    if ((byteGroundArray[plane][k][l] & 4) != 0) {
-                        j = plane;
+                    if ((byteGroundArray[this.plane][k][l] & 4) != 0) {
+                        plane = this.plane;
                     }
                     l2 += j2;
                     if (l2 >= 0x10000) {
@@ -9332,23 +9329,24 @@ public final class Client extends RSApplet {
                         } else if (k > i1) {
                             k--;
                         }
-                        if ((byteGroundArray[plane][k][l] & 4) != 0) {
-                            j = plane;
+                        if ((byteGroundArray[this.plane][k][l] & 4) != 0) {
+                            plane = this.plane;
                         }
                     }
                 }
             }
         }
-        if ((byteGroundArray[plane][myPlayer.x >> 7][myPlayer.y >> 7] & 4) != 0) {
-            j = plane;
+        if ((byteGroundArray[this.plane][myPlayer.x >> 7][myPlayer.y >> 7] & 4) != 0) {
+            plane = this.plane;
         }
-        return j;
+        return plane;
     }
 
     private int method121() {
-        int j = method42(plane, yCameraPos, xCameraPos);
-        if (j - zCameraPos < 800 && (byteGroundArray[plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0) {
-            return plane;
+        int plane = method42(this.plane, yCameraPos, xCameraPos);
+
+        if (plane - zCameraPos < 800 && (byteGroundArray[this.plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0) {
+            return this.plane;
         } else {
             return 3;
         }
@@ -12081,7 +12079,7 @@ public final class Client extends RSApplet {
         return true;
     }
 
-    private void method146() {
+    private void drawGame() {
         anInt1265++;
         method47(true);
         method26(true);
@@ -12110,34 +12108,34 @@ public final class Client extends RSApplet {
         } else {
             j = method121();
         }
-        int tmpCameraPosX = xCameraPos;
-        int tmpCameraPosZ = zCameraPos;
-        int tmpCameraPosY = yCameraPos;
-        int tmpCameraCurveY = yCameraCurve;
-        int tmpCameraCurveX = xCameraCurve;
+        int newCameraPosX = xCameraPos;
+        int newCameraPosZ = zCameraPos;
+        int newCameraPosY = yCameraPos;
+        int newCameraCurveY = yCameraCurve;
+        int newCameraCurveX = xCameraCurve;
         
         for (int i2 = 0; i2 < 5; i2++) {
             if (aBooleanArray876[i2]) {
-                int tmpOffset = (int) ((Math.random() * (double) (anIntArray873[i2] * 2 + 1) - (double) anIntArray873[i2]) + Math.sin((double) anIntArray1030[i2] * ((double) anIntArray928[i2] / 100D)) * (double) anIntArray1203[i2]);
+                int offset = (int) ((Math.random() * (double) (anIntArray873[i2] * 2 + 1) - (double) anIntArray873[i2]) + Math.sin((double) anIntArray1030[i2] * ((double) anIntArray928[i2] / 100D)) * (double) anIntArray1203[i2]);
                 
                 if (i2 == 0) {
-                    xCameraPos += tmpOffset;
+                    xCameraPos += offset;
                 }
                 
                 if (i2 == 1) {
-                    zCameraPos += tmpOffset;
+                    zCameraPos += offset;
                 }
                 
                 if (i2 == 2) {
-                    yCameraPos += tmpOffset;
+                    yCameraPos += offset;
                 }
                 
                 if (i2 == 3) {
-                    xCameraCurve = xCameraCurve + tmpOffset & 0x7ff;
+                    xCameraCurve = xCameraCurve + offset & 0x7ff;
                 }
                 
                 if (i2 == 4) {
-                    yCameraCurve += tmpOffset;
+                    yCameraCurve += offset;
                     
                     if (yCameraCurve < 128) {
                         yCameraCurve = 128;
@@ -12161,13 +12159,13 @@ public final class Client extends RSApplet {
         updateEntities();
         drawHeadIcon();
         method37(k2);
-        draw3dScreen();
+        drawGameOverlays();
         aRSImageProducer_1165.drawGraphics(super.graphics, 4, 4);
-        xCameraPos = tmpCameraPosX;
-        zCameraPos = tmpCameraPosZ;
-        yCameraPos = tmpCameraPosY;
-        yCameraCurve = tmpCameraCurveY;
-        xCameraCurve = tmpCameraCurveX;
+        xCameraPos = newCameraPosX;
+        zCameraPos = newCameraPosZ;
+        yCameraPos = newCameraPosY;
+        yCameraCurve = newCameraCurveY;
+        xCameraCurve = newCameraCurveX;
         //       }
     }
 
