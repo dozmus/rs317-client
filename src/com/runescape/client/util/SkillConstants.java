@@ -13,7 +13,7 @@ public final class SkillConstants {
     
     public static final boolean[] ENABLED = {
         true, true, true, true, true, true, true, true, true, true,
-        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, false,
         true, false, false, false, false
     };
 }
